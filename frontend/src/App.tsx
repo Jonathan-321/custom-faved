@@ -1,34 +1,65 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { Settings } from './components/Settings/Settings'
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+  const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+
+  const submitRequest = (method, action, csrfToken, alertMessage) => {
+
+    if (alertMessage && !confirm(alertMessage)) {
+      return;
+    }
+
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = action;
+
+    const addInput = (name, value) => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = name;
+      input.value = value;
+      form.appendChild(input);
+    };
+    addInput('force-method', method);
+    addInput('csrf_token', csrfToken);
+
+    document.body.appendChild(form);
+    form.submit();
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+     <BrowserRouter>
+      <div className="row">
+        <nav className="col-md-3 col-xl-2 d-md-block"> 
+          <ul>
+            <li><Link to="/">Settings</Link></li>
+          </ul>
+        </nav>
+
+        <div className="col-md-9 col-xl-10"> 
+          <div className="mb-4 d-md-none"> 
+            <button 
+              className="btn btn-outline-dark me-auto" 
+              type="button" 
+              data-bs-toggle="offcanvas"
+              data-bs-target="#sidebar" 
+              aria-controls="sidebar"
+            >
+              <i className="bi bi-list"></i>
+            </button>
+          </div>
+          <Routes> 
+            <Route path="/" element={<Settings />} />
+          </Routes>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </BrowserRouter>
   )
 }
 
