@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Button } from './components/ui/button';
+import EditItemForm from './components/EditForm/EditItemForm';
+
 
 
 function App() {
@@ -34,30 +37,10 @@ function App() {
   }
 
   return (
-     <BrowserRouter>
-      <div className="row">
-        <nav className="col-md-3 col-xl-2 d-md-block"> 
-          <ul>
-            <li><Link to="/">Settings</Link></li>
-          </ul>
-        </nav>
-
-        <div className="col-md-9 col-xl-10"> 
-          <div className="mb-4 d-md-none"> 
-            <button 
-              className="btn btn-outline-dark me-auto" 
-              type="button" 
-              data-bs-toggle="offcanvas"
-              data-bs-target="#sidebar" 
-              aria-controls="sidebar"
-            >
-              <i className="bi bi-list"></i>
-            </button>
-          </div>
-          <Routes> 
-            <Route path="/" element={<Settings />} />
-          </Routes>
-        </div>
+    <BrowserRouter>
+      <div className="flex min-h-svh flex-col items-center justify-center">
+        <Button>Click me</Button>
+<EditItemForm />
       </div>
     </BrowserRouter>
   )
