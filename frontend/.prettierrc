@@ -1,0 +1,10 @@
+{
+    "trailingComma": "all",
+    "semi": true,
+    "singleQuote": false,
+    "tabWidth": 4,
+    "printWidth__comment": "because of jsx props max per line",
+    "printWidth": 120,
+    "arrowParens": "always",
+    "endOfLine":"auto"
+}
