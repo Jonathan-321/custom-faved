@@ -17,6 +17,7 @@ import { Label } from "@/components/ui/label"
 
 
 import styles from "./editForm.module.scss"
+import { Textarea } from '../ui/textarea';
 
 
 const EditItemForm = (data: any) => {
@@ -103,16 +104,11 @@ const EditItemForm = (data: any) => {
                 name="description"
                 render={({ field }) => {
                   return (
-                    <Input
-                      className={styles.input}
-                      type="text"
-                      id="name-1"
-                      value={field.value ?? undefined}
-                      style={{ marginLeft: 5 }}
-                      onChange={(value) => {
-                        field.onChange(value ?? null);
-                      }}
-                    />
+                    <Textarea 
+                    onChange={(value) => {
+                      field.onChange(value ?? null);
+                    }} className={styles.input} placeholder="Type your message here." value={field.value ?? undefined} style={{ marginLeft: 5 }} />
+
                   );
                 }}
               />
@@ -125,16 +121,10 @@ const EditItemForm = (data: any) => {
                 name="comments"
                 render={({ field }) => {
                   return (
-                    <Input
-                      className={styles.input}
-                      type="text"
-                      id="name-1"
-                      value={field.value ?? undefined}
-                      style={{ marginLeft: 5 }}
-                      onChange={(value) => {
-                        field.onChange(value ?? null);
-                      }}
-                    />
+                   <Textarea 
+                    onChange={(value) => {
+                      field.onChange(value ?? null);
+                    }} className={styles.input} placeholder="Type your message here." value={field.value ?? undefined} style={{ marginLeft: 5 }} />
                   );
                 }}
               />
