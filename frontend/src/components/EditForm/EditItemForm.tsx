@@ -1,90 +1,252 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
-import s from "./editForm.module.scss"
+import React, { useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
-const EditItemForm = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    defaultValues: {
-      title: 'How to Migrate Your Data from Pocket to Faved | Faved - Organize Your Bookmarks',
-      url: 'https://faved.dev/blog/migrate-pocket-to-faved',
-      description: 'Pocket is shutting down on July 8, 2025. As a privacy-first alternative, Faved lets you organize and manage your bookmarks while keeping full ownership of your data. Learn how to migrate your data from Pocket to Faved in a few simple steps.',
-      imageUrl: 'https://',
-      tags: 'Faved / Welcome',
-      // created_at and updated_at are usually handled server-side
-    }
+
+import styles from "./editForm.module.scss"
+
+
+const EditItemForm = (data: any) => {
+  console.log('data', data)
+  const defaultValues = data.data;
+  const { reset, register, handleSubmit, formState: { errors }, control } = useForm({
+    defaultValues: defaultValues
   });
-
-  const onSubmit = (data) => {
-    console.log(data); // Handle form submission, e.g., send data to API
+  useEffect(() => {
+    reset(defaultValues)
+  }, [])
+  const onSubmit = (val) => {
+    console.log(val); // Handle form submission, e.g., send data to API
   };
 
   return (
-    <Dialog>
-      <DialogTrigger>Open</DialogTrigger>
 
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogContent>
-
+    <Dialog >
+      <form>
+        <DialogTrigger asChild>
+          <Button variant="outline">Open Dialog</Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[1000px]">
           <DialogHeader>
-            <DialogTitle>Edit item</DialogTitle>
-            <DialogDescription>
-              {/* This action cannot be undone. This will permanently delete your account
-                and remove your data from our servers. */}
-            </DialogDescription>
+            <div className={styles.header}>         
+              <DialogTitle>Edit item</DialogTitle>
+              <Button variant="link" >View list</Button>
+              </div>
+
+            {/* <DialogDescription>
+              Make changes to your profile here. Click save when you&apos;re
+              done.
+            </DialogDescription> */}
           </DialogHeader>
-          <div>
-            <input type="text" id="title" {...register("title", { required: "Title is required" })} />
-            {errors.title && <p>{errors.title.message}</p>}
-
-
-            <div>
-              <label htmlFor="url">URL</label>
-              <input type="url" id="url" {...register("url", {
-                required: "URL is required",
-                pattern: {
-                  value: /^(http|https):\/\/[^ "]+$/,
-                  message: "Invalid URL format"
-                }
-              })} />
-              {errors.url && <p>{errors.url.message}</p>}
+          <div className="grid gap-4">
+            <div className={styles.infoBlock}>
+              <Label htmlFor="name-1">Title</Label>
+              <Controller
+                control={control}
+                name="title"
+                render={({ field }) => {
+                  return (
+                    <Input
+                      className={styles.input}
+                      type="text"
+                      id="name-1"
+                      value={field.value ?? undefined}
+                      style={{ marginLeft: 5 }}
+                      onChange={(value) => {
+                        field.onChange(value ?? null);
+                      }}
+                    />
+                  );
+                }}
+              />
+              {/* <ValidationMessage message={errors.fileName?.message} /> */}
             </div>
-
-            <div>
-              <label htmlFor="description">Description</label>
-              <textarea id="description" {...register("description")} />
+            <div className={styles.infoBlock}>
+              <Label htmlFor="name-1">URL</Label>
+              <Controller
+                control={control}
+                name="url"
+                render={({ field }) => {
+                  return (
+                    <Input
+                      className={styles.input}
+                      type="text"
+                      id="name-1"
+                      value={field.value ?? undefined}
+                      style={{ marginLeft: 5 }}
+                      onChange={(value) => {
+                        field.onChange(value ?? null);
+                      }}
+                    />
+                  );
+                }}
+              />
+              {/* <ValidationMessage message={errors.fileName?.message} /> */}
             </div>
-
-            <div>
-              <label htmlFor="comments">Comments</label>
-              <textarea id="comments" {...register("comments")} />
+            <div className={styles.infoBlock}>
+              <Label htmlFor="name-1">Description</Label>
+              <Controller
+                control={control}
+                name="description"
+                render={({ field }) => {
+                  return (
+                    <Input
+                      className={styles.input}
+                      type="text"
+                      id="name-1"
+                      value={field.value ?? undefined}
+                      style={{ marginLeft: 5 }}
+                      onChange={(value) => {
+                        field.onChange(value ?? null);
+                      }}
+                    />
+                  );
+                }}
+              />
+              {/* <ValidationMessage message={errors.fileName?.message} /> */}
             </div>
-
-            <div>
-              <label htmlFor="imageUrl">Image URL</label>
-              <input type="url" id="imageUrl" {...register("imageUrl")} /> {/* Changed to type="url" */}
+            <div className={styles.infoBlock}>
+              <Label htmlFor="name-1">Comments</Label>
+              <Controller
+                control={control}
+                name="comments"
+                render={({ field }) => {
+                  return (
+                    <Input
+                      className={styles.input}
+                      type="text"
+                      id="name-1"
+                      value={field.value ?? undefined}
+                      style={{ marginLeft: 5 }}
+                      onChange={(value) => {
+                        field.onChange(value ?? null);
+                      }}
+                    />
+                  );
+                }}
+              />
+              {/* <ValidationMessage message={errors.fileName?.message} /> */}
             </div>
-
-            <div>
-              <label htmlFor="tags">Tags</label>
-              <input type="text" id="tags" {...register("tags")} /> {/* Changed to type="text" */}
+            <div className={styles.infoBlock}>
+              <Label htmlFor="name-1">Image URL</Label>
+              <Controller
+                control={control}
+                name="imageURL"
+                render={({ field }) => {
+                  return (
+                    <Input
+                      className={styles.input}
+                      type="text"
+                      id="name-1"
+                      value={field.value ?? undefined}
+                      style={{ marginLeft: 5 }}
+                      onChange={(value) => {
+                        field.onChange(value ?? null);
+                      }}
+                    />
+                  );
+                }}
+              />
+              {/* <ValidationMessage message={errors.fileName?.message} /> */}
+            </div>
+            <div className={styles.infoBlock}>
+              <Label htmlFor="name-1">Tags</Label>
+              <Controller
+                control={control}
+                name="tags"
+                render={({ field }) => {
+                  return (
+                    <Input
+                      className={styles.input}
+                      type="text"
+                      id="name-1"
+                      value={field.value ?? undefined}
+                      style={{ marginLeft: 5 }}
+                      onChange={(value) => {
+                        field.onChange(value ?? null);
+                      }}
+                    />
+                  );
+                }}
+              />
+              {/* <ValidationMessage message={errors.fileName?.message} /> */}
+            </div>
+            <div className={styles.infoBlock}>
+              <Label htmlFor="name-1">Created at</Label>
+              <Controller
+                control={control}
+                name="createdAt"
+                render={({ field }) => {
+                  return (
+                    <Input
+                      className={styles.input}
+                      type="text"
+                      id="name-1"
+                      value={field.value ?? undefined}
+                      style={{ marginLeft: 5 }}
+                      onChange={(value) => {
+                        field.onChange(value ?? null);
+                      }}
+                    />
+                  );
+                }}
+              />
+              {/* <ValidationMessage message={errors.fileName?.message} /> */}
+            </div>
+            <div className={styles.infoBlock}>
+              <Label htmlFor="name-1">Updated at</Label>
+              <Controller
+                control={control}
+                name="updatedAt"
+                render={({ field }) => {
+                  return (
+                    <Input
+                      className={styles.input}
+                      type="text"
+                      id="name-1"
+                      value={field.value ?? undefined}
+                      style={{ marginLeft: 5 }}
+                      onChange={(value) => {
+                        field.onChange(value ?? null);
+                      }}
+                    />
+                  );
+                }}
+              />
+              {/* <ValidationMessage message={errors.fileName?.message} /> */}
             </div>
 
           </div>
+          <DialogFooter>
+            <Button type="submit" variant="default">Save & Back</Button>
+            <Button type="submit" variant="secondary">Save as Copy</Button>
+            <Button type="submit"variant="secondary">Save</Button>
+            <Button type="submit"variant="secondary">Back</Button>
+            {/* <DialogClose asChild> */}
+ 
+   <Button variant="destructive">Delete</Button>
 
-          {/* ... (created at and updated at fields) */}
-          <div className={s.btnsFooter}>      
-            <button type="submit">Save & Back</button>
-            <button type="button">Save as Copy</button>
-            <button type="submit">Save</button>
-            <button type="button">Back</button>
-            <button type="button">Delete</button></div>
 
+            {/* </DialogClose> */}
+
+          </DialogFooter>
         </DialogContent>
       </form>
-
     </Dialog>
+
+
 
   );
 };

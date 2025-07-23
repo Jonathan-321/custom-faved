@@ -5,6 +5,7 @@ import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from './components/ui/button';
 import EditItemForm from './components/EditForm/EditItemForm';
+import { mockDefaultValues } from './components/utils/utils';
 
 
 
@@ -38,10 +39,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="flex min-h-svh flex-col items-center justify-center">
-        <Button>Click me</Button>
-<EditItemForm />
-      </div>
+      <EditItemForm data={mockDefaultValues} />
     </BrowserRouter>
   )
 }

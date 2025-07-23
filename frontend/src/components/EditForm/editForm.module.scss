@@ -1,3 +1,24 @@
-.btnsFooter{
+
+.header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+}
+.btnsFooter {
     background-color: red;
+}
+
+.infoBlock {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.label{
+    width: 10%;
+}
+.input {
+    width: 90%;
 }
