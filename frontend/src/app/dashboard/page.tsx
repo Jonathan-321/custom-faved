@@ -8,8 +8,13 @@ import {
 } from "@/components/ui/sidebar"
 
 import data from "./data.json"
+import { useState } from "react"
+import { mockDefaultValues } from "@/components/utils/utils"
+import EditItemForm from "@/components/EditForm/EditItemForm"
+import { Dialog } from "@/components/ui/dialog"
 
 export default function Page() {
+  const [isShowEditModal, setIsShowEditModal] = useState(false);
   return (
     <SidebarProvider
       style={
@@ -29,11 +34,12 @@ export default function Page() {
               {/* <div className="px-4 lg:px-6">
                 <ChartAreaInteractive />
               </div> */}
-              <DataTable data={data} />
+              <DataTable data={data} setIsShowEditModal={setIsShowEditModal} />
             </div>
           </div>
         </div>
       </SidebarInset>
+      {isShowEditModal && <Dialog  open={isShowEditModal}><EditItemForm data={mockDefaultValues} /></Dialog>}
     </SidebarProvider>
   )
 }

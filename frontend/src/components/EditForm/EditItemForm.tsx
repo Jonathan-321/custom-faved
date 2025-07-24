@@ -35,10 +35,11 @@ const EditItemForm = (data: any) => {
 
   return (
 
-    <Dialog >
-      <form>
+    // <Dialog >
+    <div>    <form>
         <DialogTrigger asChild>
-          <Button variant="outline">Open Dialog</Button>
+  
+          <Button className="hidden" variant="outline">Open Dialog</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[1000px]">
           <DialogHeader>
@@ -234,8 +235,9 @@ const EditItemForm = (data: any) => {
 
           </DialogFooter>
         </DialogContent>
-      </form>
-    </Dialog>
+      </form></div>
+  
+ 
 
 
 
