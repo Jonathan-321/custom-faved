@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "link": "https://ui.shadcn.com/blocks",
+    "description": "Pocket is shutting down on July 8, 2025. As a privacy-first alternative, Faved lets you organize and manage your bookmarks while keeping full ownership of your data. Learn how to migrate your data from Pocket to Faved in a few simple steps."
+
+  },
+  {
+    "id": 2,
+    "link": "https://ui.shadcn.com/blocks",
+    "description": "Lightning fast free open source bookmark manager with accent on privacy and data ownership."
+
+  },
+  {
+    "id": 3,
+    "link": "Executive summary",
+    "description": "Narrative"
+
+  },
+  {
+    "id": 4,
+    "link": "Technical approach",
+    "description": "Narrative"
+
+  },
+  {
+    "id": 5,
+    "link": "Design",
+    "description": "Narrative"
+
+  },
+  {
+    "id": 6,
+    "link": "Capabilities",
+    "description": "Narrative"
+
+  }
+]

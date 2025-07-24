@@ -5,6 +5,7 @@ import './App.css'
 import { Button } from './components/ui/button';
 import EditItemForm from './components/EditForm/EditItemForm';
 import { mockDefaultValues } from './components/utils/utils';
+import Page from './app/dashboard/page';
 
 
 
@@ -38,7 +39,8 @@ function App() {
 
   return (
     <BrowserRouter>
-      <EditItemForm data={mockDefaultValues} />
+      {/* <EditItemForm data={mockDefaultValues} /> */}
+      <Page />
     </BrowserRouter>
   )
 }
