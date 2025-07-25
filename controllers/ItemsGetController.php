@@ -16,15 +16,7 @@ class ItemsGetController implements ControllerInterface
 		$repository = ServiceContainer::get(Repository::class);
 		$all_items = $repository->getItems();
 
-		$all_items = array_values($all_items);
-
-		$data = array_map(function ($item) {
-			return [
-				'id' => $item['id'],
-				'link' => $item['url'],
-				'description' => $item['description']
-			];
-		}, $all_items);
+		$data = array_values($all_items);
 
 		return data($data);
 	}
