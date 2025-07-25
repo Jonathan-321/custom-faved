@@ -1,0 +1,23 @@
+<?php
+
+namespace Framework\Responses;
+
+class DataResponse implements ResponseInterface
+{
+	public function __construct(protected array $data)
+	{
+	}
+
+	public function yield(): void {
+		// Set headers for JSON response
+		header('Content-Type: application/json; charset=utf-8');
+		header('Cache-Control: no-cache, no-store, must-revalidate'); // HTTP 1.1
+		header('Pragma: no-cache'); // HTTP 1.0
+		header('Expires: 0'); // Proxies
+		header('Access-Control-Allow-Origin: *'); // Allow all origins for CORS
+
+
+		// Output the JSON data
+		echo json_encode($this->data);
+	}
+}

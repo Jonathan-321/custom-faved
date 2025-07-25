@@ -8,7 +8,7 @@ import {
 
 import data from "./data.json"
 import { useEffect, useState } from "react"
-import { mockDefaultValues } from "@/components/utils/utils"
+// import { mockDefaultValues } from "@/components/utils/utils"
 import EditItemForm from "@/components/EditForm/EditItemForm"
 import { Dialog } from "@/components/ui/dialog"
 import { DataTable } from "@/components/Table/data-table"
@@ -17,16 +17,16 @@ export enum ActionType {
   CREATE = "CREATE",
   EDIT = "EDIT",
 }
-// export const mockDefaultValues = {
-//     title: 'How to Migrate Your Data from Pocket to Faved | Faved - Organize Your Bookmarks',
-//     url: 'https://faved.dev/blog/migrate-pocket-to-faved',
-//     description: 'Pocket is shutting down on July 8, 2025. As a privacy-first alternative, Faved lets you organize and manage your bookmarks while keeping full ownership of your data. Learn how to migrate your data from Pocket to Faved in a few simple steps.',
-//     comments: 'blalbaple steps.',
-//     imageUrl: 'https://example.com/image.jpg', // Added a placeholder image URL
-//     tags: 'Faved / Welcome',
-//     createdAt: '222',
-//     updatedAt: '222',
-// };
+export const mockDefaultValues = {
+  title: 'How to Migrate Your Data from Pocket to Faved | Faved - Organize Your Bookmarks',
+  url: 'https://faved.dev/blog/migrate-pocket-to-faved',
+  description: 'Pocket is shutting down on July 8, 2025. As a privacy-first alternative, Faved lets you organize and manage your bookmarks while keeping full ownership of your data. Learn how to migrate your data from Pocket to Faved in a few simple steps.',
+  comments: 'blalbaple steps.',
+  imageUrl: 'https://example.com/image.jpg', // Added a placeholder image URL
+  tags: 'Faved / Welcome',
+  createdAt: '222',
+  updatedAt: '222',
+};
 // const mockData: Payment[] = [
 //   {
 //     id: "m5gr84i9",
@@ -59,6 +59,38 @@ export default function Page() {
   const [data, setData] = useState(mockDefaultValues)
   const [type, setType] = useState<ActionType>()
   useEffect(() => { setType(ActionType.EDIT) }, [])
+
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('http://localhost:8000/index.php?route=/items');
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setItems(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch items');
+        console.error('Error fetching items:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchItems();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <SidebarProvider
       style={
@@ -78,14 +110,15 @@ export default function Page() {
               {/* <div className="px-4 lg:px-6">
                 <ChartAreaInteractive />
               </div> */}
-              <DataTable setIsShowEditModal={setIsShowEditModal} setType={setType} />
-            </div>
-          </div>
-        </div>
-      </SidebarInset>
+              {/* <DataTable setIsShowEditModal={setIsShowEditModal} setType={setType} /> */}
+              <DataTable data={items} setIsShowEditModal={setIsShowEditModal} />
+            </div >
+          </div >
+        </div >
+      </SidebarInset >
       <Dialog onOpenChange={setIsShowEditModal} open={isShowEditModal} >
         <EditItemForm data={data} type={type} />
       </Dialog>
-    </SidebarProvider>
+    </SidebarProvider >
   )
 }

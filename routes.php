@@ -4,6 +4,7 @@ use Controllers\ItemCreateUpdateController;
 use Controllers\ItemDeleteController;
 use Controllers\ItemEditController;
 use Controllers\ItemsController;
+use Controllers\ItemsGetController;
 use Controllers\LoginSubmitController;
 use Controllers\LoginViewController;
 use Controllers\LogoutSubmitController;
@@ -67,5 +68,10 @@ return [
 	],
 	'/settings/delete-user' => [
 		'POST' => SettingsAuthDisableController::class,
+	],
+
+	// Data routes
+	'/items' => [
+		'GET' => ItemsGetController::class
 	],
 ];
