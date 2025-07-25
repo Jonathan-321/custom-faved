@@ -7,14 +7,45 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar"
 
-import data from "./data.json"
-import { useState } from "react"
+import {useEffect, useState} from "react"
 import { mockDefaultValues } from "@/components/utils/utils"
 import EditItemForm from "@/components/EditForm/EditItemForm"
 import { Dialog } from "@/components/ui/dialog"
 
 export default function Page() {
   const [isShowEditModal, setIsShowEditModal] = useState(false);
+
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('http://localhost:8000/index.php?route=/items');
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setItems(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch items');
+        console.error('Error fetching items:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchItems();
+  }, []);
+
+if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <SidebarProvider
       style={
@@ -34,7 +65,7 @@ export default function Page() {
               {/* <div className="px-4 lg:px-6">
                 <ChartAreaInteractive />
               </div> */}
-              <DataTable data={data} setIsShowEditModal={setIsShowEditModal} />
+              <DataTable data={items} setIsShowEditModal={setIsShowEditModal} />
             </div>
           </div>
         </div>

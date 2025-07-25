@@ -6,6 +6,7 @@ namespace Framework;
 use Exception;
 use Framework\Responses\PageResponse;
 use Framework\Responses\RedirectResponse;
+use Framework\Responses\DataResponse;
 use Models\Repository;
 
 function page($page_name, $data)
@@ -16,6 +17,10 @@ function page($page_name, $data)
 function redirect($location, $code = 303)
 {
 	return new RedirectResponse($location, $code);
+}
+
+function data(array $data) {
+	return new DataResponse($data);
 }
 
 

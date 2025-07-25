@@ -10,6 +10,7 @@ require_once ROOT_DIR . '/framework/FlashMessages.php';
 require_once ROOT_DIR . '/framework/CSRFProtection.php';
 require_once ROOT_DIR . '/framework/responses/ResponseInterface.php';
 require_once ROOT_DIR . '/framework/responses/RedirectResponse.php';
+require_once ROOT_DIR . '/framework/responses/DataResponse.php';
 require_once ROOT_DIR . '/framework/responses/PageResponse.php';
 require_once ROOT_DIR . '/framework/exceptions/NotFoundException.php';
 require_once ROOT_DIR . '/framework/exceptions/ValidationException.php';
