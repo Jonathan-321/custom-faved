@@ -4,7 +4,9 @@ use Controllers\ItemCreateUpdateController;
 use Controllers\ItemDeleteController;
 use Controllers\ItemEditController;
 use Controllers\ItemsController;
+use Controllers\ItemsCreateController;
 use Controllers\ItemsGetController;
+use Controllers\ItemsUpdateController;
 use Controllers\LoginSubmitController;
 use Controllers\LoginViewController;
 use Controllers\LogoutSubmitController;
@@ -72,6 +74,8 @@ return [
 
 	// Data routes
 	'/items' => [
-		'GET' => ItemsGetController::class
+		'GET' => ItemsGetController::class,
+		'POST' => ItemsCreateController::class,
+		'PATCH' => ItemsUpdateController::class,
 	],
 ];

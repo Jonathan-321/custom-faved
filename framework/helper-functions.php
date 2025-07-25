@@ -8,6 +8,7 @@ use Framework\Responses\PageResponse;
 use Framework\Responses\RedirectResponse;
 use Framework\Responses\DataResponse;
 use Models\Repository;
+use Models\TagCreator;
 
 function page($page_name, $data)
 {
@@ -23,6 +24,37 @@ function data(array $data) {
 	return new DataResponse($data);
 }
 
+
+function buildItemTagsFromInput(string $input_tags)
+{
+	$repository = ServiceContainer::get(Repository::class);
+	$tag_creator = ServiceContainer::get(TagCreator::class);
+
+	$tags = $repository->getTags();
+
+	$input_tags = explode(',', $input_tags);
+	$exising_tag_ids = array_intersect($input_tags, array_keys($tags));
+	$new_tags = array_diff($input_tags, $exising_tag_ids);
+
+	$tag_id_by_title = array_column($tags, 'id', 'title');
+	$new_tag_ids = array_map(function ($tag_name) use ($tag_creator, &$tag_id_by_title) {
+		$tag_segments = explode('/', $tag_name);
+		$tag_segments = array_map('trim', $tag_segments);
+
+		$parent = 0;
+		foreach ($tag_segments as $segment) {
+			if (isset($tag_id_by_title[$segment])) {
+				$parent = $tag_id_by_title[$segment];
+				continue;
+			}
+			$parent = $tag_creator->createTag($segment, '', $parent);
+			$tag_id_by_title[$segment] = $parent;
+		}
+		return $parent;
+	}, $new_tags);
+
+	return array_merge($exising_tag_ids, $new_tag_ids);
+}
 
 function flattenArray(array $array, string $prefix = ''): array
 {
