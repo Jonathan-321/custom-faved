@@ -696,7 +696,7 @@ export type Payment = {
   description: string
 }
 
-const createColumns = (setIsShowEditModal: (val: boolean) => void, setType: (val: ActionType) => void,): ColumnDef<z.infer<typeof schema>>[] => [
+const createColumns = (setIsShowEditModal: (val: boolean) => void, setType: (val: ActionType) => void, setIdItem: (val: any) => void): ColumnDef<z.infer<typeof schema>>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -761,9 +761,11 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void, setType: (val
   //   },
   // },
   {
-    id: "actions",
+    header: "Actions",
+    // id: "actions",
+    accessorKey: "id",
     enableHiding: false,
-    cell: () => (
+    cell: ({ row }) => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -776,7 +778,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void, setType: (val
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem onClick={() => { setType(ActionType.EDIT); setIsShowEditModal(true); }}>Edit</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => { setType(ActionType.EDIT); setIsShowEditModal(true); setIdItem(row.getValue("id")) }}>Edit</DropdownMenuItem>
           <DropdownMenuItem>Make a copy</DropdownMenuItem>
           <DropdownMenuItem>Favorite</DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -795,10 +797,17 @@ export const schema = z.object({
 export function DataTable({
   setIsShowEditModal,
   setType,
+  data,
+  setData,
+  setIdItem,
 }: {
   setIsShowEditModal: (val: boolean) => void,
   setType: (val: ActionType) => void,
+  data: any,
+  setData: any,
+  setIdItem: any,
 }) {
+  console.log('data', data)
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -806,7 +815,7 @@ export function DataTable({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
-  const columns = createColumns(setIsShowEditModal, setType);
+  const columns = createColumns(setIsShowEditModal, setType, setIdItem);
   const table = useReactTable({
     data,
     columns,

@@ -6,7 +6,7 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar"
 
-import data from "./data.json"
+// import data from "./data.json"
 import { useEffect, useState } from "react"
 // import { mockDefaultValues } from "@/components/utils/utils"
 import EditItemForm from "@/components/EditForm/EditItemForm"
@@ -56,14 +56,15 @@ export const mockDefaultValues = {
 // ]
 export default function Page() {
   const [isShowEditModal, setIsShowEditModal] = useState(false);
-  const [data, setData] = useState(mockDefaultValues)
   const [type, setType] = useState<ActionType>()
   useEffect(() => { setType(ActionType.EDIT) }, [])
 
   const [items, setItems] = useState([]);
+  const [idItem, setIdItem] = useState();
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  console.log('items', items)
   useEffect(() => {
     const fetchItems = async () => {
       try {
@@ -75,6 +76,7 @@ export default function Page() {
         }
 
         const data = await response.json();
+        console.log('response', data)
         setItems(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch items');
@@ -111,13 +113,13 @@ export default function Page() {
                 <ChartAreaInteractive />
               </div> */}
               {/* <DataTable setIsShowEditModal={setIsShowEditModal} setType={setType} /> */}
-              <DataTable data={items} setIsShowEditModal={setIsShowEditModal} />
+              <DataTable data={items} setData={setItems} setIsShowEditModal={setIsShowEditModal} setType={setType} setIdItem={setIdItem} />
             </div >
           </div >
         </div >
       </SidebarInset >
       <Dialog onOpenChange={setIsShowEditModal} open={isShowEditModal} >
-        <EditItemForm data={data} type={type} />
+        {isShowEditModal && <EditItemForm data={items} type={type} setData={setItems} setIsShowEditModal={setIsShowEditModal} idItem={idItem} />}
       </Dialog>
     </SidebarProvider >
   )

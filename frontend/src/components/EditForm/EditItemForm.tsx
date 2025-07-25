@@ -21,19 +21,31 @@ import { Textarea } from '../ui/textarea';
 import { ActionType } from '@/app/dashboard/page';
 
 
-const EditItemForm: React.FC<{ data: any; type: ActionType }> = ({ data, type }) => {
-  console.log('type', type)
-  const defaultValues = data.data;
+const EditItemForm: React.FC<{ data: any; setData: any, type: ActionType, setIsShowEditModal: any, idItem: any }> = ({ data, type, setData, setIsShowEditModal, idItem }) => {
+
+  const initialData = {
+    id: "",
+    link: "",
+    description: "",
+    comments: '',
+    createdAt: undefined,
+    imageURL: undefined,
+    tags: undefined,
+    updatedAt: undefined,
+    url: ''
+  }
+  const defaultValues = type === ActionType.EDIT && data.length > 0 ? data.filter(el => el.id === idItem)[0] : type === ActionType.CREATE ? initialData : {};
   const { reset, register, handleSubmit, formState: { errors }, control } = useForm({
     defaultValues: defaultValues
   });
   useEffect(() => {
     reset(defaultValues)
-  }, [])
+  }, [idItem])
+  console.log('defaultValues', defaultValues)
   const onSubmit = (val) => {
-    alert(22)
-    debugger;
-    console.log(val); // Handle form submission, e.g., send data to API
+    setData((prev) => ([{ ...val, id: Math.random() * 222 }, ...prev]))
+    setIsShowEditModal(false)
+    reset()
   };
 
   return (
@@ -61,7 +73,7 @@ const EditItemForm: React.FC<{ data: any; type: ActionType }> = ({ data, type })
             <Label htmlFor="name-1">Title</Label>
             <Controller
               control={control}
-              name="title"
+              name="link"
               render={({ field }) => {
                 return (
                   <Input
