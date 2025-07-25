@@ -77,5 +77,6 @@ return [
 		'GET' => ItemsGetController::class,
 		'POST' => ItemsCreateController::class,
 		'PATCH' => ItemsUpdateController::class,
+		'OPTIONS' => ItemsGetController::class, // For CORS preflight requests, temporary solution
 	],
 ];

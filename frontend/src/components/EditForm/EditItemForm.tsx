@@ -43,6 +43,30 @@ const EditItemForm: React.FC<{ data: any; setData: any, type: ActionType, setIsS
   }, [idItem])
   console.log('defaultValues', defaultValues)
   const onSubmit = (val) => {
+
+    console.log('val', val)
+
+    const options = {
+      method: ActionType.EDIT ? 'PATCH' : 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title:val.link || '',
+        description: val.description  || '',
+        url:val.url || '',
+        comments:val.comments  || '',
+        image: val.imageURL || '',
+        tags:"" // TODO: parse tags
+      })
+    };
+
+    fetch('http://localhost:8000/index.php?route=%2Fitems' + (ActionType.EDIT ? `&item-id=${val.id}`: ''), options)
+      .then(response => response.json())
+      .then(response => console.log(response))
+      .catch(err => console.error(err));
+
+
     setData((prev) => ([{ ...val, id: Math.random() * 222 }, ...prev]))
     setIsShowEditModal(false)
     reset()

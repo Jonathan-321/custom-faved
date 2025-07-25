@@ -16,6 +16,9 @@ class DataResponse implements ResponseInterface
 		header('Expires: 0'); // Proxies
 		header('Access-Control-Allow-Origin: *'); // Allow all origins for CORS
 
+		header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS, PATCH');
+		header('Access-Control-Allow-Headers: Content-Type, Authorization');
+		header('Access-Control-Max-Age: 86400');
 
 		// Output the JSON data
 		echo json_encode($this->data);
