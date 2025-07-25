@@ -61,7 +61,7 @@ const EditItemForm: React.FC<{ data: any; setData: any, type: ActionType, setIsS
       })
     };
 
-    fetch('http://localhost:8000/index.php?route=%2Fitems' + (ActionType.EDIT ? `&item-id=${val.id}`: ''), options)
+    fetch('http://localhost:8000/index.php?route=%2Fitems' + (type === ActionType.EDIT ? `&item-id=${val.id}`: ''), options)
       .then(response => response.json())
       .then(response => console.log(response))
       .catch(err => console.error(err));
