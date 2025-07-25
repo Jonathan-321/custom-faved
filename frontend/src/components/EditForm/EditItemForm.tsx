@@ -47,7 +47,7 @@ const EditItemForm: React.FC<{ data: any; setData: any, type: ActionType, setIsS
     console.log('val', val)
 
     const options = {
-      method: ActionType.EDIT ? 'PATCH' : 'POST',
+      method: type === ActionType.EDIT ? 'PATCH' : 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
