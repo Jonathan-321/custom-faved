@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Button } from "@/components/ui/button"
 import {
@@ -19,13 +19,13 @@ import { Label } from "@/components/ui/label"
 import styles from "./editForm.module.scss"
 import { Textarea } from '../ui/textarea';
 import { ActionType } from '@/app/dashboard/page';
+import { StoreContext } from '@/store/storeContext';
 
 
-const EditItemForm: React.FC<{ data: any; setData: any, type: ActionType, setIsShowEditModal: any, idItem: any }> = ({ data, type, setData, setIsShowEditModal, idItem }) => {
-
+const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModal }) => {
+  const store = useContext(StoreContext);
   const initialData = {
     id: "",
-    link: "",
     description: "",
     comments: '',
     createdAt: undefined,
@@ -34,42 +34,44 @@ const EditItemForm: React.FC<{ data: any; setData: any, type: ActionType, setIsS
     updatedAt: undefined,
     url: ''
   }
-  const defaultValues = type === ActionType.EDIT && data.length > 0 ? data.filter(el => el.id === idItem)[0] : type === ActionType.CREATE ? initialData : {};
+  const defaultValues = store.type === ActionType.EDIT && store.items.length > 0 ? store.items.filter(el => el.id === store.idItem)[0] : store.type === ActionType.CREATE ? initialData : {};
   const { reset, register, handleSubmit, formState: { errors }, control } = useForm({
     defaultValues: defaultValues
   });
   useEffect(() => {
     reset(defaultValues)
-  }, [idItem])
-  console.log('defaultValues', defaultValues)
+  }, [store.idItem])
+  console.log('store.idItem', store.idItem)
   const onSubmit = (val) => {
 
     console.log('val', val)
 
     const options = {
-      method: type === ActionType.EDIT ? 'PATCH' : 'POST',
+      method: store.type === ActionType.EDIT ? 'PATCH' : 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        title:val.link || '',
-        description: val.description  || '',
-        url:val.url || '',
-        comments:val.comments  || '',
+        title: val.title || '',
+        description: val.description || '',
+        url: val.url || '',
+        comments: val.comments || '',
         image: val.imageURL || '',
-        tags:"" // TODO: parse tags
+        tags: "" // TODO: parse tags
       })
     };
 
-    fetch('http://localhost:8000/index.php?route=%2Fitems' + (type === ActionType.EDIT ? `&item-id=${val.id}`: ''), options)
+    fetch('http://localhost:8000/index.php?route=%2Fitems' + (store.type === ActionType.EDIT ? `&item-id=${val.id}` : ''), options)
       .then(response => response.json())
       .then(response => console.log(response))
-      .catch(err => console.error(err));
-
-
-    setData((prev) => ([{ ...val, id: Math.random() * 222 }, ...prev]))
+      .catch(err => console.error(err))
+      .finally(() => {
+        store.fetchItems()
+      })
     setIsShowEditModal(false)
     reset()
+
+
   };
 
   return (
@@ -83,7 +85,7 @@ const EditItemForm: React.FC<{ data: any; setData: any, type: ActionType, setIsS
       <DialogContent className="sm:max-w-[1000px]">
         <DialogHeader>
           <div className={styles.header}>
-            <DialogTitle>{type === ActionType.EDIT ? "Edit item" : "Create item"}</DialogTitle>
+            <DialogTitle>{store.type === ActionType.EDIT ? "Edit item" : "Create item"}</DialogTitle>
             <Button variant="link" >View list</Button>
           </div>
 
@@ -97,7 +99,7 @@ const EditItemForm: React.FC<{ data: any; setData: any, type: ActionType, setIsS
             <Label htmlFor="name-1">Title</Label>
             <Controller
               control={control}
-              name="link"
+              name="url"
               render={({ field }) => {
                 return (
                   <Input

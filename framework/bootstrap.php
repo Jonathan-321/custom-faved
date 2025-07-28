@@ -52,7 +52,7 @@ ServiceContainer::bind(UrlBuilder::class, function () {
 });
 
 $middleware_classes = [
-	CSRFMiddleware::class,
+	// CSRFMiddleware::class,
 	DatabaseMigrations::class,
 	AuthenticationMiddleware::class,
 ];

@@ -5,8 +5,7 @@ import './App.css'
 import { Button } from './components/ui/button';
 import EditItemForm from './components/EditForm/EditItemForm';
 import { mockDefaultValues } from './components/utils/utils';
-import Page from './app/dashboard/page';
-
+import { Page } from './app/dashboard/page';
 
 
 function App() {
@@ -39,7 +38,7 @@ function App() {
 
   return (
     <BrowserRouter>
-   
+
       <Page />
     </BrowserRouter>
   )
