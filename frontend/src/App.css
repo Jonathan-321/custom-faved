@@ -42,3 +42,31 @@
 .read-the-docs {
   color: #888;
 }
+
+
+.tabler-icon-chevron-right[data-state="open"] {
+    rotate: 90deg;
+}
+
+.border-sidebar-border {
+  margin-right: 0 !important;
+  padding-right: 0;
+  padding-left: 5px;
+}
+
+.sidebar-menu-action {
+  visibility: hidden;
+}
+
+.peer\/menu-button:hover .sidebar-menu-action, .sidebar-menu-action[data-state="open"]  {
+  visibility: visible;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;          /* Firefox */
+  -ms-overflow-style: none;       /* Internet Explorer 10+ */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;                  /* WebKit (Chrome, Safari) */
+}

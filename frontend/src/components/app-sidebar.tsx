@@ -1,21 +1,20 @@
 import * as React from "react"
+import { useEffect, useState } from "react"
 import {
   IconCamera,
-  IconChartBar,
   IconDashboard,
   IconDatabase,
   IconFileAi,
   IconFileDescription,
   IconFileWord,
-  IconFolder,
   IconHelp,
-  IconInnerShadowTop,
-  IconListDetails,
   IconReport,
   IconSearch,
-  IconSettings,
-  IconUsers,
+  IconSettings, IconTrash,
+  IconChevronRight,
+  type Icon, IconDotsVertical, IconEdit,
 } from "@tabler/icons-react"
+
 
 import { NavDocuments } from "@/components/nav-documents"
 import { NavMain } from "@/components/nav-main"
@@ -26,10 +25,24 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
+  SidebarMenu, SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubItem, useSidebar,
 } from "@/components/ui/sidebar"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem, DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu.tsx";
+
 
 const data = {
   user: {
@@ -149,6 +162,107 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+
+  const [allTags, setAllTags] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { isMobile } = useSidebar()
+
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('http://localhost:888/index.php?route=%2Ftags');
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setAllTags(Object.values(data));
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch tags');
+        console.error('Error fetching tags:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTags();
+  }, []);
+
+  function renderTag(parentID: integer, level = 0): JSX.Element[] {
+    let output = []
+    const tags = allTags.filter((tag: any) => tag.parent === parentID);
+
+    level++
+    for (const tag of tags) {
+      const innerItems = renderTag(tag.id, level)
+      const actionButtons = (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <SidebarMenuAction
+              className="data-[state=open]:bg-accent rounded-sm sidebar-menu-action"
+            >
+              <IconDotsVertical />
+              <span className="sr-only">More</span>
+            </SidebarMenuAction>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="w-24 rounded-lg"
+            side={isMobile ? "bottom" : "right"}
+            align={isMobile ? "end" : "start"}
+          >
+            <DropdownMenuItem>
+              <IconEdit />
+              <span>Edit</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem variant="destructive">
+              <IconTrash />
+              <span>Delete</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )
+
+      const code = innerItems.length > 0 ? (<Collapsible className='group/collapsible'>
+          <SidebarMenuItem>
+
+              <SidebarMenuButton>
+                <CollapsibleTrigger asChild>
+                  <IconChevronRight className={`transition-transform hover:cursor-pointer` } />
+                </CollapsibleTrigger>
+                <a href='#' >
+                  <span>{tag.title}</span>
+                </a>
+                {actionButtons}
+              </SidebarMenuButton>
+
+            <CollapsibleContent>
+              <SidebarMenuSub>
+                { innerItems }
+              </SidebarMenuSub>
+            </CollapsibleContent>
+          </SidebarMenuItem>
+        </Collapsible>)
+        :
+        (<SidebarMenuItem>
+          <SidebarMenuButton>
+            <a href='#' className='ml-6'>
+              <span>{tag.title}</span>
+            </a>
+            {actionButtons}
+          </SidebarMenuButton>
+        </SidebarMenuItem>)
+
+      output.push(code)
+    }
+
+    return output
+  }
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -167,8 +281,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className={'no-scrollbar'}>
         <NavMain items={data.navMain} />
+        <SidebarMenu>
+          {renderTag(0)}
+        </SidebarMenu>
         <NavDocuments items={data.documents} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
