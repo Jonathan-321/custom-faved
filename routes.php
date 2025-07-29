@@ -5,6 +5,7 @@ use Controllers\ItemDeleteController;
 use Controllers\ItemEditController;
 use Controllers\ItemsController;
 use Controllers\ItemsCreateController;
+use Controllers\ItemsDeleteController;
 use Controllers\ItemsGetController;
 use Controllers\ItemsUpdateController;
 use Controllers\LoginSubmitController;
@@ -78,6 +79,7 @@ return [
 		'GET' => ItemsGetController::class,
 		'POST' => ItemsCreateController::class,
 		'PATCH' => ItemsUpdateController::class,
+		'DELETE' => ItemsDeleteController::class,
 		'OPTIONS' => ItemsGetController::class, // For CORS preflight requests, temporary solution
 	],
 	'/tags' => [
