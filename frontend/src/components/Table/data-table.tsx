@@ -15,6 +15,7 @@ import {
 } from "@tanstack/react-table"
 import { z } from "zod"
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import styles from "./table.module.scss"
 
 import {
   IconDotsVertical,
@@ -60,6 +61,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void, setType: (val
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
+        className="translate-y-[2px]"
       />
     ),
     cell: ({ row }) => (
@@ -67,23 +69,73 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void, setType: (val
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select row"
+        className="translate-y-[2px]"
       />
     ),
     enableSorting: false,
     enableHiding: false,
   },
+  // {
+  //   accessorKey: "url",
+  //   header: "Url",
+  //   cell: ({ row }) => (
+  //     <div className={styles.titleWrapper}>
+  //       {/* {label && <Badge variant="outline">{label.label}</Badge>} truncate*/}
+  //       <span className={styles.title} >
+  //         {row.getValue("url")}
+  //       </span >
+  //     </div >
+  //   ),
+  // },
   {
     accessorKey: "url",
     header: "Url",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("url")}</div>
-    ),
+    cell: ({ row }) => {
+
+
+      return (
+        <div className="flex space-x-2">
+          {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
+          <span className={styles.title}
+          //  className="max-w-[500px] truncate font-medium"
+          >
+            {row.getValue("url")}
+          </span>
+        </div>
+      )
+    },
   },
   {
     accessorKey: "description",
     header: "Description",
-    cell: ({ row }) => <div className="lowercase">{row.getValue("description")}</div>,
+    cell: ({ row }) => {
+
+
+      return (
+        <div className="flex space-x-2">
+          {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
+          <span
+            className={styles.title}
+          // className="max-w-[500px] truncate font-medium"
+          >
+            {row.getValue("description")}
+          </span>
+        </div>
+      )
+    },
   },
+  // {
+  //   accessorKey: "description",
+  //   header: "Description",
+  //   cell: ({ row }) => (
+  //     <div className={styles.titleWrapper}>
+  //       {/* {label && <Badge variant="outline">{label.label}</Badge>} truncate*/}
+  //       <span className={styles.title} >
+  //         {row.getValue("description")}
+  //       </span >
+  //     </div >
+  //   ),
+  // },
   // {
   //   id: "actions",
   //   enableHiding: false,
@@ -213,14 +265,14 @@ export function DataTable({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="overflow-hidden rounded-md border">
-        <Table>
+      <div className="m-2 overflow-hidden rounded-md border">
+        <Table >
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead className="w-[30%]" key={header.id}>
+                    <TableHead key={header.id}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -240,14 +292,18 @@ export function DataTable({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell className="break-words bg-red" key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+                  {row.getVisibleCells().map((cell) => {
+                    console.log('cell', cell)
+
+                    return (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    )
+                  })}
                 </TableRow>
               ))
             ) : (

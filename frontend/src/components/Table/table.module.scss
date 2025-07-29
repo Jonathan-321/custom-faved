@@ -1,0 +1,19 @@
+.table {
+    margin: 10px;
+}
+
+.titleWrapper {
+    display: flex;
+    width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+.title {
+    hyphens: auto;
+    max-width: 600px;
+    height: 150px;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+}
