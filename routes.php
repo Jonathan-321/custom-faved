@@ -22,6 +22,7 @@ use Controllers\SetupRunController;
 use Controllers\SetupViewController;
 use Controllers\TagDeleteController;
 use Controllers\TagEditController;
+use Controllers\TagsController;
 use Controllers\TagUpdateController;
 
 return [
@@ -78,5 +79,8 @@ return [
 		'POST' => ItemsCreateController::class,
 		'PATCH' => ItemsUpdateController::class,
 		'OPTIONS' => ItemsGetController::class, // For CORS preflight requests, temporary solution
+	],
+	'/tags' => [
+		'GET' => TagsController::class,
 	],
 ];
