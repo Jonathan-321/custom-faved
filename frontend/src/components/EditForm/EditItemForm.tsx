@@ -78,10 +78,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
 
     // <Dialog >
     <div>   <form onSubmit={handleSubmit(onSubmit)}>
-      <DialogTrigger asChild>
 
-        <Button className="hidden" variant="outline">Open Dialog</Button>
-      </DialogTrigger>
       <DialogContent className="sm:max-w-[1000px]">
         <DialogHeader>
           <div className={styles.header}>

@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/table"
 import { ActionType } from "@/app/dashboard/page"
 import { StoreContext } from "@/store/storeContext"
+import { DataTableToolbar } from "./data-table-toolbar"
 
 
 export type Payment = {
@@ -236,8 +237,8 @@ export function DataTable({
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
-
+      <div className="flex items-center py-4 m-[10px]">
+        <DataTableToolbar table={table} />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -265,6 +266,7 @@ export function DataTable({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
       <div className="m-2 overflow-hidden rounded-md border">
         <Table >
           <TableHeader>
