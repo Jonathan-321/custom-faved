@@ -173,7 +173,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const fetchTags = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:888/index.php?route=%2Ftags');
+        const response = await fetch('http://localhost:8000/index.php?route=%2Ftags');
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -228,25 +228,25 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       )
 
       const code = innerItems.length > 0 ? (<Collapsible className='group/collapsible'>
-          <SidebarMenuItem>
+        <SidebarMenuItem>
 
-              <SidebarMenuButton>
-                <CollapsibleTrigger asChild>
-                  <IconChevronRight className={`transition-transform hover:cursor-pointer` } />
-                </CollapsibleTrigger>
-                <a href='#' >
-                  <span>{tag.title}</span>
-                </a>
-                {actionButtons}
-              </SidebarMenuButton>
+          <SidebarMenuButton>
+            <CollapsibleTrigger asChild>
+              <IconChevronRight className={`transition-transform hover:cursor-pointer`} />
+            </CollapsibleTrigger>
+            <a href='#' >
+              <span>{tag.title}</span>
+            </a>
+            {actionButtons}
+          </SidebarMenuButton>
 
-            <CollapsibleContent>
-              <SidebarMenuSub>
-                { innerItems }
-              </SidebarMenuSub>
-            </CollapsibleContent>
-          </SidebarMenuItem>
-        </Collapsible>)
+          <CollapsibleContent>
+            <SidebarMenuSub>
+              {innerItems}
+            </SidebarMenuSub>
+          </CollapsibleContent>
+        </SidebarMenuItem>
+      </Collapsible>)
         :
         (<SidebarMenuItem>
           <SidebarMenuButton>

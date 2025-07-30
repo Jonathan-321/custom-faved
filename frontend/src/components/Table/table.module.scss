@@ -11,9 +11,46 @@
 }
 
 .title {
+    padding: 5px;
     hyphens: auto;
     max-width: 600px;
-    height: 150px;
+    // height: 100px;
     overflow-wrap: break-word;
     white-space: pre-wrap;
+}
+
+.titleContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.titleWrapperContaner {
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: start;
+}
+
+.btnLink {
+    color: #2A7FFF;
+    text-decoration: underline;
+    /* Подчеркивание */
+}
+
+.btnLink:visited {
+    color: purple;
+    /* Цвет текста посещенной ссылки */
+}
+
+.btnLink:hover {
+    color: red;
+    /* Цвет текста при наведении */
+    text-decoration: none;
+    /* Убираем подчеркивание при наведении */
+}
+
+.btnLink:active {
+    color: darkred;
+    /* Цвет текста при клике */
 }

@@ -96,7 +96,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
             <Label htmlFor="name-1">Title</Label>
             <Controller
               control={control}
-              name="url"
+              name="title"
               render={({ field }) => {
                 return (
                   <Input

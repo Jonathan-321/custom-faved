@@ -43,6 +43,7 @@ import {
 import { ActionType } from "@/app/dashboard/page"
 import { StoreContext } from "@/store/storeContext"
 import { DataTableToolbar } from "./data-table-toolbar"
+import { Badge } from "../ui/badge"
 
 
 export type Payment = {
@@ -51,7 +52,7 @@ export type Payment = {
   description: string
 }
 
-const createColumns = (setIsShowEditModal: (val: boolean) => void, setType: (val: ActionType) => void, setIdItem: (val: any) => void): ColumnDef<z.infer<typeof schema>>[] => [
+const createColumns = (setIsShowEditModal: (val: boolean) => void, setType: (val: ActionType) => void, setIdItem: (val: any) => void, onDeleteHandler: (val: any) => void): ColumnDef<z.infer<typeof schema>>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -89,21 +90,44 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void, setType: (val
   //   ),
   // },
   {
-    accessorKey: "url",
-    header: "Url",
+    // accessorKey: "url",
+    header: "Title",
+    // cell: ({ row }) => {
+    //   const url = row.original.url;
+    //   const title = row.original.title;
+    //   const tags = row.original.tags;
+    //   console.log('tags', tags)
+    //   return (
+    //     <div className="flex space-x-2">
+    //       {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
+    //       <span className={styles.title}
+    //       //  className="max-w-[500px] truncate font-medium"
+    //       >
+    //         {row.getValue("url")}
+    //       </span>
+    //     </div>
+    //   )
+    // },
     cell: ({ row }) => {
+      const url = row.original.url;
+      const title = row.original.title;
+      const tags = row.original.tags;
+      const createdAt = row.original.updated_at;
+
 
 
       return (
-        <div className="flex space-x-2">
-          {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
-          <span className={styles.title}
-          //  className="max-w-[500px] truncate font-medium"
-          >
-            {row.getValue("url")}
-          </span>
+        <div className={styles.titleWrapper}>
+          <div className={styles.titleWrapperContaner}>
+            {title && <div className={styles.title}><h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+              {title}
+            </h4></div>}
+            {url && <div className={styles.title}><a className={styles.btnLink} href={url} target="_blank" rel="noopener noreferrer">{url}</a> </div>}
+            {tags && <div className={styles.title} >{tags.map((e) => <Badge variant="outline">{e}</Badge>)} <p className="text-muted-foreground text-sm">{createdAt}</p></div>}
+          </div>
+
         </div>
-      )
+      );
     },
   },
   {
@@ -188,7 +212,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void, setType: (val
           <DropdownMenuItem>Make a copy</DropdownMenuItem>
           <DropdownMenuItem>Favorite</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+          <DropdownMenuItem variant="destructive" onClick={() => onDeleteHandler(row.getValue("id"))}>Delete</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     ),
@@ -214,7 +238,7 @@ export function DataTable({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
-  const columns = createColumns(setIsShowEditModal, store.setType, store.setIdItem);
+  const columns = createColumns(setIsShowEditModal, store.setType, store.setIdItem, store.onDeleteItem);
   const data = store.items
   const table = useReactTable({
     data,
@@ -295,8 +319,6 @@ export function DataTable({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => {
-                    console.log('cell', cell)
-
                     return (
                       <TableCell key={cell.id}>
                         {flexRender(

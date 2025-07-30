@@ -47,6 +47,26 @@ class mainStore {
 
         fetchItems();
     }
+    onDeleteItem = async (id: number) => {
+        const options = {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        fetch('http://localhost:8000/index.php?route=%2Fitems' + `&item-id=${id}`, options)
+            .then(response => response.json())
+            .then(response => console.log(response))
+            .catch(err => console.error(err))
+            .finally(() => {
+                this.fetchItems()
+            })
+
+
+
+
+
+    }
 
 
 }
