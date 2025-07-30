@@ -44,6 +44,7 @@ import { ActionType } from "@/app/dashboard/page"
 import { StoreContext } from "@/store/storeContext"
 import { DataTableToolbar } from "./data-table-toolbar"
 import { Badge } from "../ui/badge"
+import { DataTableColumnHeader } from "./data-table-column-header"
 
 
 export type Payment = {
@@ -93,32 +94,17 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
     //   ),
     // },
     {
-      // accessorKey: "url",
-      header: "Title",
-      // cell: ({ row }) => {
-      //   const url = row.original.url;
-      //   const title = row.original.title;
-      //   const tags = row.original.tags;
-      //   console.log('tags', tags)
-      //   return (
-      //     <div className="flex space-x-2">
-      //       {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
-      //       <span className={styles.title}
-      //       //  className="max-w-[500px] truncate font-medium"
-      //       >
-      //         {row.getValue("url")}
-      //       </span>
-      //     </div>
-      //   )
-      // },
+      accessorKey: "url",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Title" />
+      ),
+      enableSorting: true,
+      enableHiding: true,
       cell: ({ row }) => {
         const url = row.original.url;
         const title = row.original.title;
         const tags = row.original.tags;
         const createdAt = row.original.updated_at;
-
-
-
         return (
           <div className={styles.titleWrapper}>
             <div className={styles.titleWrapperContaner}>
@@ -135,7 +121,11 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
     },
     {
       accessorKey: "description",
-      header: "Description",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Description" />
+      ),
+      enableSorting: true,
+      enableHiding: true,
       cell: ({ row }) => {
 
 
