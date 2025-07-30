@@ -32,14 +32,14 @@ export const mockDefaultValues = {
 
 export const Page = observer(() => {
   const store = useContext(StoreContext);
-
+  const [isLoading, setIsLoading] = useState(true);
   const [isShowEditModal, setIsShowEditModal] = useState(false);
   console.log('items', store.items)
   useEffect(() => {
-    store.fetchItems()
+    store.fetchItems().finally(() => { setIsLoading(false) })
   }, []);
 
-  if (store.isLoading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 

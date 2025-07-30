@@ -7,7 +7,6 @@ class mainStore {
     type: ActionType = "" as ActionType
     idItem = undefined;
     error: string | null = null;
-    isLoading: boolean = false;
 
     constructor() {
         makeAutoObservable(this); // Makes state observable and actions transactional
@@ -28,7 +27,6 @@ class mainStore {
     fetchItems = async () => {
         const fetchItems = async () => {
             try {
-                this.isLoading = true;
                 const response = await fetch('http://localhost:8000/index.php?route=/items');
 
                 if (!response.ok) {
@@ -42,7 +40,6 @@ class mainStore {
                 this.error = (err instanceof Error ? err.message : 'Failed to fetch items');
                 console.error('Error fetching items:', err);
             } finally {
-                this.isLoading = false;
             }
         };
 
@@ -60,7 +57,7 @@ class mainStore {
             .then(response => toast('Deleted succesfully', {
                 description: "Sunday, December 03, 2023 at 9:00 AM",
                 action: {
-                    label: "Undo",
+                    label: "ХУЙ",
                     onClick: () => console.log("Undo"),
                 },
             }))
