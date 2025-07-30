@@ -52,172 +52,175 @@ export type Payment = {
   description: string
 }
 
-const createColumns = (setIsShowEditModal: (val: boolean) => void, setType: (val: ActionType) => void, setIdItem: (val: any) => void, onDeleteHandler: (val: any) => void): ColumnDef<z.infer<typeof schema>>[] => [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="translate-y-[2px]"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="translate-y-[2px]"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  // {
-  //   accessorKey: "url",
-  //   header: "Url",
-  //   cell: ({ row }) => (
-  //     <div className={styles.titleWrapper}>
-  //       {/* {label && <Badge variant="outline">{label.label}</Badge>} truncate*/}
-  //       <span className={styles.title} >
-  //         {row.getValue("url")}
-  //       </span >
-  //     </div >
-  //   ),
-  // },
-  {
-    // accessorKey: "url",
-    header: "Title",
-    // cell: ({ row }) => {
-    //   const url = row.original.url;
-    //   const title = row.original.title;
-    //   const tags = row.original.tags;
-    //   console.log('tags', tags)
-    //   return (
-    //     <div className="flex space-x-2">
-    //       {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
-    //       <span className={styles.title}
-    //       //  className="max-w-[500px] truncate font-medium"
-    //       >
+const createColumns = (setIsShowEditModal: (val: boolean) => void,
+  setType: (val: ActionType) => void,
+  setIdItem: (val: any) => void,
+  onDeleteHandler: (val: any) => void, onCreateItem: any): ColumnDef<z.infer<typeof schema>>[] => [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+          className="translate-y-[2px]"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+          className="translate-y-[2px]"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    // {
+    //   accessorKey: "url",
+    //   header: "Url",
+    //   cell: ({ row }) => (
+    //     <div className={styles.titleWrapper}>
+    //       {/* {label && <Badge variant="outline">{label.label}</Badge>} truncate*/}
+    //       <span className={styles.title} >
     //         {row.getValue("url")}
-    //       </span>
-    //     </div>
-    //   )
+    //       </span >
+    //     </div >
+    //   ),
     // },
-    cell: ({ row }) => {
-      const url = row.original.url;
-      const title = row.original.title;
-      const tags = row.original.tags;
-      const createdAt = row.original.updated_at;
+    {
+      // accessorKey: "url",
+      header: "Title",
+      // cell: ({ row }) => {
+      //   const url = row.original.url;
+      //   const title = row.original.title;
+      //   const tags = row.original.tags;
+      //   console.log('tags', tags)
+      //   return (
+      //     <div className="flex space-x-2">
+      //       {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
+      //       <span className={styles.title}
+      //       //  className="max-w-[500px] truncate font-medium"
+      //       >
+      //         {row.getValue("url")}
+      //       </span>
+      //     </div>
+      //   )
+      // },
+      cell: ({ row }) => {
+        const url = row.original.url;
+        const title = row.original.title;
+        const tags = row.original.tags;
+        const createdAt = row.original.updated_at;
 
 
 
-      return (
-        <div className={styles.titleWrapper}>
-          <div className={styles.titleWrapperContaner}>
-            {title && <div className={styles.title}><h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
-              {title}
-            </h4></div>}
-            {url && <div className={styles.title}><a className={styles.btnLink} href={url} target="_blank" rel="noopener noreferrer">{url}</a> </div>}
-            {tags && <div className={styles.title} >{tags.map((e) => <Badge variant="outline">{e}</Badge>)} <p className="text-muted-foreground text-sm">{createdAt}</p></div>}
+        return (
+          <div className={styles.titleWrapper}>
+            <div className={styles.titleWrapperContaner}>
+              {title && <div className={styles.title}><h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+                {title}
+              </h4></div>}
+              {url && <div className={styles.title}><a className={styles.btnLink} href={url} target="_blank" rel="noopener noreferrer">{url}</a> </div>}
+              {tags && <div className={styles.title} >{tags.map((e) => <Badge variant="outline">{e}</Badge>)} <p className="text-muted-foreground text-sm">{createdAt}</p></div>}
+            </div>
+
           </div>
-
-        </div>
-      );
+        );
+      },
     },
-  },
-  {
-    accessorKey: "description",
-    header: "Description",
-    cell: ({ row }) => {
+    {
+      accessorKey: "description",
+      header: "Description",
+      cell: ({ row }) => {
 
 
-      return (
-        <div className="flex space-x-2">
-          {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
-          <span
-            className={styles.title}
-          // className="max-w-[500px] truncate font-medium"
-          >
-            {row.getValue("description")}
-          </span>
-        </div>
-      )
+        return (
+          <div className="flex space-x-2">
+            {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
+            <span
+              className={styles.title}
+            // className="max-w-[500px] truncate font-medium"
+            >
+              {row.getValue("description")}
+            </span>
+          </div>
+        )
+      },
     },
-  },
-  // {
-  //   accessorKey: "description",
-  //   header: "Description",
-  //   cell: ({ row }) => (
-  //     <div className={styles.titleWrapper}>
-  //       {/* {label && <Badge variant="outline">{label.label}</Badge>} truncate*/}
-  //       <span className={styles.title} >
-  //         {row.getValue("description")}
-  //       </span >
-  //     </div >
-  //   ),
-  // },
-  // {
-  //   id: "actions",
-  //   enableHiding: false,
-  //   cell: ({ row }) => {
-  //     const payment = row.original
+    // {
+    //   accessorKey: "description",
+    //   header: "Description",
+    //   cell: ({ row }) => (
+    //     <div className={styles.titleWrapper}>
+    //       {/* {label && <Badge variant="outline">{label.label}</Badge>} truncate*/}
+    //       <span className={styles.title} >
+    //         {row.getValue("description")}
+    //       </span >
+    //     </div >
+    //   ),
+    // },
+    // {
+    //   id: "actions",
+    //   enableHiding: false,
+    //   cell: ({ row }) => {
+    //     const payment = row.original
 
-  //     return (
-  //       <DropdownMenu>
-  //         <DropdownMenuTrigger asChild>
-  //           <Button variant="ghost" className="h-8 w-8 p-0">
-  //             <span className="sr-only">Open menu</span>
-  //             <MoreHorizontal />
-  //           </Button>
-  //         </DropdownMenuTrigger>
-  //         <DropdownMenuContent align="end">
-  //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-  //           <DropdownMenuItem
-  //             onClick={() => navigator.clipboard.writeText(payment.id)}
-  //           >
-  //             Copy payment ID
-  //           </DropdownMenuItem>
-  //           <DropdownMenuSeparator />
-  //           <DropdownMenuItem>View customer</DropdownMenuItem>
-  //           <DropdownMenuItem>View payment details</DropdownMenuItem>
-  //         </DropdownMenuContent>
-  //       </DropdownMenu>
-  //     )
-  //   },
-  // },
-  {
-    header: "Actions",
-    // id: "actions",
-    accessorKey: "id",
-    enableHiding: false,
-    cell: ({ row }) => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
-            size="icon"
-          >
-            <IconDotsVertical />
-            <span className="sr-only">Open menu</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem onClick={() => { setType(ActionType.EDIT); setIsShowEditModal(true); setIdItem(row.getValue("id")) }}>Edit</DropdownMenuItem>
-          <DropdownMenuItem>Make a copy</DropdownMenuItem>
-          <DropdownMenuItem>Favorite</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive" onClick={() => onDeleteHandler(row.getValue("id"))}>Delete</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
-  },
-]
+    //     return (
+    //       <DropdownMenu>
+    //         <DropdownMenuTrigger asChild>
+    //           <Button variant="ghost" className="h-8 w-8 p-0">
+    //             <span className="sr-only">Open menu</span>
+    //             <MoreHorizontal />
+    //           </Button>
+    //         </DropdownMenuTrigger>
+    //         <DropdownMenuContent align="end">
+    //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
+    //           <DropdownMenuItem
+    //             onClick={() => navigator.clipboard.writeText(payment.id)}
+    //           >
+    //             Copy payment ID
+    //           </DropdownMenuItem>
+    //           <DropdownMenuSeparator />
+    //           <DropdownMenuItem>View customer</DropdownMenuItem>
+    //           <DropdownMenuItem>View payment details</DropdownMenuItem>
+    //         </DropdownMenuContent>
+    //       </DropdownMenu>
+    //     )
+    //   },
+    // },
+    {
+      header: "Actions",
+      // id: "actions",
+      accessorKey: "id",
+      enableHiding: false,
+      cell: ({ row }) => (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
+              size="icon"
+            >
+              <IconDotsVertical />
+              <span className="sr-only">Open menu</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-32">
+            <DropdownMenuItem onClick={() => { setType(ActionType.EDIT); setIsShowEditModal(true); setIdItem(row.getValue("id")) }}>Edit</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => { onCreateItem(row.original, true) }}>Make a copy</DropdownMenuItem>
+            <DropdownMenuItem>Favorite</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem variant="destructive" onClick={() => onDeleteHandler(row.getValue("id"))}>Delete</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ),
+    },
+  ]
 export const schema = z.object({
   id: z.number(),
   url: z.string(),
@@ -238,7 +241,7 @@ export function DataTable({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
-  const columns = createColumns(setIsShowEditModal, store.setType, store.setIdItem, store.onDeleteItem);
+  const columns = createColumns(setIsShowEditModal, store.setType, store.setIdItem, store.onDeleteItem, store.onCreateItem);
   const data = store.items
   const table = useReactTable({
     data,

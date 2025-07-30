@@ -1,5 +1,6 @@
-import type { ActionType } from '@/app/dashboard/page';
+import { ActionType } from '@/app/dashboard/page';
 import { makeAutoObservable } from 'mobx';
+import { toast } from 'sonner';
 
 class mainStore {
     items = [];
@@ -56,16 +57,42 @@ class mainStore {
         };
         fetch('http://localhost:8000/index.php?route=%2Fitems' + `&item-id=${id}`, options)
             .then(response => response.json())
-            .then(response => console.log(response))
+            .then(response => toast('Deleted succesfully', {
+                description: "Sunday, December 03, 2023 at 9:00 AM",
+                action: {
+                    label: "Undo",
+                    onClick: () => console.log("Undo"),
+                },
+            }))
             .catch(err => console.error(err))
             .finally(() => {
                 this.fetchItems()
             })
+    }
+    onCreateItem = (val, isCreateCopy = false as boolean, onSave = false) => {
+        const options = {
+            method: !isCreateCopy ? this.type === ActionType.EDIT ? 'PATCH' : 'POST' : 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                title: val.title || '',
+                description: val.description || '',
+                url: val.url || '',
+                comments: val.comments || '',
+                image: val.imageURL || '',
+                tags: "" // TODO: parse tags
+            })
+        };
 
-
-
-
-
+        fetch('http://localhost:8000/index.php?route=%2Fitems' + (!isCreateCopy ? this.type === ActionType.EDIT ? `&item-id=${val.id}` : '' : ''), options)
+            .then(response => response.json())
+            .then(response => console.log(response))
+            .catch(err => console.error(err))
+            .finally(() => {
+                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                !onSave && this.fetchItems()
+            })
     }
 
 

@@ -68,7 +68,12 @@ export const Page = observer(() => {
           </div >
         </div >
       </SidebarInset >
-      <Dialog onOpenChange={setIsShowEditModal} open={isShowEditModal} >
+      <Dialog onOpenChange={(val) => {
+        setIsShowEditModal(val)
+        if (!val) {
+          store.fetchItems()
+        }
+      }} open={isShowEditModal} >
         {isShowEditModal && <EditItemForm setIsShowEditModal={setIsShowEditModal} />}
       </Dialog>
     </SidebarProvider >

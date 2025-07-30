@@ -6,6 +6,8 @@ import { Button } from './components/ui/button';
 import EditItemForm from './components/EditForm/EditItemForm';
 import { mockDefaultValues } from './components/utils/utils';
 import { Page } from './app/dashboard/page';
+import { Toaster } from 'sonner';
+
 
 
 function App() {
@@ -40,6 +42,7 @@ function App() {
     <BrowserRouter>
 
       <Page />
+      <Toaster />
     </BrowserRouter>
   )
 }
