@@ -24,7 +24,8 @@ const formSchema = z.object({
   }),
 })
 
-export function CardsCreateAccount() {
+
+export const CardsCreateAccount: React.FC<{ setIsUserWasCreate: any }> = ({ setIsUserWasCreate }) => {
   const store = useContext(StoreContext);
   const initialData = {
     name: "",
@@ -143,7 +144,7 @@ export function CardsCreateAccount() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button className="w-full">Create user</Button>
+            <Button onClick={() => { setIsUserWasCreate(true) }} className="w-full">Create user</Button>
           </CardFooter>
         </form>
       </Form>

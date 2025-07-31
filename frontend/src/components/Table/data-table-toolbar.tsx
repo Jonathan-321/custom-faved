@@ -10,11 +10,13 @@ import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 
 interface DataTableToolbarProps<TData> {
-  table: Table<TData>
+  table: Table<TData>;
+  globalFilter: any;
 }
 
 export function DataTableToolbar<TData>({
   table,
+  globalFilter,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
 
@@ -22,11 +24,13 @@ export function DataTableToolbar<TData>({
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
         <Input
-          placeholder="Filter urls..."
-          value={(table.getColumn("url")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("url")?.setFilterValue(event.target.value)
-          }
+          placeholder="Filter..."
+          // value={(table.getColumn("url")?.getFilterValue() as string) ?? ""}
+          // onChange={(event) =>
+          //   table.getColumn("url")?.setFilterValue(event.target.value)
+          // }
+          value={globalFilter ?? ''}
+          onChange={(e) => table.setGlobalFilter(String(e.target.value))}
           className="h-8 w-[150px] lg:w-[250px]"
         />
 

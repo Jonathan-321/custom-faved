@@ -25,28 +25,10 @@ export function PresetActions() {
             <div onClick={() => { setIsOpen(true) }}><SlidersHorizontal /></div>
           </Button>
         </DropdownMenuTrigger>
-        {/* <DropdownMenuContent align="end"> */}
-        {/* <DropdownMenuItem onSelect={() => setIsOpen(true)}>
-            Settings
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onSelect={() => setShowDeleteDialog(true)}
-            className="text-red-600"
-          >
-            Something
-          </DropdownMenuItem> */}
-        {/* </DropdownMenuContent> */}
       </DropdownMenu>
       <div className="flex h-svh items-center justify-center">
         <SettingsDialog open={open} setOpen={setIsOpen} />
       </div>
-      {/* <Dialog open={open} onOpenChange={setIsOpen}>
-        <DialogContent style={{ padding: 5 }}>
-          <CardsCreateAccount />
-        </DialogContent>
-      </Dialog> */}
-
     </>
   )
 }

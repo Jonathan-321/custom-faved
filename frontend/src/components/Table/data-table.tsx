@@ -222,7 +222,7 @@ export function DataTable({
 }: {
   setIsShowEditModal: (val: boolean) => void,
 }) {
-
+  const [globalFilter, setGlobalFilter] = React.useState<any>([]);
   const store = React.useContext(StoreContext);
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -244,18 +244,20 @@ export function DataTable({
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    onGlobalFilterChange: setGlobalFilter,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
+      globalFilter
     },
   })
 
   return (
     <div className="w-full">
       <div className="flex items-center py-4 m-[10px]">
-        <DataTableToolbar table={table} />
+        <DataTableToolbar table={table} globalFilter={globalFilter} />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
