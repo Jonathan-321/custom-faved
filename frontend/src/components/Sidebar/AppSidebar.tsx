@@ -14,7 +14,7 @@ import {
   IconChevronRight,
   type Icon, IconDotsVertical, IconEdit,
 } from "@tabler/icons-react"
-
+import styles from "./appSidebar.module.scss"
 
 import { NavDocuments } from "@/components/nav-documents"
 import { NavMain } from "@/components/nav-main"
@@ -42,6 +42,7 @@ import {
   DropdownMenuItem, DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
+import { PresetActions } from "@/app/dashboard/preset-actions"
 
 
 const data = {
@@ -267,16 +268,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem>
+          <SidebarMenuItem className={styles.headeBtnWrapper}>
             <SidebarMenuButton
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <a href="#">
-                {/* <IconInnerShadowTop className="!size-5" /> */}
                 <img src="/public/logo.png" alt="Faved logo" className="img-fluid " width="48"></img>
                 <span className="text-base font-semibold">Faved.</span>
               </a>
+            </SidebarMenuButton>
+            <SidebarMenuButton
+              asChild
+              className="data-[slot=sidebar-menu-button]:!p-1.5"
+            >
+              <PresetActions />
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

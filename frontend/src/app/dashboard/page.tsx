@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/components/app-sidebar"
+
 import { ChartAreaInteractive } from "@/components/chart-area-interactive"
 import { SiteHeader } from "@/components/site-header"
 import {
@@ -14,6 +14,7 @@ import { Dialog } from "@/components/ui/dialog"
 import { DataTable } from "@/components/Table/data-table"
 import { observer } from "mobx-react-lite"
 import { StoreContext } from "@/store/storeContext"
+import { AppSidebar } from "@/components/Sidebar/AppSidebar"
 
 export enum ActionType {
   CREATE = "CREATE",
