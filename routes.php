@@ -27,6 +27,8 @@ use Controllers\TagsController;
 use Controllers\TagUpdateController;
 use Controllers\UserCreateController;
 use Controllers\UserDeleteController;
+use Controllers\UserPasswordUpdateController;
+use Controllers\UserUsernameUpdateController;
 
 return [
 	'/' => [
@@ -65,9 +67,13 @@ return [
 	],
 	'/settings/username' => [
 		'POST' => SettingsUsernameUpdateController::class,
+		'PATCH' => UserUsernameUpdateController::class,
+		'OPTIONS' => ItemsGetController::class, // For CORS preflight requests, temporary solution
 	],
 	'/settings/password' => [
 		'POST' => SettingsPasswordUpdateController::class,
+		'PATCH' => UserPasswordUpdateController::class,
+		'OPTIONS' => ItemsGetController::class, // For CORS preflight requests, temporary solution
 	],
 	'/settings/create-user' => [
 		'POST' => SettingsUserCreateController::class,

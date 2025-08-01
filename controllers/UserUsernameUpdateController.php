@@ -2,16 +2,21 @@
 
 namespace Controllers;
 
+use Exception;
 use Framework\ControllerInterface;
+use Framework\FlashMessages;
 use Framework\Responses\ResponseInterface;
 use Framework\ServiceContainer;
+use Framework\UrlBuilder;
 use Models\Repository;
 use function Framework\data;
 use function Framework\getLoggedInUser;
-use function Framework\logoutUser;
+use function Framework\redirect;
+use function Framework\validateUsername;
 
-class UserDeleteController implements ControllerInterface
+class UserUsernameUpdateController implements ControllerInterface
 {
+
 	public function __invoke(array $input): ResponseInterface
 	{
 		// Check if authentication is enabled (any user exists)
@@ -27,20 +32,29 @@ class UserDeleteController implements ControllerInterface
 
 		$user = getLoggedInUser();
 
-		$result = $repository->deleteUser($user['id']);
-
-		if (! $result) {
+		try {
+			$username = trim($input['username'] ?? '');
+			validateUsername($username);
+		} catch (Exception $e) {
 			return data([
 				'success' => false,
-				'message' => 'Failed to disable authentication.',
+				'message' => $e->getMessage(),
+			], 422);
+		}
+
+		// Update username
+		$result = $repository->updateUsername($user['id'], $username);
+
+		if (!$result) {
+			return data([
+				'success' => false,
+				'message' => 'Failed to update username.',
 			], 500);
 		}
 
-		logoutUser();
-
 		return data([
 			'success' => true,
-			'message' => 'Authentication disabled successfully.',
+			'message' => 'Username updated successfully.',
 		], 200);
 	}
 }

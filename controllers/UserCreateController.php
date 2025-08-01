@@ -46,7 +46,6 @@ class UserCreateController implements ControllerInterface
 			], 422);
 		}
 
-		$repository = ServiceContainer::get(Repository::class);
 		$password_hash = password_hash($password, Config::getPasswordAlgo());
 		$user_id = $repository->createUser($username, $password_hash);
 
