@@ -72,10 +72,7 @@ class Application
 
 		if (json_last_error() !== JSON_ERROR_NONE) {
 			// @TODO: Make proper exception
-			throw new \Exception([
-				'success' => false,
-				'message' => 'Invalid JSON input',
-			], 400);
+			throw new Exception('Invalid JSON input',400);
 		}
 		return $input;
 	}

@@ -25,6 +25,8 @@ use Controllers\TagDeleteController;
 use Controllers\TagEditController;
 use Controllers\TagsController;
 use Controllers\TagUpdateController;
+use Controllers\UserCreateController;
+use Controllers\UserDeleteController;
 
 return [
 	'/' => [
@@ -84,5 +86,9 @@ return [
 	],
 	'/tags' => [
 		'GET' => TagsController::class,
+	],
+	'/settings/user' => [
+		'POST' => UserCreateController::class,
+		'DELETE' => UserDeleteController::class,
 	],
 ];
