@@ -91,6 +91,27 @@ class mainStore {
                 !onSave && this.fetchItems()
             })
     }
+    onCreateUser = (val: any, setIsUserWasCreate: (val: boolean) => void) => {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: val.username || '',
+                password: val.password || '',
+                confirm_password: val.passwordConfirm || '',
+            })
+        };
+
+        fetch('http://localhost:8000/index.php?route=/settings/create-user', options)
+            .then(response => response.json())
+            .then(response => { setIsUserWasCreate(true); console.log(response) })
+            .catch(err => toast(JSON.stringify(err)))
+            .finally(() => {
+                // setIsUserWasCreate(true)
+            })
+    }
 
 
 }

@@ -12,16 +12,12 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 
+
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  password: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  passwordConfirm: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
+  username: z
+    .string()
+    .min(2, { message: "Username must be at least 2 characters." })
+    .max(30, { message: "Username must be at most 30 characters." }),
 })
 
 export function CardsEditAccountUserName() {
@@ -74,7 +70,7 @@ export function CardsEditAccountUserName() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button className="w-full">Update Username</Button>
+            <Button onClick={form.handleSubmit(onSubmit)} className="w-full">Update Username</Button>
           </CardFooter>
         </form>
       </Form>

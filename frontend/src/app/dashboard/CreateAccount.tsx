@@ -12,17 +12,36 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 
+// const formSchema = z.object({
+//   username: z.string().min(2, {
+//     message: "Username must be at least 2 characters.",
+//   }),
+//   password: z.string().min(2, {
+//     message: "Username must be at least 2 characters.",
+//   }),
+//   passwordConfirm: z.string().min(2, {
+//     message: "Username must be at least 2 characters.",
+//   }),
+// })
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  password: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  passwordConfirm: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-})
+  username: z
+    .string()
+    .min(2, { message: "Username must be at least 2 characters." })
+    .max(30, { message: "Username must be at most 30 characters." }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters." })
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
+      message: "Password must contain at least one uppercase, one lowercase, one number, and one special character."
+    }),
+  passwordConfirm: z.string().min(8, { message: "Password confirmation must be at least 8 characters." }),
+}).refine(
+  (data: { password: string; passwordConfirm: string }) => { console.log('1', data.password, data.passwordConfirm); return data.password === data.passwordConfirm }, // explicit type
+  {
+    message: "Passwords do not match.",
+    path: ["passwordConfirm"], // Ensures error is linked to passwordConfirm field
+  }
+);
 
 
 export const CardsCreateAccount: React.FC<{ setIsUserWasCreate: any }> = ({ setIsUserWasCreate }) => {
@@ -51,8 +70,11 @@ export const CardsCreateAccount: React.FC<{ setIsUserWasCreate: any }> = ({ setI
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
+    // setIsUserWasCreate(true)
+    store.onCreateUser(values, setIsUserWasCreate)
+    console.log('values', values)
   }
+  console.log('form', form)
   return (
     <Card className={styles.cardWrapper}>
       <Form {...form}>
@@ -123,7 +145,7 @@ export const CardsCreateAccount: React.FC<{ setIsUserWasCreate: any }> = ({ setI
                 name="passwordConfirm"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>Confirm Password</FormLabel>
                     {/* <Label htmlFor="email-create-account">Username</Label> */}
                     {/* <Input
                 id="Username"
@@ -132,6 +154,7 @@ export const CardsCreateAccount: React.FC<{ setIsUserWasCreate: any }> = ({ setI
               /> */}
                     <FormControl>
                       <Input placeholder="Confirm Password" {...field} />
+
                     </FormControl>
                     {/* <FormDescription>
                       This is your public display name.
@@ -144,7 +167,7 @@ export const CardsCreateAccount: React.FC<{ setIsUserWasCreate: any }> = ({ setI
             </div>
           </CardContent>
           <CardFooter>
-            <Button onClick={() => { setIsUserWasCreate(true) }} className="w-full">Create user</Button>
+            <Button onClick={form.handleSubmit(onSubmit)} className="w-full">Create user</Button>
           </CardFooter>
         </form>
       </Form>
