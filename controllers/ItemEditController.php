@@ -18,7 +18,7 @@ use function Utils\groupTagsByParent;
 
 class ItemEditController implements ControllerInterface
 {
-	public function __invoke(): ResponseInterface
+	public function __invoke(array $input): ResponseInterface
 	{
 		$item_id = $_GET['item-id'] ?? null;
 

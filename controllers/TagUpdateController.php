@@ -14,7 +14,7 @@ use function Framework\redirect;
 
 class TagUpdateController implements ControllerInterface
 {
-	public function __invoke(): ResponseInterface
+	public function __invoke(array $input): ResponseInterface
 	{
 		if (!isset($_GET['tag-id'], $_POST['title'], $_POST['description'], $_POST['parent'], $_POST['color'])) {
 			throw new ValidationException('Invalid input data for tag update');

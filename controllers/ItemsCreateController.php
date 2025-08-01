@@ -11,19 +11,9 @@ use function Framework\data;
 
 class ItemsCreateController implements ControllerInterface
 {
-	public function __invoke() : ResponseInterface
+	public function __invoke(array $input) : ResponseInterface
 	{
 		$repository = ServiceContainer::get(Repository::class);
-
-		$rawData = file_get_contents("php://input");
-		$input = json_decode($rawData, true);
-
-		if (json_last_error() !== JSON_ERROR_NONE) {
-			return data([
-				'success' => false,
-				'message' => 'Invalid JSON input',
-			], 400);
-		}
 
 		$title = $input['title'];
 		$description = $input['description'];

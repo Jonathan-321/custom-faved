@@ -18,7 +18,7 @@ use function Framework\validateUsername;
 class SettingsUserCreateController implements ControllerInterface
 {
 
-	public function __invoke(): ResponseInterface
+	public function __invoke(array $input): ResponseInterface
 	{
 		$url_builder = ServiceContainer::get(UrlBuilder::class);
 

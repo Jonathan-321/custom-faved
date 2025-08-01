@@ -16,7 +16,7 @@ use function Framework\redirect;
 
 class PocketImportRunController implements ControllerInterface
 {
-	public function __invoke(): ResponseInterface
+	public function __invoke(array $input): ResponseInterface
 	{
 		$url_builder = ServiceContainer::get(UrlBuilder::class);
 

@@ -15,7 +15,7 @@ use function Utils\groupTagsByParent;
 
 class TagDeleteController implements ControllerInterface
 {
-	public function __invoke(): ResponseInterface
+	public function __invoke(array $input): ResponseInterface
 	{
 		$tag_id = $_GET['tag-id'] ?? null;
 

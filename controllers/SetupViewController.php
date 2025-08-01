@@ -16,7 +16,7 @@ use function Framework\redirect;
 
 class SetupViewController implements ControllerInterface
 {
-	public function __invoke(): ResponseInterface
+	public function __invoke(array $input): ResponseInterface
 	{
 		try {
 			// Check if database already exists

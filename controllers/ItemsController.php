@@ -20,7 +20,7 @@ use function Utils\groupTagsByParent;
 
 class ItemsController implements ControllerInterface
 {
-	public function __invoke(): ResponseInterface
+	public function __invoke(array $input): ResponseInterface
 	{
 		$selected_tag = $_GET['tag'] ?? null;
 

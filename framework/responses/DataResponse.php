@@ -4,11 +4,13 @@ namespace Framework\Responses;
 
 class DataResponse implements ResponseInterface
 {
-	public function __construct(protected array $data)
+	public function __construct(protected array $data, protected int $code)
 	{
 	}
 
 	public function yield(): void {
+		http_response_code($this->code);
+
 		// Set headers for JSON response
 		header('Content-Type: application/json; charset=utf-8');
 		header('Cache-Control: no-cache, no-store, must-revalidate'); // HTTP 1.1

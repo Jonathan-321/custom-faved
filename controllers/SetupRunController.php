@@ -15,7 +15,7 @@ use function Framework\redirect;
 
 class SetupRunController
 {
-	public function __invoke(): ResponseInterface
+	public function __invoke(array $input): ResponseInterface
 	{
 		try {
 			// Check if database already exists

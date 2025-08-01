@@ -12,7 +12,7 @@ use function Framework\data;
 
 class TagsController implements ControllerInterface
 {
-	public function __invoke(): ResponseInterface
+	public function __invoke(array $input): ResponseInterface
 	{
 		$repository = ServiceContainer::get(Repository::class);
 

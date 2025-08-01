@@ -14,7 +14,7 @@ use function Framework\page;
 
 class SettingsAuthViewController implements ControllerInterface
 {
-	public function __invoke(): ResponseInterface
+	public function __invoke(array $input): ResponseInterface
 	{
 		$user = getLoggedInUser();
 

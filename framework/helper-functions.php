@@ -20,8 +20,8 @@ function redirect($location, $code = 303)
 	return new RedirectResponse($location, $code);
 }
 
-function data(array $data) {
-	return new DataResponse($data);
+function data(array $data, $code = 200) {
+	return new DataResponse($data, $code);
 }
 
 
