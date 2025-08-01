@@ -15,7 +15,7 @@ use function Framework\redirect;
 
 class ItemCreateUpdateController implements ControllerInterface
 {
-	public function __invoke() : ResponseInterface
+	public function __invoke(array $input) : ResponseInterface
 	{
 		$repository = ServiceContainer::get(Repository::class);
 		$url_builder = ServiceContainer::get(UrlBuilder::class);

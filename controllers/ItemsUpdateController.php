@@ -11,7 +11,7 @@ use function Framework\data;
 
 class ItemsUpdateController implements ControllerInterface
 {
-	public function __invoke() : ResponseInterface
+	public function __invoke(array $input) : ResponseInterface
 	{
 		if (empty($_GET['item-id'])) {
 			return data([
@@ -23,16 +23,6 @@ class ItemsUpdateController implements ControllerInterface
 		$item_id = $_GET['item-id'];
 
 		$repository = ServiceContainer::get(Repository::class);
-
-		$rawData = file_get_contents("php://input");
-		$input = json_decode($rawData, true);
-
-		if (json_last_error() !== JSON_ERROR_NONE) {
-			return data([
-				'success' => false,
-				'message' => 'Invalid JSON input',
-			], 400);
-		}
 
 		$title = $input['title'];
 		$description = $input['description'];

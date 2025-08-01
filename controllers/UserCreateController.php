@@ -5,59 +5,63 @@ namespace Controllers;
 use Config;
 use Exception;
 use Framework\ControllerInterface;
-use Framework\FlashMessages;
 use Framework\Responses\ResponseInterface;
 use Framework\ServiceContainer;
-use Framework\UrlBuilder;
 use Models\Repository;
+use function Framework\data;
 use function Framework\loginUser;
-use function Framework\redirect;
 use function Framework\validatePasswordAndConfirmation;
 use function Framework\validateUsername;
 
-class SettingsUserCreateController implements ControllerInterface
+class UserCreateController implements ControllerInterface
 {
-
 	public function __invoke(array $input): ResponseInterface
 	{
-		$url_builder = ServiceContainer::get(UrlBuilder::class);
-
 		// Check if authentication is enabled (any user exists)
 		$repository = ServiceContainer::get(Repository::class);
 		$auth_enabled = $repository->userTableNotEmpty();
 
 		// If auth is enabled already and user exists, raise an error
 		if ($auth_enabled) {
-			FlashMessages::set('info', 'User has been created already.');
-			return redirect($url_builder->build('/settings/auth'));
+			return data([
+				'success' => false,
+				'message' => 'User has been created already.'
+			], 400);
 		}
 
 		try {
-			$username = trim($_POST['username'] ?? '');
+			$username = trim($input['username'] ?? '');
 			validateUsername($username);
 
-			$password = $_POST['password'] ?? '';
-			$confirm_password = $_POST['confirm_password'] ?? '';
+			$password = $input['password'] ?? '';
+			$confirm_password = $input['confirm_password'] ?? '';
 			validatePasswordAndConfirmation(
 				$password,
 				$confirm_password
 			);
 		} catch (Exception $e) {
-			FlashMessages::set('error', $e->getMessage());
-			return redirect($url_builder->build('/settings/auth'));
+			return data([
+				'success' => false,
+				'message' => $e->getMessage(),
+			], 422);
 		}
 
 		$repository = ServiceContainer::get(Repository::class);
 		$password_hash = password_hash($password, Config::getPasswordAlgo());
 		$user_id = $repository->createUser($username, $password_hash);
 
-		if ($user_id) {
-			loginUser($user_id);
-			FlashMessages::set('success', 'User created successfully.');
-		} else {
-			FlashMessages::set('error', 'Failed to create user.');
+		if (!$user_id) {
+			return data([
+				'success' => false,
+				'message' => 'Failed to create user.',
+			], 500);
 		}
 
-		return redirect($url_builder->build('/settings/auth'));
+		loginUser($user_id);
+
+		return data([
+			'success' => true,
+			'message' => 'User created successfully.',
+		], 500);
 	}
 }

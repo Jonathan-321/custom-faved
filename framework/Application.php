@@ -27,8 +27,10 @@ class Application
 			$router = new Router($this->routes);
 			$controller_class = $router->match_controller($route, $method);
 
+			$input = $this->getInput();
+
 			$controller = new $controller_class();
-			$response = $controller();
+			$response = $controller($input);
 		} catch (DatabaseNotFound $e) {
 			$url_builder = ServiceContainer::get(UrlBuilder::class);
 			$response = redirect($url_builder->build('/setup'));
@@ -52,6 +54,27 @@ class Application
 		}
 
 		$response->yield();
+	}
+
+	public function getInput() : array
+	{
+		$content_type = $_SERVER['CONTENT_TYPE'] ?? '';
+		if (! str_contains($content_type, 'application/json') ) {
+			return array_merge($_POST, $_GET, $_FILES);
+		}
+
+		$raw_data = file_get_contents("php://input");
+
+		if ('' === $raw_data) {
+			return [];
+		}
+		$input = json_decode($raw_data, true);
+
+		if (json_last_error() !== JSON_ERROR_NONE) {
+			// @TODO: Make proper exception
+			throw new Exception('Invalid JSON input',400);
+		}
+		return $input;
 	}
 }
 

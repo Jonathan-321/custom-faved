@@ -10,7 +10,7 @@ use function Framework\data;
 
 class ItemsDeleteController implements ControllerInterface
 {
-	public function __invoke() : ResponseInterface
+	public function __invoke(array $input) : ResponseInterface
 	{
 		if (empty($_GET['item-id'])) {
 			return data([
