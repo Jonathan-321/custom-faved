@@ -45,6 +45,7 @@ import { CardsEditAccountUserName } from "@/app/dashboard/CardsEditAccountUserNa
 import { CardsEditAccountPassword } from "@/app/dashboard/CardsEditAccountPassword"
 import { CardsEditAccountDisableAuth } from "@/app/dashboard/CardsEditAccountDisableAuth"
 import { CardsCreateAccount } from "@/app/dashboard/CreateAccount"
+import { StoreContext } from "@/store/storeContext"
 
 const data = {
   nav: [
@@ -72,9 +73,13 @@ const components = [
   { name: "Component3", component: <CardsEditAccountDisableAuth /> },
 ];
 export function SettingsDialog({ open, setOpen }: Props) {
+  const store = React.useContext(StoreContext);
+  const [isAuthSuccess, setIsAuthSuccess] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState("Authentication settings")
   const [isUserWasCreated, setIsUserWasCreated] = React.useState(false)
-
+  React.useEffect(() => {
+    store.auth(setIsAuthSuccess)
+  }, [])
   return (
     <Dialog open={open} onOpenChange={setOpen}>
 
@@ -124,13 +129,13 @@ export function SettingsDialog({ open, setOpen }: Props) {
               </div>
             </header>
             <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 pt-0">
-              {selectedItem === "Authentication settings" && !isUserWasCreated && <CardsCreateAccount setIsUserWasCreate={setIsUserWasCreated} />}
-              {selectedItem === "Authentication settings" && isUserWasCreated && components.map((component, i) => (
+              {isAuthSuccess ? selectedItem === "Authentication settings" && !isUserWasCreated && <CardsCreateAccount setIsUserWasCreate={setIsUserWasCreated} /> : selectedItem === "Authentication settings" && isUserWasCreated && components.map((component, i) => (
                 <div
                   key={i}
                 // className="bg-muted/50 aspect-video max-w-3xl rounded-xl"
                 >{component.component}</div>
               ))}
+
               {selectedItem === "User edit" &&
                 <div>Import</div>
               }

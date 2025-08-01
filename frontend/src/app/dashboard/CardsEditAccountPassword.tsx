@@ -45,7 +45,7 @@ export function CardsEditAccountPassword() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
+    store.createPassword(values)
   }
   return (
     <Card className={styles.cardWrapper}>
@@ -87,7 +87,7 @@ export function CardsEditAccountPassword() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button className="w-full">Change Password</Button>
+            <Button onClick={form.handleSubmit(onSubmit)} className="w-full">Change Password</Button>
           </CardFooter>
         </form>
       </Form>

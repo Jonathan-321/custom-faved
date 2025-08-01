@@ -57,7 +57,7 @@ class mainStore {
             .then(response => toast('Deleted succesfully', {
                 description: "Sunday, December 03, 2023 at 9:00 AM",
                 action: {
-                    label: "ХУЙ",
+                    label: "Ok",
                     onClick: () => console.log("Undo"),
                 },
             }))
@@ -91,11 +91,32 @@ class mainStore {
                 !onSave && this.fetchItems()
             })
     }
-    onCreateUser = (val: any, setIsUserWasCreate: (val: boolean) => void) => {
+    auth = (setIsAuthSuccess: (val: boolean) => void) => {
+
         const options = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+            },
+
+        };
+
+        fetch('http://localhost:8000/index.php?route=%2FisAuth', options)
+            .then(response => response.json())
+            .then(response => setIsAuthSuccess(true))
+            .catch(err => setIsAuthSuccess(false))
+            .finally(() => {
+
+            })
+
+    }
+    onCreateUser = (val: any, setIsUserWasCreate: (val: boolean) => void) => {
+        const sessionId = '9d4c111487b0f3b348c3a0a0df68294b';
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': `PHPSESSID=${sessionId}`
             },
             body: JSON.stringify({
                 username: val.username || '',
@@ -104,7 +125,7 @@ class mainStore {
             })
         };
 
-        fetch('http://localhost:8000/index.php?route=/settings/create-user', options)
+        fetch('http://localhost:8000/index.php?route=%2Fsettings%2Fuser', options)
             .then(response => response.json())
             .then(response => { setIsUserWasCreate(true); console.log(response) })
             .catch(err => toast(JSON.stringify(err)))
@@ -113,6 +134,50 @@ class mainStore {
             })
     }
 
+    createUserName = (val: any) => {
+        const sessionId = '9d4c111487b0f3b348c3a0a0df68294b';
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': `PHPSESSID=${sessionId}`
+            },
+            body: JSON.stringify({
+                username: val.username || '',
+
+            })
+        };
+
+        fetch('http://localhost:8000/index.php?route=%2Fsettings%2Fpassword', options)
+            .then(response => response.json())
+            .then(response => { console.log(response) })
+            .catch(err => toast(JSON.stringify(err)))
+            .finally(() => {
+                // setIsUserWasCreate(true)
+            })
+    }
+    createPassword = (val: any) => {
+        const sessionId = '9d4c111487b0f3b348c3a0a0df68294b';
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': `PHPSESSID=${sessionId}`
+            },
+            body: JSON.stringify({
+                password: val.password || '',
+                confirm_password: val.passwordConfirm || '',
+            })
+        };
+
+        fetch('http://localhost:8000/index.php?route=%2Fsettings%2Fpassword', options)
+            .then(response => response.json())
+            .then(response => { console.log(response) })
+            .catch(err => toast(JSON.stringify(err)))
+            .finally(() => {
+                // setIsUserWasCreate(true)
+            })
+    }
 
 }
 

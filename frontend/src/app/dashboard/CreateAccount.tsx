@@ -80,7 +80,7 @@ export const CardsCreateAccount: React.FC<{ setIsUserWasCreate: any }> = ({ setI
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <CardHeader>
-            <CardTitle className="text-2xl">Create an user</CardTitle>
+            <CardTitle className="text-2xl">Create user</CardTitle>
             {/* <CardDescription>
               Enter your Username below to create user
             </CardDescription> */}
