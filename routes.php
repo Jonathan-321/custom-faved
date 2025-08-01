@@ -90,5 +90,6 @@ return [
 	'/settings/user' => [
 		'POST' => UserCreateController::class,
 		'DELETE' => UserDeleteController::class,
+		'OPTIONS' => ItemsGetController::class, // For CORS preflight requests, temporary solution
 	],
 ];
