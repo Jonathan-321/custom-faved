@@ -19,7 +19,7 @@ class Application
 
 	public function run($route, $method)
 	{
-		$expects_json = str_contains($_SERVER['HTTP_ACCEPT'] ?? '' . $_SERVER['CONTENT_TYPE'] ?? '', 'application/json');
+		$expects_json = str_contains(($_SERVER['HTTP_ACCEPT'] ?? '') . ($_SERVER['CONTENT_TYPE'] ?? ''), 'application/json');
 		$url_builder = ServiceContainer::get(UrlBuilder::class);
 
 		try {
@@ -39,9 +39,13 @@ class Application
 		} catch (DatabaseNotFound $e) {
 			$response = redirect($url_builder->build('/setup'));
 		} catch (ValidationException|DataWriteException $e) {
-			FlashMessages::set('error', $e->getMessage());
-			$referrer = $_SERVER['HTTP_REFERER'] ?? $url_builder->build('/');
-			$response = redirect($referrer);
+			if ($expects_json) {
+				$response = data(['error' => $e->getMessage()], $e->getCode());
+			} else {
+				FlashMessages::set('error', $e->getMessage());
+				$referrer = $_SERVER['HTTP_REFERER'] ?? $url_builder->build('/');
+				$response = redirect($referrer);
+			}
 		} catch (UnauthorizedException $e) {
 			if ($expects_json) {
 				$response = data(['error' => $e->getMessage()], $e->getCode());
@@ -81,7 +85,7 @@ class Application
 
 		if (json_last_error() !== JSON_ERROR_NONE) {
 			// @TODO: Make proper exception
-			throw new Exception('Invalid JSON input',400);
+			throw new ValidationException('Invalid JSON input',400);
 		}
 		return $input;
 	}

@@ -1,5 +1,6 @@
 <?php
 
+use Controllers\AuthController;
 use Controllers\ItemCreateUpdateController;
 use Controllers\ItemDeleteController;
 use Controllers\ItemEditController;
@@ -98,6 +99,10 @@ return [
 		'GET' => UserGetController::class,
 		'POST' => UserCreateController::class,
 		'DELETE' => UserDeleteController::class,
+		'OPTIONS' => ItemsGetController::class, // For CORS preflight requests, temporary solution
+	],
+	'/auth' => [
+		'POST' => AuthController::class,
 		'OPTIONS' => ItemsGetController::class, // For CORS preflight requests, temporary solution
 	],
 ];
