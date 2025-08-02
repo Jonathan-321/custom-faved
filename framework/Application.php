@@ -6,6 +6,7 @@ namespace Framework;
 use Exception;
 use Framework\Exceptions\DatabaseNotFound;
 use Framework\Exceptions\DataWriteException;
+use Framework\Exceptions\UnauthorizedException;
 use Framework\Exceptions\ForbiddenException;
 use Framework\Exceptions\NotFoundException;
 use Framework\Exceptions\ValidationException;
@@ -18,6 +19,9 @@ class Application
 
 	public function run($route, $method)
 	{
+		$expects_json = str_contains($_SERVER['HTTP_ACCEPT'] ?? '' . $_SERVER['CONTENT_TYPE'] ?? '', 'application/json');
+		$url_builder = ServiceContainer::get(UrlBuilder::class);
+
 		try {
 			foreach (array_reverse($this->middleware_classes) as $middleware_class) {
 				$middleware = new $middleware_class($middleware ?? null);
@@ -31,14 +35,19 @@ class Application
 
 			$controller = new $controller_class();
 			$response = $controller($input);
+
 		} catch (DatabaseNotFound $e) {
-			$url_builder = ServiceContainer::get(UrlBuilder::class);
 			$response = redirect($url_builder->build('/setup'));
 		} catch (ValidationException|DataWriteException $e) {
 			FlashMessages::set('error', $e->getMessage());
-			$url_builder = ServiceContainer::get(UrlBuilder::class);
 			$referrer = $_SERVER['HTTP_REFERER'] ?? $url_builder->build('/');
 			$response = redirect($referrer);
+		} catch (UnauthorizedException $e) {
+			if ($expects_json) {
+				$response = data(['error' => $e->getMessage()], $e->getCode());
+			} else {
+				$response = redirect($url_builder->build('/login'));
+			}
 		} catch (ForbiddenException $e) {
 			http_response_code(403);
 			$response = page('error', ['message' => "403 - {$e->getMessage()}"])

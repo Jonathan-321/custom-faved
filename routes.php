@@ -27,6 +27,7 @@ use Controllers\TagsController;
 use Controllers\TagUpdateController;
 use Controllers\UserCreateController;
 use Controllers\UserDeleteController;
+use Controllers\UserGetController;
 use Controllers\UserPasswordUpdateController;
 use Controllers\UserUsernameUpdateController;
 
@@ -94,6 +95,7 @@ return [
 		'GET' => TagsController::class,
 	],
 	'/settings/user' => [
+		'GET' => UserGetController::class,
 		'POST' => UserCreateController::class,
 		'DELETE' => UserDeleteController::class,
 		'OPTIONS' => ItemsGetController::class, // For CORS preflight requests, temporary solution

@@ -17,6 +17,7 @@ require_once ROOT_DIR . '/framework/exceptions/ValidationException.php';
 require_once ROOT_DIR . '/framework/exceptions/DataWriteException.php';
 require_once ROOT_DIR . '/framework/exceptions/DatabaseNotFound.php';
 require_once ROOT_DIR . '/framework/exceptions/ForbiddenException.php';
+require_once ROOT_DIR . '/framework/exceptions/UnauthorizedException.php';
 require_once ROOT_DIR . '/framework/middleware/MiddlewareAbstract.php';
 require_once ROOT_DIR . '/framework/middleware/CSRFMiddleware.php';
 require_once ROOT_DIR . '/framework/middleware/DatabaseMigrations.php';
