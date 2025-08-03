@@ -27,7 +27,7 @@ export function PresetActions() {
         </DropdownMenuTrigger>
       </DropdownMenu>
       <div className="flex h-svh items-center justify-center">
-        <SettingsDialog open={open} setOpen={setIsOpen} />
+        {open && <SettingsDialog open={open} setOpen={setIsOpen} />}
       </div>
     </>
   )

@@ -78,8 +78,9 @@ export function SettingsDialog({ open, setOpen }: Props) {
   const [selectedItem, setSelectedItem] = React.useState("Authentication settings")
   const [isUserWasCreated, setIsUserWasCreated] = React.useState(false)
   React.useEffect(() => {
-    store.auth(setIsAuthSuccess)
+    store.getUser(setIsAuthSuccess)
   }, [])
+  console.log('isAuthSuccess', isAuthSuccess)
   return (
     <Dialog open={open} onOpenChange={setOpen}>
 
@@ -129,12 +130,19 @@ export function SettingsDialog({ open, setOpen }: Props) {
               </div>
             </header>
             <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 pt-0">
-              {isAuthSuccess ? selectedItem === "Authentication settings" && !isUserWasCreated && <CardsCreateAccount setIsUserWasCreate={setIsUserWasCreated} /> : selectedItem === "Authentication settings" && isUserWasCreated && components.map((component, i) => (
-                <div
-                  key={i}
-                // className="bg-muted/50 aspect-video max-w-3xl rounded-xl"
-                >{component.component}</div>
-              ))}
+              {!isAuthSuccess &&
+                selectedItem === "Authentication settings"
+                ?
+                <CardsCreateAccount setIsUserWasCreate={setIsUserWasCreated} />
+                :
+                selectedItem === "Authentication settings"
+                && components.map((component, i) => (
+                  <div
+                    key={i}
+                  // className="bg-muted/50 aspect-video max-w-3xl rounded-xl"
+                  >{component.component}</div>
+                ))}
+
 
               {selectedItem === "User edit" &&
                 <div>Import</div>

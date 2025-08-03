@@ -91,19 +91,26 @@ class mainStore {
                 !onSave && this.fetchItems()
             })
     }
-    auth = (setIsAuthSuccess: (val: boolean) => void) => {
-
+    getUser = (setIsAuthSuccess: (val: boolean) => void) => {
         const options = {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
 
         };
 
-        fetch('http://localhost:8000/index.php?route=%2FisAuth', options)
+        fetch('http://localhost:8000/index.php?route=%2Fsettings%2Fuser', options)
             .then(response => response.json())
-            .then(response => setIsAuthSuccess(true))
+            .then(response => {
+                console.log('response', response)
+                if (response.message !== "User has not been created.") {
+                    setIsAuthSuccess(true)
+                } else {
+                    setIsAuthSuccess(false)
+                }
+
+            })
             .catch(err => setIsAuthSuccess(false))
             .finally(() => {
 
@@ -148,7 +155,7 @@ class mainStore {
             })
         };
 
-        fetch('http://localhost:8000/index.php?route=%2Fsettings%2Fpassword', options)
+        fetch('http://localhost:8000/index.php?route=%2Fsettings%2Fusername', options)
             .then(response => response.json())
             .then(response => { console.log(response) })
             .catch(err => toast(JSON.stringify(err)))
