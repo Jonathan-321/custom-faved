@@ -61,6 +61,6 @@ class UserCreateController implements ControllerInterface
 		return data([
 			'success' => true,
 			'message' => 'User created successfully.',
-		], 500);
+		], 200);
 	}
 }

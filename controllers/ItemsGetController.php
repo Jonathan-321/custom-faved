@@ -12,7 +12,6 @@ class ItemsGetController implements ControllerInterface
 {
 	public function __invoke(array $input): ResponseInterface
 	{
-
 		$repository = ServiceContainer::get(Repository::class);
 		$all_items = $repository->getItems();
 

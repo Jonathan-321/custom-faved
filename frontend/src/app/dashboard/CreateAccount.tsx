@@ -30,10 +30,7 @@ const formSchema = z.object({
     .max(30, { message: "Username must be at most 30 characters." }),
   password: z
     .string()
-    .min(8, { message: "Password must be at least 8 characters." })
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
-      message: "Password must contain at least one uppercase, one lowercase, one number, and one special character."
-    }),
+    .min(8, { message: "Password must be at least 8 characters." }),
   passwordConfirm: z.string().min(8, { message: "Password confirmation must be at least 8 characters." }),
 }).refine(
   (data: { password: string; passwordConfirm: string }) => { console.log('1', data.password, data.passwordConfirm); return data.password === data.passwordConfirm }, // explicit type
