@@ -142,7 +142,7 @@ class mainStore {
     createUserName = (val: any) => {
         const sessionId = '9d4c111487b0f3b348c3a0a0df68294b';
         const options = {
-            method: 'POST',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Cookie': `PHPSESSID=${sessionId}`
@@ -164,7 +164,7 @@ class mainStore {
     createPassword = (val: any) => {
         const sessionId = '9d4c111487b0f3b348c3a0a0df68294b';
         const options = {
-            method: 'POST',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Cookie': `PHPSESSID=${sessionId}`
