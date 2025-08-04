@@ -43,7 +43,7 @@ Start the Docker container (change the port if needed):
 PORT=8000 docker-compose up -d
 ```
 
-Visit `http://localhost:8000` in your browser to access Faved.
+Visit `http://localhost:2222` in your browser to access Faved.
 
 - The first time you visit, you'll be prompted to set up the database. Just click "Initialize Database" to proceed and finish installation.
 
