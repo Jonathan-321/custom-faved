@@ -130,9 +130,14 @@ class mainStore {
         };
 
         fetch(API_ENDPOINTS.settings.create, options)
-            .then(response => response.json())
-            .then(response => { setIsUserWasCreate(true); console.log(response); toast('User created successfully.') })
-            .catch(err => toast(JSON.stringify(err)))
+            // .then(response => response.json())
+            .then(() => {
+                setIsUserWasCreate(true);
+                toast('User created successfully.')
+            })
+            .catch((err) => {
+                toast("error")
+            })
             .finally(() => {
                 // setIsUserWasCreate(true)
             })
@@ -152,7 +157,7 @@ class mainStore {
 
         fetch(API_ENDPOINTS.settings.userName, options)
             .then(response => response.json())
-            .then(response => { console.log(response) })
+            .then(() => { toast('Username updated successfully.') })
             .catch(err => toast(JSON.stringify(err)))
             .finally(() => {
                 // setIsUserWasCreate(true)
@@ -172,7 +177,7 @@ class mainStore {
 
         fetch(API_ENDPOINTS.settings.password, options)
             .then(response => response.json())
-            .then(response => { console.log(response) })
+            .then(() => { toast('Password updated successfully.') })
             .catch(err => toast(JSON.stringify(err)))
             .finally(() => {
                 // setIsUserWasCreate(true)
@@ -188,11 +193,8 @@ class mainStore {
 
         fetch(API_ENDPOINTS.settings.delete, options)
             .then(response => response.json())
-            .then(response => { console.log(response) })
+            .then(() => { toast('Authentication disabled successfully.') })
             .catch(err => toast(JSON.stringify(err)))
-            .finally(() => {
-                // setIsUserWasCreate(true)
-            })
     }
 
 }

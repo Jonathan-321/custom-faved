@@ -136,7 +136,7 @@ export function SettingsDialog({ open, setOpen }: Props) {
               {!isAuthSuccess &&
                 selectedItem === "Authentication settings"
                 ?
-                <CardsCreateAccount setIsUserWasCreate={setIsAuthSuccess} />
+                <CardsCreateAccount setIsAuthSuccess={setIsAuthSuccess} />
                 :
                 selectedItem === "Authentication settings"
                 && components.map((component, i) => (
