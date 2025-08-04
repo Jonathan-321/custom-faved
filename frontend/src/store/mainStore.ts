@@ -27,12 +27,11 @@ class mainStore {
     fetchItems = async () => {
         const fetchItems = async () => {
             try {
-                const response = await fetch('http://localhost:8000/index.php?route=/items');
+                const response = await fetch('/api/index.php?route=/items');
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-
                 const data = await response.json();
                 console.log('response', data)
                 this.setItems(data);
@@ -52,7 +51,7 @@ class mainStore {
                 'Content-Type': 'application/json',
             },
         };
-        fetch('http://localhost:8000/index.php?route=%2Fitems' + `&item-id=${id}`, options)
+        fetch('/api/index.php?route=%2Fitems' + `&item-id=${id}`, options)
             .then(response => response.json())
             .then(response => toast('Deleted succesfully', {
                 description: "Sunday, December 03, 2023 at 9:00 AM",
@@ -82,7 +81,7 @@ class mainStore {
             })
         };
 
-        fetch('http://localhost:8000/index.php?route=%2Fitems' + (!isCreateCopy ? this.type === ActionType.EDIT ? `&item-id=${val.id}` : '' : ''), options)
+        fetch('/api/index.php?route=%2Fitems' + (!isCreateCopy ? this.type === ActionType.EDIT ? `&item-id=${val.id}` : '' : ''), options)
             .then(response => response.json())
             .then(response => console.log(response))
             .catch(err => console.error(err))
@@ -100,7 +99,7 @@ class mainStore {
 
         };
 
-        fetch('http://localhost:8000/index.php?route=%2Fsettings%2Fuser', options)
+        fetch('/api/index.php?route=%2Fsettings%2Fuser', options)
             .then(response => response.json())
             .then(response => {
                 console.log('response', response)
@@ -132,7 +131,7 @@ class mainStore {
             })
         };
 
-        fetch('http://localhost:8000/index.php?route=%2Fsettings%2Fuser', options)
+        fetch('/api/index.php?route=%2Fsettings%2Fuser', options)
             .then(response => response.json())
             .then(response => { setIsUserWasCreate(true); console.log(response) })
             .catch(err => toast(JSON.stringify(err)))
@@ -155,7 +154,7 @@ class mainStore {
             })
         };
 
-        fetch('http://localhost:8000/index.php?route=%2Fsettings%2Fusername', options)
+        fetch('/api/index.php?route=%2Fsettings%2Fusername', options)
             .then(response => response.json())
             .then(response => { console.log(response) })
             .catch(err => toast(JSON.stringify(err)))
@@ -177,7 +176,7 @@ class mainStore {
             })
         };
 
-        fetch('http://localhost:8000/index.php?route=%2Fsettings%2Fpassword', options)
+        fetch('/api/index.php?route=%2Fsettings%2Fpassword', options)
             .then(response => response.json())
             .then(response => { console.log(response) })
             .catch(err => toast(JSON.stringify(err)))

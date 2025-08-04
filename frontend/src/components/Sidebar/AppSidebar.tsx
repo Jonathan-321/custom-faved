@@ -174,7 +174,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const fetchTags = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:8000/index.php?route=%2Ftags');
+        const response = await fetch('/api/index.php?route=%2Ftags');
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

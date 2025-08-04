@@ -16,4 +16,14 @@ export default defineConfig({
       // "@redux": path.resolve(__dirname, "./src/redux"),
     },
   },
+  server: {
+    port: 8001, // Локальный порт разработки
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8000', // Обратите внимание, /api здесь убран
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    }
+  }
 })

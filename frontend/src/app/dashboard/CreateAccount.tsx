@@ -41,7 +41,7 @@ const formSchema = z.object({
 );
 
 
-export const CardsCreateAccount: React.FC<{ setIsUserWasCreate: any }> = ({ setIsUserWasCreate }) => {
+export const CardsCreateAccount: React.FC<{ setIsAuthSuccess: any }> = ({ setIsAuthSuccess }) => {
   const store = useContext(StoreContext);
   const initialData = {
     name: "",
@@ -68,7 +68,7 @@ export const CardsCreateAccount: React.FC<{ setIsUserWasCreate: any }> = ({ setI
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     // setIsUserWasCreate(true)
-    store.onCreateUser(values, setIsUserWasCreate)
+    store.onCreateUser(values, setIsAuthSuccess)
     console.log('values', values)
   }
   console.log('form', form)
