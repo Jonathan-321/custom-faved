@@ -1,50 +1,30 @@
-import { Settings } from './components/Settings/Settings'
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css'
-import { Button } from './components/ui/button';
-import EditItemForm from './components/EditForm/EditItemForm';
-import { mockDefaultValues } from './components/utils/utils';
 import { Page } from './app/dashboard/page';
 import { Toaster } from 'sonner';
+import { observer } from 'mobx-react-lite';
+import { useContext } from 'react';
+import { StoreContext } from './store/storeContext';
+import { LoginPage } from './components/Login/LoginPage';
 
 
 
-function App() {
-  // const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
-  // const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
-
-  // const submitRequest = (method, action, csrfToken, alertMessage) => {
-
-  //   if (alertMessage && !confirm(alertMessage)) {
-  //     return;
-  //   }
-
-  //   const form = document.createElement('form');
-  //   form.method = 'POST';
-  //   form.action = action;
-
-  //   const addInput = (name, value) => {
-  //     const input = document.createElement('input');
-  //     input.type = 'hidden';
-  //     input.name = name;
-  //     input.value = value;
-  //     form.appendChild(input);
-  //   };
-  //   addInput('force-method', method);
-  //   addInput('csrf_token', csrfToken);
-
-  //   document.body.appendChild(form);
-  //   form.submit();
-  // }
-
+const App = observer(() => {
+  const store = useContext(StoreContext);
+  console.log('showLoginPage', store.showLoginPage)
   return (
     <BrowserRouter>
-
-      <Page />
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/main" element={<Page />} />
+        <Route
+          path="/"
+          element={store.showLoginPage ? <Navigate to="/login" replace={true} /> : <Navigate to="/main" />}
+        />
+      </Routes>
       <Toaster />
     </BrowserRouter>
-  )
-}
+  );
+})
 
 export default App

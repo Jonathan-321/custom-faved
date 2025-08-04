@@ -8,6 +8,7 @@ class mainStore {
     type: ActionType = "" as ActionType
     userName: string = "" as string
     idItem = undefined;
+    showLoginPage = false;
     error: string | null = null;
 
     constructor() {
@@ -30,8 +31,10 @@ class mainStore {
         const fetchItems = async () => {
             try {
                 const response = await fetch(API_ENDPOINTS.items.list);
-
                 if (!response.ok) {
+                    if (response.status === 403) {
+                        this.showLoginPage = true
+                    }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
@@ -52,8 +55,16 @@ class mainStore {
             },
         };
         fetch(API_ENDPOINTS.items.deleteItem(id), options)
-            .then(response => response.json())
-            .then(response => toast('Deleted succesfully', {
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 403) {
+                        this.showLoginPage = true
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(() => toast('Deleted successfully', {
                 description: "Sunday, December 03, 2023 at 9:00 AM",
                 action: {
                     label: "Ok",
@@ -82,7 +93,15 @@ class mainStore {
         };
 
         fetch(API_ENDPOINTS.items.createItem + (!isCreateCopy ? this.type === ActionType.EDIT ? `&item-id=${val.id}` : '' : ''), options)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 403) {
+                        this.showLoginPage = true
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(response => console.log(response))
             .catch(err => console.error(err))
             .finally(() => {
@@ -100,7 +119,15 @@ class mainStore {
         };
 
         fetch(API_ENDPOINTS.settings.getUser, options)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 403) {
+                        this.showLoginPage = true
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(({ data }) => {
                 console.log('data', data)
                 setIsAuthSuccess(true);
@@ -130,7 +157,15 @@ class mainStore {
         };
 
         fetch(API_ENDPOINTS.settings.create, options)
-            // .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 403) {
+                        this.showLoginPage = true
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(() => {
                 setIsUserWasCreate(true);
                 toast('User created successfully.')
@@ -156,7 +191,15 @@ class mainStore {
         };
 
         fetch(API_ENDPOINTS.settings.userName, options)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 403) {
+                        this.showLoginPage = true
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(() => { toast('Username updated successfully.') })
             .catch(err => toast(JSON.stringify(err)))
             .finally(() => {
@@ -176,7 +219,15 @@ class mainStore {
         };
 
         fetch(API_ENDPOINTS.settings.password, options)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 403) {
+                        this.showLoginPage = true
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(() => { toast('Password updated successfully.') })
             .catch(err => toast(JSON.stringify(err)))
             .finally(() => {
@@ -192,7 +243,15 @@ class mainStore {
         };
 
         fetch(API_ENDPOINTS.settings.delete, options)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 403) {
+                        this.showLoginPage = true
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(() => { toast('Authentication disabled successfully.') })
             .catch(err => toast(JSON.stringify(err)))
     }

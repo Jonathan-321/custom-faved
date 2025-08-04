@@ -230,7 +230,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
       const code = innerItems.length > 0 ? (<Collapsible className='group/collapsible'>
         <SidebarMenuItem>
-
           <SidebarMenuButton>
             <CollapsibleTrigger asChild>
               <IconChevronRight className={`transition-transform hover:cursor-pointer`} />
