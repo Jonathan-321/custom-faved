@@ -74,11 +74,12 @@ const components = [
 ];
 export function SettingsDialog({ open, setOpen }: Props) {
   const store = React.useContext(StoreContext);
+  const [isLoading, setIsLoading] = React.useState(true);
   const [isAuthSuccess, setIsAuthSuccess] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState("Authentication settings")
   const [isUserWasCreated, setIsUserWasCreated] = React.useState(false)
   React.useEffect(() => {
-    store.getUser(setIsAuthSuccess)
+    store.getUser(setIsAuthSuccess, setIsLoading)
   }, [])
   console.log('isAuthSuccess', isAuthSuccess)
   return (
@@ -130,7 +131,7 @@ export function SettingsDialog({ open, setOpen }: Props) {
               </div>
             </header>
             <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 pt-0">
-              {!isAuthSuccess &&
+              {!isLoading ? !isAuthSuccess &&
                 selectedItem === "Authentication settings"
                 ?
                 <CardsCreateAccount setIsUserWasCreate={setIsAuthSuccess} />
@@ -141,7 +142,8 @@ export function SettingsDialog({ open, setOpen }: Props) {
                     key={i}
                   // className="bg-muted/50 aspect-video max-w-3xl rounded-xl"
                   >{component.component}</div>
-                ))}
+                )) : 'Loading...'}
+              { }
 
 
               {selectedItem === "User edit" &&

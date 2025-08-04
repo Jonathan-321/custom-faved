@@ -1,6 +1,7 @@
 import { ActionType } from '@/app/dashboard/page';
 import { makeAutoObservable } from 'mobx';
 import { toast } from 'sonner';
+import { API_ENDPOINTS } from './api';
 
 class mainStore {
     items = [];
@@ -27,7 +28,7 @@ class mainStore {
     fetchItems = async () => {
         const fetchItems = async () => {
             try {
-                const response = await fetch('/api/index.php?route=/items');
+                const response = await fetch(API_ENDPOINTS.items.list);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -38,10 +39,8 @@ class mainStore {
             } catch (err) {
                 this.error = (err instanceof Error ? err.message : 'Failed to fetch items');
                 console.error('Error fetching items:', err);
-            } finally {
             }
         };
-
         fetchItems();
     }
     onDeleteItem = async (id: number) => {
@@ -51,7 +50,7 @@ class mainStore {
                 'Content-Type': 'application/json',
             },
         };
-        fetch('/api/index.php?route=%2Fitems' + `&item-id=${id}`, options)
+        fetch(API_ENDPOINTS.items.deleteItem(id), options)
             .then(response => response.json())
             .then(response => toast('Deleted succesfully', {
                 description: "Sunday, December 03, 2023 at 9:00 AM",
@@ -81,7 +80,7 @@ class mainStore {
             })
         };
 
-        fetch('/api/index.php?route=%2Fitems' + (!isCreateCopy ? this.type === ActionType.EDIT ? `&item-id=${val.id}` : '' : ''), options)
+        fetch(API_ENDPOINTS.items.createItem + (!isCreateCopy ? this.type === ActionType.EDIT ? `&item-id=${val.id}` : '' : ''), options)
             .then(response => response.json())
             .then(response => console.log(response))
             .catch(err => console.error(err))
@@ -90,7 +89,7 @@ class mainStore {
                 !onSave && this.fetchItems()
             })
     }
-    getUser = (setIsAuthSuccess: (val: boolean) => void) => {
+    getUser = (setIsAuthSuccess: (val: boolean) => void, setIsLoading: (val: boolean) => void) => {
         const options = {
             method: 'GET',
             headers: {
@@ -99,7 +98,7 @@ class mainStore {
 
         };
 
-        fetch('/api/index.php?route=%2Fsettings%2Fuser', options)
+        fetch(API_ENDPOINTS.settings.getUser, options)
             .then(response => response.json())
             .then(response => {
                 console.log('response', response)
@@ -112,7 +111,7 @@ class mainStore {
             })
             .catch(err => setIsAuthSuccess(false))
             .finally(() => {
-
+                setIsLoading(false)
             })
 
     }
@@ -131,7 +130,7 @@ class mainStore {
             })
         };
 
-        fetch('/api/index.php?route=%2Fsettings%2Fuser', options)
+        fetch(API_ENDPOINTS.settings.create, options)
             .then(response => response.json())
             .then(response => { setIsUserWasCreate(true); console.log(response) })
             .catch(err => toast(JSON.stringify(err)))
@@ -154,7 +153,7 @@ class mainStore {
             })
         };
 
-        fetch('/api/index.php?route=%2Fsettings%2Fusername', options)
+        fetch(API_ENDPOINTS.settings.userName, options)
             .then(response => response.json())
             .then(response => { console.log(response) })
             .catch(err => toast(JSON.stringify(err)))
@@ -176,7 +175,7 @@ class mainStore {
             })
         };
 
-        fetch('/api/index.php?route=%2Fsettings%2Fpassword', options)
+        fetch(API_ENDPOINTS.settings.password, options)
             .then(response => response.json())
             .then(response => { console.log(response) })
             .catch(err => toast(JSON.stringify(err)))
