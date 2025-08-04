@@ -13,4 +13,7 @@ export const API_ENDPOINTS = {
         password: `${API_BASE}?route=%2Fsettings%2Fpassword`,
         delete: `${API_BASE}?route=%2Fsettings%2Fuser`,
     },
+    tags: {
+        list: `${API_BASE}?route=%2Ftags`,
+    }
 };
