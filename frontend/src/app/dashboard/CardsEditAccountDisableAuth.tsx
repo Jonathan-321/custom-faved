@@ -22,7 +22,7 @@ export function CardsEditAccountDisableAuth() {
         </CardDescription>
       </CardHeader>
       <CardFooter>
-        <Button variant="destructive" className="w-full">Disable authentication</Button>
+        <Button onClick={store.deleteUser} variant="destructive" className="w-full">Disable authentication</Button>
       </CardFooter>
     </Card >
   )

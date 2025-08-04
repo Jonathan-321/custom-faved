@@ -6,6 +6,7 @@ import { API_ENDPOINTS } from './api';
 class mainStore {
     items = [];
     type: ActionType = "" as ActionType
+    userName: string = "" as string
     idItem = undefined;
     error: string | null = null;
 
@@ -100,28 +101,26 @@ class mainStore {
 
         fetch(API_ENDPOINTS.settings.getUser, options)
             .then(response => response.json())
-            .then(response => {
-                console.log('response', response)
-                if (response.message !== "User has not been created.") {
-                    setIsAuthSuccess(true)
-                } else {
-                    setIsAuthSuccess(false)
-                }
+            .then(({ data }) => {
+                console.log('data', data)
+                setIsAuthSuccess(true);
+                this.userName = data.user.username;
+                // console.log('response', response)
+                // if (response.message !== "User has not been created.") {
+                //     setIsAuthSuccess(true)
+                // } else {
+                //     setIsAuthSuccess(false)
+                // }
 
             })
             .catch(err => setIsAuthSuccess(false))
-            .finally(() => {
-                setIsLoading(false)
-            })
 
     }
     onCreateUser = (val: any, setIsUserWasCreate: (val: boolean) => void) => {
-        const sessionId = '9d4c111487b0f3b348c3a0a0df68294b';
         const options = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Cookie': `PHPSESSID=${sessionId}`
             },
             body: JSON.stringify({
                 username: val.username || '',
@@ -132,7 +131,7 @@ class mainStore {
 
         fetch(API_ENDPOINTS.settings.create, options)
             .then(response => response.json())
-            .then(response => { setIsUserWasCreate(true); console.log(response) })
+            .then(response => { setIsUserWasCreate(true); console.log(response); toast('User created successfully.') })
             .catch(err => toast(JSON.stringify(err)))
             .finally(() => {
                 // setIsUserWasCreate(true)
@@ -140,12 +139,10 @@ class mainStore {
     }
 
     createUserName = (val: any) => {
-        const sessionId = '9d4c111487b0f3b348c3a0a0df68294b';
         const options = {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
-                'Cookie': `PHPSESSID=${sessionId}`
             },
             body: JSON.stringify({
                 username: val.username || '',
@@ -162,12 +159,10 @@ class mainStore {
             })
     }
     createPassword = (val: any) => {
-        const sessionId = '9d4c111487b0f3b348c3a0a0df68294b';
         const options = {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
-                'Cookie': `PHPSESSID=${sessionId}`
             },
             body: JSON.stringify({
                 password: val.password || '',
@@ -176,6 +171,22 @@ class mainStore {
         };
 
         fetch(API_ENDPOINTS.settings.password, options)
+            .then(response => response.json())
+            .then(response => { console.log(response) })
+            .catch(err => toast(JSON.stringify(err)))
+            .finally(() => {
+                // setIsUserWasCreate(true)
+            })
+    }
+    deleteUser = () => {
+        const options = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+        fetch(API_ENDPOINTS.settings.delete, options)
             .then(response => response.json())
             .then(response => { console.log(response) })
             .catch(err => toast(JSON.stringify(err)))

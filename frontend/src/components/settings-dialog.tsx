@@ -82,9 +82,11 @@ export function SettingsDialog({ open, setOpen }: Props) {
     store.getUser(setIsAuthSuccess, setIsLoading)
   }, [])
   console.log('isAuthSuccess', isAuthSuccess)
+  if (!open && isLoading) {
+    return <div>{'Loading...'}</div>
+  }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-
       <DialogContent className="overflow-hidden p-0 md:max-h-[600px] md:max-w-[900px] lg:max-w-[900px]">
         <DialogTitle className="sr-only">Settings</DialogTitle>
         {/* <DialogDescription className="sr-only">
@@ -131,7 +133,7 @@ export function SettingsDialog({ open, setOpen }: Props) {
               </div>
             </header>
             <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 pt-0">
-              {!isLoading ? !isAuthSuccess &&
+              {!isAuthSuccess &&
                 selectedItem === "Authentication settings"
                 ?
                 <CardsCreateAccount setIsUserWasCreate={setIsAuthSuccess} />
@@ -142,8 +144,8 @@ export function SettingsDialog({ open, setOpen }: Props) {
                     key={i}
                   // className="bg-muted/50 aspect-video max-w-3xl rounded-xl"
                   >{component.component}</div>
-                )) : 'Loading...'}
-              { }
+                ))}
+
 
 
               {selectedItem === "User edit" &&

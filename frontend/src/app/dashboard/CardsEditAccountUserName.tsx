@@ -22,11 +22,8 @@ const formSchema = z.object({
 
 export function CardsEditAccountUserName() {
   const store = useContext(StoreContext);
-  const initialData = {
-    username: "",
+  console.log('userName', store.userName)
 
-  }
-  const defaultValues = initialData;
   // const { reset, register, handleSubmit, formState: { errors }, control } = useForm<z.infer<typeof formSchema>>({
   //   defaultValues: defaultValues,
   //   resolver: zodResolver(formSchema)
@@ -34,7 +31,7 @@ export function CardsEditAccountUserName() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      username: store.userName ?? "",
     },
   })
   // useEffect(() => {

@@ -6,11 +6,10 @@ import mainStore from './store/mainStore.ts'
 import { StoreContext } from './store/storeContext.ts'
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <StoreContext.Provider value={mainStore}>
-      <App />
-    </StoreContext.Provider>
-  </StrictMode>,
+
+  <StoreContext.Provider value={mainStore}>
+    <App />
+  </StoreContext.Provider>,
 )
 
 

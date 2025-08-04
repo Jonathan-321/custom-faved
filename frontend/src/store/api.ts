@@ -11,5 +11,6 @@ export const API_ENDPOINTS = {
         create: `${API_BASE}?route=%2Fsettings%2Fuser`,
         userName: `${API_BASE}?route=%2Fsettings%2Fusername`,
         password: `${API_BASE}?route=%2Fsettings%2Fpassword`,
+        delete: `${API_BASE}?route=%2Fsettings%2Fuser`,
     },
 };
