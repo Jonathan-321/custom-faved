@@ -5,6 +5,7 @@ import { API_ENDPOINTS } from './api';
 
 class mainStore {
     items = [];
+    tags = [];
     type: ActionType = "" as ActionType
     userName: string = "" as string
     idItem = undefined;
@@ -17,6 +18,9 @@ class mainStore {
 
     setItems = (val) => {
         this.items = val;
+    };
+    setTags = (val) => {
+        this.tags = val;
     };
     createItem = (val) => {
         this.items = this.items.concat(val);
@@ -46,6 +50,24 @@ class mainStore {
             }
         };
         fetchItems();
+    }
+    fetchTags = async () => {
+        const fetchTags = async () => {
+            try {
+                const response = await fetch(API_ENDPOINTS.tags.list);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log('response-tags', data)
+                this.setTags(data);
+            } catch (err) {
+                this.error = (err instanceof Error ? err.message : 'Failed to fetch tags');
+                console.error('Error fetching tags:', err);
+            }
+        };
+        fetchTags();
     }
     onDeleteItem = async (id: number) => {
         const options = {
