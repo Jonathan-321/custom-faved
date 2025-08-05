@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css'
-import { Page } from './app/dashboard/page';
+import { Page } from './components/dashboard/page';
 import { Toaster } from 'sonner';
 import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';

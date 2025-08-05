@@ -40,7 +40,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { ActionType } from "@/app/dashboard/page"
+import { ActionType } from "@/components/dashboard/page"
 import { StoreContext } from "@/store/storeContext"
 import { DataTableToolbar } from "./data-table-toolbar"
 import { Badge } from "../ui/badge"
@@ -147,7 +147,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
       },
     },
     {
-      header: "Actions",
+      header: "",
       // id: "actions",
       accessorKey: "id",
       enableHiding: false,
@@ -166,7 +166,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
           <DropdownMenuContent align="end" className="w-32">
             <DropdownMenuItem onClick={() => { setType(ActionType.EDIT); setIsShowEditModal(true); setIdItem(row.getValue("id")) }}>Edit</DropdownMenuItem>
             <DropdownMenuItem onClick={() => { onCreateItem(row.original, true) }}>Make a copy</DropdownMenuItem>
-            <DropdownMenuItem>Favorite</DropdownMenuItem>
+            {/* <DropdownMenuItem>Favorite</DropdownMenuItem> */}
             <DropdownMenuSeparator />
             <DropdownMenuItem variant="destructive" onClick={() => onDeleteHandler(row.getValue("id"))}>Delete</DropdownMenuItem>
           </DropdownMenuContent>
@@ -306,7 +306,7 @@ export function DataTable({
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="space-x-2">
+        <div className="space-x-2 pr-[10px]">
           <Button
             variant="outline"
             size="sm"

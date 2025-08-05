@@ -18,7 +18,7 @@ import { Label } from "@/components/ui/label"
 
 import styles from "./editForm.module.scss"
 import { Textarea } from '../ui/textarea';
-import { ActionType } from '@/app/dashboard/page';
+import { ActionType } from '@/components/dashboard/page';
 import { StoreContext } from '@/store/storeContext';
 
 
@@ -28,10 +28,10 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
     id: "",
     description: "",
     comments: '',
-    createdAt: undefined,
+    created_at: undefined,
     imageURL: undefined,
     tags: undefined,
-    updatedAt: undefined,
+    updated_at: undefined,
     url: ''
   }
   const defaultValues = store.type === ActionType.EDIT && store.items.length > 0 ? store.items.filter(el => el.id === store.idItem)[0] : store.type === ActionType.CREATE ? initialData : {};
@@ -42,6 +42,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
     reset(defaultValues)
   }, [store.idItem])
   console.log('store.idItem', store.idItem)
+  console.log('defaultValues', defaultValues)
   const onSubmit = (val) => {
     store.onCreateItem(val, false)
     setIsShowEditModal(false)
@@ -164,6 +165,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
                       className={styles.input}
                       type="text"
                       id="name-1"
+                      placeholder='https://'
                       value={field.value ?? undefined}
                       style={{ marginLeft: 5 }}
                       onChange={(value) => {
@@ -201,13 +203,14 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
               <Label htmlFor="name-1">Created at</Label>
               <Controller
                 control={control}
-                name="createdAt"
+                name="created_at"
                 render={({ field }) => {
                   return (
                     <Input
                       className={styles.input}
                       type="text"
                       id="name-1"
+                      disabled
                       value={field.value ?? undefined}
                       style={{ marginLeft: 5 }}
                       onChange={(value) => {
@@ -223,13 +226,14 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
               <Label htmlFor="name-1">Updated at</Label>
               <Controller
                 control={control}
-                name="updatedAt"
+                name="updated_at"
                 render={({ field }) => {
                   return (
                     <Input
                       className={styles.input}
                       type="text"
                       id="name-1"
+                      disabled
                       value={field.value ?? undefined}
                       style={{ marginLeft: 5 }}
                       onChange={(value) => {

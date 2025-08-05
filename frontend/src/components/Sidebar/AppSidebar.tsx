@@ -42,7 +42,7 @@ import {
   DropdownMenuItem, DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
-import { PresetActions } from "@/app/dashboard/preset-actions"
+import { PresetActions } from "@/components/dashboard/preset-actions"
 
 
 const data = {

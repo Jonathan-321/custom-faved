@@ -41,10 +41,10 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar"
 
-import { CardsEditAccountUserName } from "@/app/dashboard/CardsEditAccountUserName"
-import { CardsEditAccountPassword } from "@/app/dashboard/CardsEditAccountPassword"
-import { CardsEditAccountDisableAuth } from "@/app/dashboard/CardsEditAccountDisableAuth"
-import { CardsCreateAccount } from "@/app/dashboard/CreateAccount"
+import { CardsEditAccountUserName } from "@/components/dashboard/CardsEditAccountUserName"
+import { CardsEditAccountPassword } from "@/components/dashboard/CardsEditAccountPassword"
+import { CardsEditAccountDisableAuth } from "@/components/dashboard/CardsEditAccountDisableAuth"
+import { CardsCreateAccount } from "@/components/dashboard/CreateAccount"
 import { StoreContext } from "@/store/storeContext"
 
 const data = {

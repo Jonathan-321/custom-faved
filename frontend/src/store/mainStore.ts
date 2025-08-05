@@ -1,4 +1,4 @@
-import { ActionType } from '@/app/dashboard/page';
+import { ActionType } from '@/components/dashboard/page';
 import { makeAutoObservable } from 'mobx';
 import { toast } from 'sonner';
 import { API_ENDPOINTS } from './api';
