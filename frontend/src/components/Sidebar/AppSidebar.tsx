@@ -43,7 +43,7 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
 import { PresetActions } from "@/components/dashboard/preset-actions"
-
+import {StoreContext} from "@/store/storeContext.ts";
 
 const data = {
   user: {
@@ -162,43 +162,26 @@ const data = {
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ allTags, ...props }: React.ComponentProps<typeof Sidebar>) {
 
-  const [allTags, setAllTags] = useState([]);
+  const store = React.useContext(StoreContext);
+  const userName = store.userName;
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { isMobile } = useSidebar()
 
 
-  useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch('/api/index.php?route=%2Ftags');
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        setAllTags(Object.values(data));
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch tags');
-        console.error('Error fetching tags:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTags();
-  }, []);
+  console.log('all_Tags_2', allTags,  userName)
 
   function renderTag(parentID: integer, level = 0): JSX.Element[] {
     let output = []
-    const tags = allTags.filter((tag: any) => tag.parent === parentID);
+    const tags = Object.values(allTags).filter((tag: any) => tag.parent === parentID);
+    console.log('tagList', Object.values(allTags), allTags, parentID, tags);
 
     level++
     for (const tag of tags) {
+      console.log(tag)
       const innerItems = renderTag(tag.id, level)
       const actionButtons = (
         <DropdownMenu>
@@ -277,12 +260,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <span className="text-base font-semibold">Faved.</span>
               </a>
             </SidebarMenuButton>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
-            >
-              <PresetActions />
-            </SidebarMenuButton>
+
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>

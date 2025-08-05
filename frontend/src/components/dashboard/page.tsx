@@ -40,6 +40,7 @@ export const Page = observer(() => {
   console.log('items', store.items)
   useEffect(() => {
     store.fetchItems().finally(() => { setIsLoading(false) })
+    store.fetchTags().finally(() => { setIsLoading(false) })
   }, []);
 
 
@@ -64,7 +65,7 @@ export const Page = observer(() => {
         } as React.CSSProperties
       }
     >
-      <AppSidebar variant="inset" />
+      <AppSidebar variant="inset" allTags={store.tags} />
       <SidebarInset>
         <SiteHeader setType={store.setType} setIsShowEditModal={setIsShowEditModal} />
         <div className="flex flex-1 flex-col">

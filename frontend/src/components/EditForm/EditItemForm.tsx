@@ -11,9 +11,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogOverlay,
+  DialogPortal
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { TagEdit } from "@/components/ui/tags"
 
 
 import styles from "./editForm.module.scss"
@@ -63,9 +66,12 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
   }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogContent className="sm:max-w-[1000px]">
+    <form onSubmit={handleSubmit(onSubmit)}>
+
+    <DialogPortal>
+        <DialogOverlay className="DialogOverlay">
+
+        <DialogContent className="sm:max-w-[1000px] overflow-y-auto">
           <DialogHeader>
             <div className={styles.header}>
               <DialogTitle>{store.type === ActionType.EDIT ? "Edit item" : "Create item"}</DialogTitle>
@@ -184,12 +190,12 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
                 name="tags"
                 render={({ field }) => {
                   return (
-                    <Input
+                    <TagEdit
                       className={styles.input}
-                      type="text"
-                      id="name-1"
+                      // type="text"
+                      // id="name-1"
                       value={field.value ?? undefined}
-                      style={{ marginLeft: 5 }}
+                      // style={{ marginLeft: 5 }}
                       onChange={(value) => {
                         field.onChange(value ?? null);
                       }}
@@ -258,8 +264,9 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
             <Button onClick={onDeleteItem} variant="destructive">Delete</Button>
           </DialogFooter>
         </DialogContent>
-      </form>
-    </div >
+        </DialogOverlay>
+        </DialogPortal>
+    </form>
 
 
 
