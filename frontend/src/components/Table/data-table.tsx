@@ -104,7 +104,8 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
         const url = row.original.url;
         const title = row.original.title;
         const tags = row.original.tags;
-        const createdAt = row.original.updated_at;
+        const updatedAt = row.original.updated_at;
+        const createdAt = row.original.created_at;
         return (
           <div className={styles.titleWrapper}>
             <div className={styles.titleWrapperContaner}>
@@ -112,7 +113,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
                 {title}
               </h4></div>}
               {url && <div className={styles.title}><a className={styles.btnLink} href={url} target="_blank" rel="noopener noreferrer">{url}</a> </div>}
-              {tags && <div className={styles.title} >{tags.map((e) => <Badge variant="outline">{e}</Badge>)} <p className="text-muted-foreground text-sm">{createdAt}</p></div>}
+              {tags && <div className={styles.titleTask} >{tags.map((e) => <Badge variant="outline">{e}</Badge>)} <p className="text-muted-foreground text-sm">{updatedAt ?? createdAt}</p></div>}
             </div>
 
           </div>
@@ -130,59 +131,21 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
 
 
         return (
-          <div className="flex space-x-2">
+          <div className="flex space-x-2" style={{ textAlign: "left" }}>
             {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
             <span
               className={styles.title}
             // className="max-w-[500px] truncate font-medium"
             >
-              {row.getValue("description")}
+              <p className="leading-7 [&:not(:first-child)]:mt-6">
+                {row.getValue("description")}
+              </p>
+
             </span>
           </div>
         )
       },
     },
-    // {
-    //   accessorKey: "description",
-    //   header: "Description",
-    //   cell: ({ row }) => (
-    //     <div className={styles.titleWrapper}>
-    //       {/* {label && <Badge variant="outline">{label.label}</Badge>} truncate*/}
-    //       <span className={styles.title} >
-    //         {row.getValue("description")}
-    //       </span >
-    //     </div >
-    //   ),
-    // },
-    // {
-    //   id: "actions",
-    //   enableHiding: false,
-    //   cell: ({ row }) => {
-    //     const payment = row.original
-
-    //     return (
-    //       <DropdownMenu>
-    //         <DropdownMenuTrigger asChild>
-    //           <Button variant="ghost" className="h-8 w-8 p-0">
-    //             <span className="sr-only">Open menu</span>
-    //             <MoreHorizontal />
-    //           </Button>
-    //         </DropdownMenuTrigger>
-    //         <DropdownMenuContent align="end">
-    //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-    //           <DropdownMenuItem
-    //             onClick={() => navigator.clipboard.writeText(payment.id)}
-    //           >
-    //             Copy payment ID
-    //           </DropdownMenuItem>
-    //           <DropdownMenuSeparator />
-    //           <DropdownMenuItem>View customer</DropdownMenuItem>
-    //           <DropdownMenuItem>View payment details</DropdownMenuItem>
-    //         </DropdownMenuContent>
-    //       </DropdownMenu>
-    //     )
-    //   },
-    // },
     {
       header: "Actions",
       // id: "actions",

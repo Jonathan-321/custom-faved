@@ -3,20 +3,31 @@
 }
 
 .titleWrapper {
-    display: flex;
-    width: 100%;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
+    // display: flex;
+    // width: 100%;
+    // word-wrap: break-word;
+    // overflow-wrap: break-word;
+    // hyphens: auto;
 }
 
 .title {
     padding: 5px;
     hyphens: auto;
     max-width: 600px;
-    // height: 100px;
     overflow-wrap: break-word;
     white-space: pre-wrap;
+}
+
+.titleTask {
+    padding-top: 5px;
+    display: flex;
+    margin-left: 5px;
+    flex-direction: row;
+    width: 100%;
+}
+
+.titleTask> :first-child {
+    margin-right: 10px;
 }
 
 .titleContainer {
@@ -25,7 +36,6 @@
 }
 
 .titleWrapperContaner {
-    height: 120px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
