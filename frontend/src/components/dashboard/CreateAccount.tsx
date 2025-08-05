@@ -116,18 +116,9 @@ export const CardsCreateAccount: React.FC<{ setIsAuthSuccess: any }> = ({ setIsA
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
-                    {/* <Label htmlFor="email-create-account">Username</Label> */}
-                    {/* <Input
-                id="Username"
-                type="username"
-                placeholder="Username"
-              /> */}
                     <FormControl>
                       <Input placeholder="Password" {...field} />
                     </FormControl>
-                    {/* <FormDescription>
-                      This is your public display name.
-                    </FormDescription> */}
                     <FormMessage />
                   </FormItem>
                 )}

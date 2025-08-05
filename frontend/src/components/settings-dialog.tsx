@@ -77,9 +77,8 @@ export function SettingsDialog({ open, setOpen }: Props) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [isAuthSuccess, setIsAuthSuccess] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState("Authentication settings")
-  const [isUserWasCreated, setIsUserWasCreated] = React.useState(false)
   React.useEffect(() => {
-    store.getUser(setIsAuthSuccess, setIsLoading)
+    store.getUser(setIsAuthSuccess)
   }, [])
   console.log('isAuthSuccess', isAuthSuccess)
   if (!open && isLoading) {

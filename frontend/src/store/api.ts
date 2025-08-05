@@ -15,5 +15,9 @@ export const API_ENDPOINTS = {
     },
     tags: {
         list: `${API_BASE}?route=%2Ftags`,
+    },
+    auth: {
+        login: `${API_BASE}?route=%2Fauth`,
+        logout: `${API_BASE}?route=%2Flogout`,
     }
 };

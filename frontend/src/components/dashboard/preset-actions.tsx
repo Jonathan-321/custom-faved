@@ -1,21 +1,15 @@
 "use client"
 
 import * as React from "react"
-import { Dialog } from "@radix-ui/react-dialog"
-import { MoreHorizontal, SlidersHorizontal } from "lucide-react"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { SlidersHorizontal } from "lucide-react"
+import { DropdownMenu, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
-import { CardsCreateAccount } from "./CreateAccount"
 import { SettingsDialog } from "@/components/settings-dialog"
 
 
 
 export function PresetActions() {
   const [open, setIsOpen] = React.useState(false)
-  const [showDeleteDialog, setShowDeleteDialog] = React.useState(false)
-
   return (
     <>
       <DropdownMenu>

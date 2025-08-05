@@ -2,12 +2,15 @@ import { ActionType } from "@/components/dashboard/page"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { Import } from "lucide-react"
+import { Import, LogOut } from "lucide-react"
 import { useState } from "react"
 import { ImportModal } from "./Import/ImportModal"
+import { LogOutModal } from "./Logout/LogOut"
+import { Popover, PopoverTrigger } from "./ui/popover"
 
 export const SiteHeader: React.FC<{ setType: (val: ActionType) => void; setIsShowEditModal: (val: boolean) => void }> = ({ setType, setIsShowEditModal }) => {
   const [isOpenImport, setIsOpenImport] = useState(false)
+
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
       <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
@@ -24,18 +27,19 @@ export const SiteHeader: React.FC<{ setType: (val: ActionType) => void; setIsSho
           <Import />
         </Button>
         <div className="ml-auto flex items-center gap-2">
-          <Button variant="ghost" asChild size="sm" className="hidden sm:flex">
-            <a
-              href="https://github.com/shadcn-ui/ui/tree/main/apps/v4/app/(examples)/dashboard"
-              rel="noopener noreferrer"
-              target="_blank"
-              className="dark:text-foreground"
-            >
-              GitHub
-            </a>
-          </Button>
+          <Popover >
+            <PopoverTrigger asChild>
+              <Button variant="outline" size="sm" className="hidden sm:flex">
+                <LogOut />
+              </Button>
+            </PopoverTrigger>
+            <LogOutModal />
+          </Popover>
+
         </div>
         {isOpenImport && <ImportModal isOpen={isOpenImport} setIsOpen={setIsOpenImport} />}
+
+
       </div>
     </header>
   )

@@ -15,6 +15,7 @@ import { DataTable } from "@/components/Table/data-table"
 import { observer } from "mobx-react-lite"
 import { StoreContext } from "@/store/storeContext"
 import { AppSidebar } from "@/components/Sidebar/AppSidebar"
+import { useNavigate } from "react-router-dom"
 
 export enum ActionType {
   CREATE = "CREATE",
@@ -32,6 +33,7 @@ export const mockDefaultValues = {
 };
 
 export const Page = observer(() => {
+  const navigate = useNavigate();
   const store = useContext(StoreContext);
   const [isLoading, setIsLoading] = useState(true);
   const [isShowEditModal, setIsShowEditModal] = useState(false);
@@ -39,6 +41,15 @@ export const Page = observer(() => {
   useEffect(() => {
     store.fetchItems().finally(() => { setIsLoading(false) })
   }, []);
+
+
+  useEffect(() => {
+    if (store.showLoginPage) {
+      navigate('/login', { replace: true });
+    } else {
+      navigate('/main', { replace: true });
+    }
+  }, [store.showLoginPage, navigate]);
 
   if (isLoading) {
     return <div>Loading...</div>;
