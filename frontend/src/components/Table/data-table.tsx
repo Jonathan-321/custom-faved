@@ -113,7 +113,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
                 {title}
               </h4></div>}
               {url && <div className={styles.title}><a className={styles.btnLink} href={url} target="_blank" rel="noopener noreferrer">{url}</a> </div>}
-              {tags && <div className={styles.titleTask} >{tags.map((e) => <Badge variant="outline">{e}</Badge>)} <p className="text-muted-foreground text-sm">{updatedAt ?? createdAt}</p></div>}
+              {tags && <div className={styles.titleTask} >{tags.map((e) => <Badge className="bg-blue-500 text-white dark:bg-blue-600">{e}</Badge>)} <p className="text-muted-foreground text-sm">{updatedAt ?? createdAt}</p></div>}
             </div>
 
           </div>
