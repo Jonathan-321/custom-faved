@@ -49,26 +49,26 @@ class mainStore {
             },
         };
         fetch(API_ENDPOINTS.tags.deleteTag(id), options)
-          .then(response => {
-              if (!response.ok) {
-                  if (response.status === 403 || response.status === 401) {
-                      this.showLoginPage = true
-                  }
-                  throw new Error(`HTTP error! status: ${response.status}`);
-              }
-              return response.json();
-          })
-          .then(() => toast('Deleted successfully', {
-              description: "Sunday, December 03, 2023 at 9:00 AM",
-              action: {
-                  label: "Ok",
-                  onClick: () => console.log("Undo"),
-              },
-          }))
-          .catch(err => console.error(err))
-          .finally(() => {
-              this.fetchItems()
-          })
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 403 || response.status === 401) {
+                        this.showLoginPage = true
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(() => toast('Deleted successfully', {
+                description: "Sunday, December 03, 2023 at 9:00 AM",
+                action: {
+                    label: "Ok",
+                    onClick: () => console.log("Undo"),
+                },
+            }))
+            .catch(err => console.error(err))
+            .finally(() => {
+                this.fetchItems()
+            })
     }
     setItems = (val) => {
         this.items = val;
@@ -127,7 +127,9 @@ class mainStore {
             })
             .then(({ data }) => {
                 fetchItems();
-                this.userName = data.user.username;
+                if (data.user !== null) {
+                    this.userName = data.user.username;
+                }
             })
             .catch(err => {
                 toast(err.message)
@@ -211,9 +213,14 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then(({ data }) => {
-                setIsAuthSuccess(true);
-                this.userName = data.user.username;
+            .then((response) => {
+                if (response.message === "User created successfully.") {
+                    setIsAuthSuccess(true);
+                }
+                if (response.data.user !== null) {
+                    this.userName = response.data.user.username;
+                }
+
             })
             .catch(err => {
                 toast(err.message)

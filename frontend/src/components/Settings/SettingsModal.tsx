@@ -82,6 +82,7 @@ export const SettingsDialog = observer(({ open, setOpen }: Props) => {
     store.getUser(setIsAuthSuccess)
   }, [])
   console.log('store.selectedItemSettingsModal', store.selectedItemSettingsModal)
+  console.log('isAuthSuccess', isAuthSuccess)
   if (!open && isLoading) {
     return <div>{'Loading...'}</div>
   }
@@ -136,7 +137,6 @@ export const SettingsDialog = observer(({ open, setOpen }: Props) => {
             </header>
             <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 pt-0">
               {store.selectedItemSettingsModal === "Authentication settings" && !isAuthSuccess
-
                 ?
                 <CardsCreateAccount setIsAuthSuccess={setIsAuthSuccess} />
                 :
