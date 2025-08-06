@@ -47,7 +47,7 @@ function extractTagSegments(string $title): array
 	return $segments;
 }
 
-	function createTagsFromSegments(array $tag_segments): int
+function createTagsFromSegments(array $tag_segments): int
 {
 	$repository = ServiceContainer::get(Repository::class);
 	$tags = $repository->getTags();

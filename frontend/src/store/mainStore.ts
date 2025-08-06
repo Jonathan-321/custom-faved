@@ -86,7 +86,7 @@ class mainStore {
                 return response.json();
             })
             .then((data) => toast(data.message))
-            .catch(err => console.error(err))
+            .catch((err,data) => toast('Tag not deleted: ' + (err instanceof Error ? err.message : 'Unknown error')))
             .finally(() => {
                 this.fetchTags()
                 this.fetchItems()

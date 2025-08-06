@@ -5,6 +5,7 @@ namespace Controllers;
 use Framework\Exceptions\ValidationException;
 use Framework\Responses\ResponseInterface;
 use Framework\ServiceContainer;
+use http\Exception\RuntimeException;
 use Models\Repository;
 use function Framework\data;
 use function Utils\createTagsFromSegments;
@@ -24,6 +25,11 @@ class TagsUpdateTitleController
 		$tag_title = array_pop($tag_segments);
 
 		$parent_id = createTagsFromSegments($tag_segments);
+
+		if ($parent_id === $tag_id) {
+			throw new RuntimeException('Tag cannot be its own parent.');
+		}
+
 		$repository = ServiceContainer::get(Repository::class);
 		$repository->updateTagTitle(
 			$tag_id,
