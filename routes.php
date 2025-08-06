@@ -25,6 +25,7 @@ use Controllers\SetupViewController;
 use Controllers\TagDeleteController;
 use Controllers\TagEditController;
 use Controllers\TagsController;
+use Controllers\TagsDeleteController;
 use Controllers\TagUpdateController;
 use Controllers\UserCreateController;
 use Controllers\UserDeleteController;
@@ -91,6 +92,7 @@ return [
 	],
 	'/tags' => [
 		'GET' => TagsController::class,
+		'DELETE' => TagsDeleteController::class,
 	],
 	'/settings/user' => [
 		'GET' => UserGetController::class,
