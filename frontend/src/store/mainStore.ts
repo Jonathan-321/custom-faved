@@ -10,6 +10,7 @@ class mainStore {
     userName: string = "" as string
     idItem = undefined;
     showLoginPage = false;
+    showInitializeDatabasePage = false;
     error: string | null = null;
     isOpenSettingsModal: boolean = false;
     selectedItemSettingsModal: string = "Authentication settings";
@@ -99,6 +100,9 @@ class mainStore {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
                     }
+                    if (response.status === 430) {
+                        this.showInitializeDatabasePage = true
+                    }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
@@ -123,6 +127,9 @@ class mainStore {
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
+                    }
+                    if (response.status === 430) {
+                        this.showInitializeDatabasePage = true
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -153,6 +160,9 @@ class mainStore {
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
+                    }
+                    if (response.status === 430) {
+                        this.showInitializeDatabasePage = true
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -186,6 +196,9 @@ class mainStore {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
                     }
+                    if (response.status === 430) {
+                        this.showInitializeDatabasePage = true
+                    }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 return response.json();
@@ -211,6 +224,9 @@ class mainStore {
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
+                    }
+                    if (response.status === 430) {
+                        this.showInitializeDatabasePage = true
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -250,6 +266,9 @@ class mainStore {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
                     }
+                    if (response.status === 430) {
+                        this.showInitializeDatabasePage = true
+                    }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 return response.json();
@@ -283,6 +302,9 @@ class mainStore {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
                     }
+                    if (response.status === 430) {
+                        this.showInitializeDatabasePage = true
+                    }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 return response.json();
@@ -313,6 +335,9 @@ class mainStore {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
                     }
+                    if (response.status === 430) {
+                        this.showInitializeDatabasePage = true
+                    }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 return response.json();
@@ -336,6 +361,9 @@ class mainStore {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
                     }
+                    if (response.status === 430) {
+                        this.showInitializeDatabasePage = true
+                    }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 return response.json();
@@ -358,6 +386,9 @@ class mainStore {
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
+                    }
+                    if (response.status === 430) {
+                        this.showInitializeDatabasePage = true
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -388,6 +419,9 @@ class mainStore {
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
+                    }
+                    if (response.status === 430) {
+                        this.showInitializeDatabasePage = true
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }

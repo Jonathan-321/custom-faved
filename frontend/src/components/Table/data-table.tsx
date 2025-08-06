@@ -58,47 +58,11 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
   setIdItem: (val: any) => void,
   onDeleteHandler: (val: any) => void, onCreateItem: any): ColumnDef<z.infer<typeof schema>>[] => [
     {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-          className="translate-y-[2px]"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-          className="translate-y-[2px]"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    // {
-    //   accessorKey: "url",
-    //   header: "Url",
-    //   cell: ({ row }) => (
-    //     <div className={styles.titleWrapper}>
-    //       {/* {label && <Badge variant="outline">{label.label}</Badge>} truncate*/}
-    //       <span className={styles.title} >
-    //         {row.getValue("url")}
-    //       </span >
-    //     </div >
-    //   ),
-    // },
-    {
       accessorKey: "url",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Title" />
       ),
-      enableSorting: true,
+      enableSorting: false,
       enableHiding: true,
       cell: ({ row }) => {
         const url = row.original.url;
@@ -125,7 +89,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Description" />
       ),
-      enableSorting: true,
+      enableSorting: false,
       enableHiding: true,
       cell: ({ row }) => {
 
@@ -221,7 +185,7 @@ export function DataTable({
     <div className="w-full">
       <div className="flex items-center py-4 m-[10px]">
         <DataTableToolbar table={table} globalFilter={globalFilter} />
-        <DropdownMenu>
+        {/* <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
               Columns <ChevronDown />
@@ -246,12 +210,12 @@ export function DataTable({
                 )
               })}
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu> */}
       </div>
 
-      <div className="m-2 overflow-hidden rounded-md border">
+      <div className="m-2 overflow-hidden ">
         <Table >
-          <TableHeader>
+          {/* <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -268,7 +232,7 @@ export function DataTable({
                 })}
               </TableRow>
             ))}
-          </TableHeader>
+          </TableHeader> */}
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (

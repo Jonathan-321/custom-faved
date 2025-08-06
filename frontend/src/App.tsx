@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';
 import { StoreContext } from './store/storeContext';
 import { LoginPage } from './components/Login/LoginPage';
+import { Setup } from './components/Setup/Setup';
 
 
 
@@ -16,6 +17,7 @@ const App = observer(() => {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/setup" element={<Setup />} />
         <Route path="/main" element={<Page />} />
         <Route
           path="/"
