@@ -23,7 +23,7 @@ class mainStore {
         const renderTagSegment = (tag) => {
             let output = ''
             if (tag.parent !== '0') {
-                const parentTag = Object.values(tags).find(t => t.id === tag.parent);
+                const parentTag = Object.values(tags).find(t => t.id.toString() === tag.parent.toString());
                 if (parentTag) {
                     output += renderTagSegment(parentTag) + '/';
                 }
@@ -33,12 +33,13 @@ class mainStore {
         }
 
         for (const tagID in tags) {
-            tags[tagID] = {
-                ...tags[tagID],
-                id: tags[tagID].id.toString(),
-                parent: tags[tagID].parent.toString(),
-                fullPath: renderTagSegment(tags[tagID]),
-                pinned: !!tags[tagID].pinned
+            const tagId = tagID.toString()
+            tags[tagId] = {
+                ...tags[tagId],
+                id: tags[tagId].id.toString(),
+                parent: tags[tagId].parent.toString(),
+                fullPath: renderTagSegment(tags[tagId]),
+                pinned: !!tags[tagId].pinned
             };
         }
 

@@ -191,7 +191,7 @@ const [showTagCreate, setShowTagCreate] = React.useState(false)
                     }}
                   >
                     <span className={`w-3 h-3 rounded-full inline-block mr-1 ${colorMap[tag.color]}`}></span>
-                    { tag.fullPath}
+                    { tag.fullPath }
                     <Check
                       className={cn(
                         "ml-auto",
