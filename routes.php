@@ -70,12 +70,10 @@ return [
 	'/settings/username' => [
 		'POST' => SettingsUsernameUpdateController::class,
 		'PATCH' => UserUsernameUpdateController::class,
-		'OPTIONS' => ItemsGetController::class, // For CORS preflight requests, temporary solution
 	],
 	'/settings/password' => [
 		'POST' => SettingsPasswordUpdateController::class,
 		'PATCH' => UserPasswordUpdateController::class,
-		'OPTIONS' => ItemsGetController::class, // For CORS preflight requests, temporary solution
 	],
 	'/settings/create-user' => [
 		'POST' => SettingsUserCreateController::class,
@@ -90,7 +88,6 @@ return [
 		'POST' => ItemsCreateController::class,
 		'PATCH' => ItemsUpdateController::class,
 		'DELETE' => ItemsDeleteController::class,
-		'OPTIONS' => ItemsGetController::class, // For CORS preflight requests, temporary solution
 	],
 	'/tags' => [
 		'GET' => TagsController::class,
@@ -99,10 +96,8 @@ return [
 		'GET' => UserGetController::class,
 		'POST' => UserCreateController::class,
 		'DELETE' => UserDeleteController::class,
-		'OPTIONS' => ItemsGetController::class, // For CORS preflight requests, temporary solution
 	],
 	'/auth' => [
 		'POST' => AuthController::class,
-		'OPTIONS' => ItemsGetController::class, // For CORS preflight requests, temporary solution
 	],
 ];
