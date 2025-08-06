@@ -271,6 +271,12 @@ export function AppSidebar({ allTags, ...props }: React.ComponentProps<typeof Si
         </SidebarMenu>
         <NavDocuments items={data.documents} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
+        <SidebarMenuButton
+          asChild
+          className="data-[slot=sidebar-menu-button]:!p-1.5"
+        >
+          <PresetActions />
+        </SidebarMenuButton>
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
