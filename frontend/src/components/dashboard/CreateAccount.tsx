@@ -43,16 +43,8 @@ const formSchema = z.object({
 
 export const CardsCreateAccount: React.FC<{ setIsAuthSuccess: any }> = ({ setIsAuthSuccess }) => {
   const store = useContext(StoreContext);
-  const initialData = {
-    name: "",
-    password: '',
-    passwordConfirm: "",
-  }
-  const defaultValues = initialData;
-  // const { reset, register, handleSubmit, formState: { errors }, control } = useForm<z.infer<typeof formSchema>>({
-  //   defaultValues: defaultValues,
-  //   resolver: zodResolver(formSchema)
-  // });
+
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -61,13 +53,8 @@ export const CardsCreateAccount: React.FC<{ setIsAuthSuccess: any }> = ({ setIsA
       passwordConfirm: "",
     },
   })
-  // useEffect(() => {
-  //   reset(defaultValues)
-  // }, [])
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    // setIsUserWasCreate(true)
     store.onCreateUser(values, setIsAuthSuccess)
     console.log('values', values)
   }

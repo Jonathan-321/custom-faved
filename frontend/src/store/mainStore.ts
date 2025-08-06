@@ -46,7 +46,7 @@ class mainStore {
                 this.setItems(data);
             } catch (err) {
                 this.error = (err instanceof Error ? err.message : 'Failed to fetch items');
-                console.error('Error fetching items:', err);
+                toast(err.message)
             }
         };
         fetchItems();
@@ -65,7 +65,7 @@ class mainStore {
                 this.setTags(data);
             } catch (err) {
                 this.error = (err instanceof Error ? err.message : 'Failed to fetch tags');
-                console.error('Error fetching tags:', err);
+                toast(err.message)
             }
         };
         fetchTags();
@@ -87,21 +87,15 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then(() => toast('Deleted successfully', {
-                description: "Sunday, December 03, 2023 at 9:00 AM",
-                action: {
-                    label: "Ok",
-                    onClick: () => console.log("Undo"),
-                },
-            }))
-            .catch(err => console.error(err))
+            .then((response) => toast(response.message))
+            .catch(err => toast(err.message))
             .finally(() => {
                 this.fetchItems()
             })
     }
     onCreateItem = (val, isCreateCopy = false as boolean, onSave = false) => {
         const options = {
-            method: !isCreateCopy ? this.type === ActionType.EDIT ? 'PATCH' : 'POST' : 'POST',
+            method: onSave ? 'PATCH' : !isCreateCopy ? this.type === ActionType.EDIT ? 'PATCH' : 'POST' : 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -125,8 +119,8 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then(response => console.log(response))
-            .catch(err => console.error(err))
+            .then(response => toast(response.message))
+            .catch(err => toast(err.message))
             .finally(() => {
                 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                 !onSave && this.fetchItems()
@@ -155,7 +149,10 @@ class mainStore {
                 setIsAuthSuccess(true);
                 this.userName = data.user.username;
             })
-            .catch(err => setIsAuthSuccess(false))
+            .catch(err => {
+                toast(err.message)
+                setIsAuthSuccess(false)
+            })
 
     }
     onCreateUser = (val: any, setIsUserWasCreate: (val: boolean) => void) => {
@@ -181,16 +178,14 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then(() => {
+            .then((response) => {
                 setIsUserWasCreate(true);
-                toast('User created successfully.')
+                toast(response.message)
             })
             .catch((err) => {
-                toast("error")
+                toast(err.message)
             })
-            .finally(() => {
-                // setIsUserWasCreate(true)
-            })
+
     }
 
     createUserName = (val: any) => {
@@ -215,13 +210,12 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then(() => {
-                toast('Username updated successfully.');
+            .then((response) => {
+                toast(response.message)
                 this.userName = val.username;
             })
-            .catch(err => toast(JSON.stringify(err)))
-            .finally(() => {
-                // setIsUserWasCreate(true)
+            .catch((err) => {
+                toast(err.message)
             })
     }
     createPassword = (val: any) => {
@@ -246,10 +240,9 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then(() => { toast('Password updated successfully.') })
-            .catch(err => toast(JSON.stringify(err)))
-            .finally(() => {
-                // setIsUserWasCreate(true)
+            .then((response) => { toast(response.message) })
+            .catch((err) => {
+                toast(err.message)
             })
     }
     deleteUser = () => {
@@ -270,8 +263,10 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then(() => { toast('Authentication disabled successfully.') })
-            .catch(err => toast(JSON.stringify(err)))
+            .then((response) => { toast(response.message) })
+            .catch((err) => {
+                toast(err.message)
+            })
     }
     logOut = () => {
         const options = {
@@ -291,14 +286,15 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then(() => {
-                toast('Authentication disabled successfully.');
+            .then((response) => {
+                toast(response.message)
                 this.showLoginPage = true;
             })
-            .catch(err => toast(JSON.stringify(err)))
+            .catch((err) => {
+                toast(err.message)
+            })
     }
     login = (values) => {
-        debugger;
         const options = {
             method: 'POST',
             headers: {
@@ -320,8 +316,13 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then(() => { toast('Authentication disabled successfully.'); this.showLoginPage = false })
-            .catch(err => toast(JSON.stringify(err)))
+            .then((response) => {
+                toast(response.message)
+                this.showLoginPage = false
+            })
+            .catch((err) => {
+                toast(err.message)
+            })
     }
 
 }
