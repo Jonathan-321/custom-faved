@@ -11,7 +11,7 @@ import { SettingsDialog } from "@/components/settings-dialog"
 export function PresetActions() {
   const [open, setIsOpen] = React.useState(false)
   return (
-    <>
+    <div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="secondary" size="icon">
@@ -20,9 +20,9 @@ export function PresetActions() {
           </Button>
         </DropdownMenuTrigger>
       </DropdownMenu>
-      <div className="flex h-svh items-center justify-center">
+      <div>
         {open && <SettingsDialog open={open} setOpen={setIsOpen} />}
       </div>
-    </>
+    </div>
   )
 }

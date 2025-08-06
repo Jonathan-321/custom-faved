@@ -43,7 +43,7 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
 import { PresetActions } from "@/components/dashboard/preset-actions"
-import {StoreContext} from "@/store/storeContext.ts";
+import { StoreContext } from "@/store/storeContext.ts";
 
 const data = {
   user: {
@@ -172,7 +172,7 @@ export function AppSidebar({ allTags, ...props }: React.ComponentProps<typeof Si
   const { isMobile } = useSidebar()
 
 
-  console.log('all_Tags_2', allTags,  userName)
+  console.log('all_Tags_2', allTags, userName)
 
   function renderTag(parentID: integer, level = 0): JSX.Element[] {
     let output = []
@@ -260,17 +260,16 @@ export function AppSidebar({ allTags, ...props }: React.ComponentProps<typeof Si
                 <span className="text-base font-semibold">Faved.</span>
               </a>
             </SidebarMenuButton>
-
+            <PresetActions />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent className={'no-scrollbar'}>
         <NavMain items={data.navMain} />
         <SidebarMenu>
+
           {renderTag(0)}
         </SidebarMenu>
-        <NavDocuments items={data.documents} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
