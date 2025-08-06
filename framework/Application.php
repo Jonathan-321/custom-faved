@@ -30,7 +30,7 @@ class Application
 			$router = new Router($this->routes);
 			$controller_class = $router->match_controller($route, $method);
 
-			$input = $this->getInput();
+			$input = $this->getInput($expects_json);
 
 			$controller = new $controller_class();
 			$response = $controller($input);
@@ -41,7 +41,7 @@ class Application
 					'success' => false,
 					'message' => $e->getMessage(),
 					'error' => $e->getMessage(),
-				], $e->getCode());
+				], is_int($e->getCode()) ? $e->getCode() : 500);
 			} elseif(isset($this->error_redirects[get_class($e)])) {
 				FlashMessages::set('error', $e->getMessage());
 				$redirect_url = $this->error_redirects[get_class($e)];
@@ -56,10 +56,9 @@ class Application
 		$response->yield();
 	}
 
-	public function getInput() : array
+	public function getInput($expects_json) : array
 	{
-		$content_type = $_SERVER['CONTENT_TYPE'] ?? '';
-		if (! str_contains($content_type, 'application/json') ) {
+		if (! $expects_json ) {
 			return array_merge($_POST, $_GET, $_FILES);
 		}
 
@@ -74,7 +73,7 @@ class Application
 			// @TODO: Make proper exception
 			throw new ValidationException('Invalid JSON input',400);
 		}
-		return $input;
+		return array_merge($input, $_GET);
 	}
 }
 

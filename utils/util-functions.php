@@ -2,6 +2,10 @@
 
 namespace Utils;
 
+use Framework\ServiceContainer;
+use Models\Repository;
+use Models\TagCreator;
+
 function groupTagsByParent($tags)
 {
 	$tags_by_parent = [];
@@ -31,6 +35,31 @@ function getTagColors()
 		'white ' => 'light',
 		'black' => 'dark',
 	];
+}
+
+	function createTagsFromSegments(array $tag_segments): int
+{
+	$repository = ServiceContainer::get(Repository::class);
+	$tags = $repository->getTags();
+	$tag_creator = ServiceContainer::get(TagCreator::class);
+
+	$parent_tag_id = 0;
+	$check_existing_parent = true;
+	foreach ($tag_segments as $tag_title) {
+		$existing_parent = array_find($tags, function ($tag) use ($tag_title, $parent_tag_id) {
+			return $tag['title'] === $tag_title && $tag['parent'] === $parent_tag_id;
+		});
+
+		if ($check_existing_parent && $existing_parent) {
+			$parent_tag_id = $existing_parent['id'];
+			continue;
+		}
+
+		$parent_tag_id = $tag_creator->createTag($tag_title, '', $parent_tag_id);
+		$check_existing_parent = false;
+	}
+
+	return (int)$parent_tag_id;
 }
 
 function findURLMatches($checked_url, $items, &$host_matches)

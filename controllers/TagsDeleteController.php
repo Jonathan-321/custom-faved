@@ -18,7 +18,7 @@ class TagsDeleteController implements ControllerInterface
 {
 	public function __invoke(array $input): ResponseInterface
 	{
-		$tag_id = $_GET['tag-id'] ?? null;
+		$tag_id = $input['tag-id'] ?? null;
 
 		if (empty($tag_id)) {
 			throw new ValidationException('Tag ID is required');

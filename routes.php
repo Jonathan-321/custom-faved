@@ -25,7 +25,11 @@ use Controllers\SetupViewController;
 use Controllers\TagDeleteController;
 use Controllers\TagEditController;
 use Controllers\TagsController;
+use Controllers\TagsCreateController;
 use Controllers\TagsDeleteController;
+use Controllers\TagsUpdateColorController;
+use Controllers\TagsUpdatePinnedController;
+use Controllers\TagsUpdateTitleController;
 use Controllers\TagUpdateController;
 use Controllers\UserCreateController;
 use Controllers\UserDeleteController;
@@ -92,7 +96,17 @@ return [
 	],
 	'/tags' => [
 		'GET' => TagsController::class,
+		'POST' => TagsCreateController::class,
 		'DELETE' => TagsDeleteController::class,
+	],
+	'/tags/update-pinned' => [
+		'PATCH' => TagsUpdatePinnedController::class,
+	],
+	'/tags/update-title' => [
+		'PATCH' => TagsUpdateTitleController::class,
+	],
+	'/tags/update-color' => [
+		'PATCH' => TagsUpdateColorController::class,
 	],
 	'/settings/user' => [
 		'GET' => UserGetController::class,
