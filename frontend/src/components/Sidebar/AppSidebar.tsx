@@ -12,6 +12,7 @@ import {
   IconSearch,
   IconSettings, IconTrash,
   IconChevronRight,
+  IconPaletteOff,
   type Icon, IconDotsVertical, IconEdit,
 } from "@tabler/icons-react"
 import styles from "./appSidebar.module.scss"
@@ -37,7 +38,12 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem, DropdownMenuSeparator,
+  DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
 import { PresetActions } from "@/components/dashboard/presetActions"
@@ -160,6 +166,16 @@ const data = {
   ],
 }
 
+const colorMap = {
+  'gray':  'bg-gray-600',
+    'green':  'bg-green-600',
+    'red':  'bg-red-600',
+    'yellow':  'bg-yellow-600',
+    'aqua':  'bg-blue-600',
+    'white ':  'bg-neutral-100',
+    'black':  'bg-neutral-950',
+}
+
 export function AppSidebar({ allTags, ...props }: React.ComponentProps<typeof Sidebar>) {
 
   const store = React.useContext(StoreContext);
@@ -172,6 +188,8 @@ export function AppSidebar({ allTags, ...props }: React.ComponentProps<typeof Si
 
   console.log('all_Tags_2', allTags, userName)
 
+
+
   function renderTag(parentID: integer, level = 0): JSX.Element[] {
     let output = []
     const tags = Object.values(allTags).filter((tag: any) => tag.parent === parentID);
@@ -179,6 +197,11 @@ export function AppSidebar({ allTags, ...props }: React.ComponentProps<typeof Si
 
     level++
     for (const tag of tags) {
+      console.log('tag', tag.color)
+      const deleteTag = () => {
+        store.onDeleteTag(tag.id)
+      }
+
       console.log(tag)
       const innerItems = renderTag(tag.id, level)
       const actionButtons = (
@@ -200,9 +223,25 @@ export function AppSidebar({ allTags, ...props }: React.ComponentProps<typeof Si
               <IconEdit />
               <span>Edit</span>
             </DropdownMenuItem>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger> Color</DropdownMenuSubTrigger>
+              <DropdownMenuPortal>
+                <DropdownMenuSubContent>
+                  { Object.keys(colorMap).map((color) => (
+                    <DropdownMenuItem
+                      key={color}
+                      className={`text-${colorMap[color]}-foreground hover:bg-${colorMap[color]}-foreground/10`}
+                      onClick={() => store.onChangeTagColor(tag.id, color)}
+                    >
+                      <span className={`w-3 h-3 rounded-full inline-block mr-1 ${colorMap[color]}`}></span> {color.charAt(0).toUpperCase() + color.slice(1)}
+                      <span className="ml-auto">{tag.color === color ? "✓" : ""}</span>
+                    </DropdownMenuItem>
+                  )) }
+                </DropdownMenuSubContent>
+              </DropdownMenuPortal>
+            </DropdownMenuSub>
             <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive">
-              <IconTrash />
+            <DropdownMenuItem variant="destructive" onClick={deleteTag}>
               <span>Delete</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -215,7 +254,8 @@ export function AppSidebar({ allTags, ...props }: React.ComponentProps<typeof Si
             <CollapsibleTrigger asChild>
               <IconChevronRight className={`transition-transform hover:cursor-pointer`} />
             </CollapsibleTrigger>
-            <a href='#' >
+            <a href='#'>
+              <span className={`w-3 h-3 rounded-full inline-block mr-2 ${colorMap[tag.color]}`}></span>
               <span>{tag.title}</span>
             </a>
             {actionButtons}
@@ -232,6 +272,7 @@ export function AppSidebar({ allTags, ...props }: React.ComponentProps<typeof Si
         (<SidebarMenuItem>
           <SidebarMenuButton>
             <a href='#' className='ml-6'>
+              <span className={`w-3 h-3 rounded-full inline-block mr-2 ${colorMap[tag.color]}`}></span>
               <span>{tag.title}</span>
             </a>
             {actionButtons}
@@ -265,7 +306,6 @@ export function AppSidebar({ allTags, ...props }: React.ComponentProps<typeof Si
       <SidebarContent className={'no-scrollbar'}>
         <NavMain items={data.navMain} />
         <SidebarMenu>
-
           {renderTag(0)}
         </SidebarMenu>
       </SidebarContent>

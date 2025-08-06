@@ -15,6 +15,7 @@ export const API_ENDPOINTS = {
     },
     tags: {
         list: `${API_BASE}?route=%2Ftags`,
+        deleteTag: (id: any) => `${API_BASE}?route=%2Ftags&tag-id=${id}`,
     },
     auth: {
         login: `${API_BASE}?route=%2Fauth`,

@@ -60,8 +60,8 @@ $middleware_classes = [
 
 $url_builder = ServiceContainer::get(UrlBuilder::class);
 $error_redirects = [
-	Framework\Exceptions\DatabaseNotFound::class => '/setup',
-	Framework\Exceptions\UnauthorizedException::class => '/login',
+	Framework\Exceptions\DatabaseNotFound::class => $url_builder->build('/setup'),
+	Framework\Exceptions\UnauthorizedException::class => $url_builder->build('/login'),
 	Framework\Exceptions\ValidationException::class => ($_SERVER['HTTP_REFERER'] ?? $url_builder->build('/')),
 	Framework\Exceptions\DataWriteException::class => ($_SERVER['HTTP_REFERER'] ?? $url_builder->build('/')),
 ];
