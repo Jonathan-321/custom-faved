@@ -73,6 +73,16 @@ const [showTagCreate, setShowTagCreate] = React.useState(false)
     }));
   }
 
+  const colorMap = {
+    'gray':  'bg-gray-600',
+    'green':  'bg-green-600',
+    'red':  'bg-red-600',
+    'yellow':  'bg-yellow-600',
+    'aqua':  'bg-blue-600',
+    'white ':  'bg-neutral-100',
+    'black':  'bg-neutral-950',
+  }
+
   return (
     <div className={ [className, 'justify-between'].join(' ') }>
       <Dialog open={showTagCreate}>
@@ -195,6 +205,7 @@ const [showTagCreate, setShowTagCreate] = React.useState(false)
                       )
                     }}
                   >
+                    <span className={`w-3 h-3 rounded-full inline-block mr-1 ${colorMap[tag.color]}`}></span>
                     { tag.fullPath}
                     <Check
                       className={cn(
