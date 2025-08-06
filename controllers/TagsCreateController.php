@@ -6,6 +6,7 @@ use Framework\Exceptions\ValidationException;
 use Framework\Responses\ResponseInterface;
 use function Framework\data;
 use function Utils\createTagsFromSegments;
+use function Utils\extractTagSegments;
 
 class TagsCreateController
 {
@@ -16,9 +17,7 @@ class TagsCreateController
 		}
 
 
-		$tag_segments = explode('/', $input['title']);
-		$tag_segments = array_map('trim', $tag_segments);
-
+		$tag_segments = extractTagSegments($input['title']);
 		$tag_id = createTagsFromSegments($tag_segments);
 
 		return data([

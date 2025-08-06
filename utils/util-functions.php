@@ -37,6 +37,16 @@ function getTagColors()
 	];
 }
 
+function extractTagSegments(string $title): array
+{
+	$segments = explode('/', $title);
+	$segments = array_map('trim', $segments);
+	$segments = array_filter($segments, function ($segment) {
+		return '' !== $segment;
+	});
+	return $segments;
+}
+
 	function createTagsFromSegments(array $tag_segments): int
 {
 	$repository = ServiceContainer::get(Repository::class);

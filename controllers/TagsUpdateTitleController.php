@@ -8,6 +8,7 @@ use Framework\ServiceContainer;
 use Models\Repository;
 use function Framework\data;
 use function Utils\createTagsFromSegments;
+use function Utils\extractTagSegments;
 
 class TagsUpdateTitleController
 {
@@ -19,8 +20,7 @@ class TagsUpdateTitleController
 
 		$tag_id = $input['tag-id'];
 
-		$tag_segments = explode('/', $input['title']);
-		$tag_segments = array_map('trim', $tag_segments);
+		$tag_segments = extractTagSegments($input['title']);
 		$tag_title = array_pop($tag_segments);
 
 		$parent_id = createTagsFromSegments($tag_segments);

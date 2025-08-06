@@ -37,7 +37,8 @@ class mainStore {
                 ...tags[tagID],
                 id: tags[tagID].id.toString(),
                 parent: tags[tagID].parent.toString(),
-                fullPath: renderTagSegment(tags[tagID])
+                fullPath: renderTagSegment(tags[tagID]),
+                pinned: !!tags[tagID].pinned
             };
         }
 

@@ -33,9 +33,14 @@ const colorMap = {
 
 export function SidebarTag({tag, innerItems = [], level}) {
   const [isRenaming, setIsRenaming] = React.useState(false);
-  const [isSubmitted, setIsSubmitted] = React.useState(false);
+
   const [newTagTitle, setNewTagTitle] = React.useState(tag.fullPath);
   const inputRef = React.useRef(null);
+
+  React.useEffect(() => {
+    setNewTagTitle(tag.fullPath);
+  }, [tag.fullPath]);
+
 
   const store = React.useContext(StoreContext);
   const { isMobile } = useSidebar()
@@ -45,23 +50,18 @@ export function SidebarTag({tag, innerItems = [], level}) {
   }
   const enableRenaming = () => {
     setIsRenaming(true);
-    setIsSubmitted(false);
     setTimeout(() => {
       inputRef.current.focus();
     }, 50)
   }
 
   const submit = () => {
-    setIsSubmitted(true);
     store.onChangeTagTitle(tag.id, newTagTitle as string);
     // Add your submit logic here, e.g., store.onUpdateTagTitle(tag.id, newTagTitle)
     setIsRenaming(false);
   }
 
   const revert = () => {
-    if (isSubmitted) {
-      return
-    }
     setNewTagTitle(tag.fullPath);
     setIsRenaming(false);
   }
