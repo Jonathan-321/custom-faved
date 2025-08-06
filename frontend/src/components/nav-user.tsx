@@ -30,11 +30,14 @@ import { User } from "lucide-react"
 import { observer } from "mobx-react-lite"
 import { StoreContext } from "@/store/storeContext"
 import { useContext } from "react"
+import { API_ENDPOINTS } from "@/store/api"
+import { toast } from "sonner"
+import { useNavigate } from "react-router-dom"
 
 export const NavUser = observer(() => {
   const store = useContext(StoreContext);
   const { isMobile } = useSidebar()
-
+  const navigate = useNavigate();
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -73,7 +76,35 @@ export const NavUser = observer(() => {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={store.logOut}>
+            <DropdownMenuItem onClick={() => {
+              // store.logOut()
+              const options = {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              };
+
+              fetch(API_ENDPOINTS.auth.logout, options)
+                .then(response => {
+                  if (!response.ok) {
+                    if (response.status === 403 || response.status === 401) {
+                      store.setShowLoginPage(true)
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                  }
+                  return response.json();
+                })
+                .then((response) => {
+                  toast(response.message)
+                  store.setShowLoginPage(true)
+                  navigate('/login', { replace: true })
+                })
+                .catch((err) => {
+                  toast(err.message)
+                })
+
+            }}>
               <IconLogout />
               Log out
             </DropdownMenuItem>

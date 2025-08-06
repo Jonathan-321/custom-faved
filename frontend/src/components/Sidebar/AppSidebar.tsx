@@ -48,6 +48,7 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import { PresetActions } from "@/components/dashboard/presetActions"
 import { StoreContext } from "@/store/storeContext.ts";
+import { observer } from "mobx-react-lite"
 
 const data = {
   user: {
@@ -176,13 +177,11 @@ const colorMap = {
   'black': 'bg-neutral-950',
 }
 
-export function AppSidebar({ allTags, ...props }: React.ComponentProps<typeof Sidebar>) {
+export const AppSidebar = observer(({ allTags, ...props }: React.ComponentProps<typeof Sidebar>) => {
 
   const store = React.useContext(StoreContext);
   const userName = store.userName;
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const { isMobile } = useSidebar()
 
 
@@ -314,4 +313,4 @@ export function AppSidebar({ allTags, ...props }: React.ComponentProps<typeof Si
       </SidebarFooter>
     </Sidebar>
   )
-}
+})

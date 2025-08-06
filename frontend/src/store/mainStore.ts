@@ -21,6 +21,9 @@ class mainStore {
     setTags = (val) => {
         this.tags = val;
     };
+    setShowLoginPage = (val) => {
+        this.showLoginPage = val;
+    };
     fetchTags = async () => {
         const fetchTags = async () => {
             try {
@@ -253,6 +256,7 @@ class mainStore {
             })
             .then((response) => {
                 setIsUserWasCreate(true);
+                this.userName = val.username;
                 toast(response.message)
             })
             .catch((err) => {
