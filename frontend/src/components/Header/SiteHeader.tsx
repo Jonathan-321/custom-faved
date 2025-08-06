@@ -2,11 +2,8 @@ import { ActionType } from "@/components/dashboard/page"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { Import, LogOut } from "lucide-react"
-import { useContext, useState } from "react"
-import { ImportModal } from "../Import/ImportModal"
-// import { LogOutModal } from "../Logout/LogOut"
-import { Popover, PopoverTrigger } from "../ui/popover"
+import { Import } from "lucide-react"
+import { useContext } from "react"
 import { StoreContext } from "@/store/storeContext"
 
 export const SiteHeader: React.FC<{ setType: (val: ActionType) => void; setIsShowEditModal: (val: boolean) => void }> = ({ setType, setIsShowEditModal }) => {
@@ -31,14 +28,14 @@ export const SiteHeader: React.FC<{ setType: (val: ActionType) => void; setIsSho
           <Import />
         </Button>
         <div className="ml-auto flex items-center gap-2">
-          {store.userName && <Popover>
+          {/* {store.userName && <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" size="sm" className="hidden sm:flex">
                 <LogOut />
               </Button>
             </PopoverTrigger>
-            {/* <LogOutModal /> */}
-          </Popover>}
+            <LogOutModal />
+          </Popover>} */}
 
 
         </div>
