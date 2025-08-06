@@ -33,7 +33,8 @@ const colorMap = {
 
 export function SidebarTag({tag, innerItems = [], level}) {
   const [isRenaming, setIsRenaming] = React.useState(false);
-  const [newTagTitle, setNewTagTitle] = React.useState(tag.title);
+  const [isSubmitted, setIsSubmitted] = React.useState(false);
+  const [newTagTitle, setNewTagTitle] = React.useState(tag.fullPath);
   const inputRef = React.useRef(null);
 
   const store = React.useContext(StoreContext);
@@ -44,20 +45,28 @@ export function SidebarTag({tag, innerItems = [], level}) {
   }
   const enableRenaming = () => {
     setIsRenaming(true);
+    setIsSubmitted(false);
     setTimeout(() => {
       inputRef.current.focus();
     }, 50)
   }
 
-  const revert = () => {
-    setNewTagTitle(tag.title);
-    setIsRenaming(false);
-  }
-
   const submit = () => {
+    setIsSubmitted(true);
+    store.onChangeTagTitle(tag.id, newTagTitle as string);
     // Add your submit logic here, e.g., store.onUpdateTagTitle(tag.id, newTagTitle)
     setIsRenaming(false);
   }
+
+  const revert = () => {
+    if (isSubmitted) {
+      return
+    }
+    setNewTagTitle(tag.fullPath);
+    setIsRenaming(false);
+  }
+
+
 
   const tagContent = (className = '') => {
     return (<><a href='#' className={`${className} flex items-center gap-2`}>
@@ -67,7 +76,14 @@ export function SidebarTag({tag, innerItems = [], level}) {
           className={ ['border-none rounded-sm w-[85%]', (isRenaming ? '' : 'hidden')].join(' ')}
           value={newTagTitle as string}
           onChange={(e) => setNewTagTitle(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Escape') { revert(); } else if (e.key === 'Enter') { submit(); } }}
+          onKeyDown={(e) => {
+              if (e.key === 'Escape') {
+                revert();
+              } else if (e.key === 'Enter') {
+                submit();
+              }
+            }
+          }
           onBlur={revert}
         />
         {!isRenaming && <span>{tag.title}</span>}
@@ -93,12 +109,9 @@ export function SidebarTag({tag, innerItems = [], level}) {
         side={isMobile ? "bottom" : "right"}
         align={isMobile ? "end" : "start"}
       >
-        {level === 1 && (tag.pinned ? (<DropdownMenuItem onClick={() => store.onTagUnpin(tag.id)}>
-            <span>Unpin tag</span>
-          </DropdownMenuItem>)
-          : (<DropdownMenuItem onClick={() => store.onTagPin(tag.id)}>
-            <span>Pin tag</span>
-          </DropdownMenuItem>))}
+        {level === 1 && (<DropdownMenuItem onClick={() => store.onChangeTagPinned(tag.id, !tag.pinned)}>
+            <span>{tag.pinned ? 'Unpin' : 'Pin' } tag</span>
+          </DropdownMenuItem>)}
         <DropdownMenuItem onClick={enableRenaming}>
           <span>Rename</span>
         </DropdownMenuItem>

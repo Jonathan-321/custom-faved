@@ -176,19 +176,21 @@ export const AppSidebar = observer(({ allTags, ...props }: React.ComponentProps<
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  console.log('all_Tags_2', allTags, userName)
-
-  function renderTag(parentID: integer, level = 0): JSX.Element[] {
+  function renderTag(parentID: string, level = 0): JSX.Element[] {
     let output = []
     const tags = Object.values(allTags).filter((tag: any) => tag.parent === parentID);
-    tags.sort((t) => t.pinned ? -1 : 1) // Pinned tags first
+    tags.sort((a, b) => {
+      if (a.pinned && !b.pinned) return -1;
+      if (!a.pinned && b.pinned) return 1;
+      return a.title.localeCompare(b.title);
+    }) // Pinned tags first
     // console.log('tagList', Object.values(allTags), allTags, parentID, tags);
 
     level++
     for (const tag of tags) {
       // console.log('tag', tag.color)
       const innerItems = renderTag(tag.id, level)
-      const code = (<SidebarTag tag={tag} innerItems={innerItems} level={level} />)
+      const code = (<SidebarTag key={tag.id} tag={tag} innerItems={innerItems} level={level} />)
       output.push(code)
     }
 
@@ -216,7 +218,7 @@ export const AppSidebar = observer(({ allTags, ...props }: React.ComponentProps<
       <SidebarContent className={'no-scrollbar'}>
         <NavMain items={data.navMain} />
         <SidebarMenu>
-          {renderTag(0)}
+          {renderTag('0')}
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter>{store.userName && <NavUser />}

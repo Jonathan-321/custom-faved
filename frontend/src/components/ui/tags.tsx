@@ -47,24 +47,9 @@ const [showTagCreate, setShowTagCreate] = React.useState(false)
 
   const [query, setQuery] = React.useState("")
 
-  const renderTagSegment = (tag) => {
-    let output = ''
-    if (tag.parent !== '0') {
-      const parentTag = tags.find(t => t.id === tag.parent);
-      if (parentTag) {
-        output += renderTagSegment(parentTag) + ' / ';
-      }
-    }
-    output += tag.title;
-    return output;
-  }
 
-  const [tagsList, setTagList] = React.useState(tags.map(tag => {
-    tag.id = tag.id.toString()
-    tag.parent = tag.parent.toString()
-    tag.fullPath = renderTagSegment(tag)
-    return tag
-  }));
+
+  const [tagsList, setTagList] = React.useState(tags);
 
   const sort = () => {
 

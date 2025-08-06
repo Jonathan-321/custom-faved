@@ -65,7 +65,7 @@ class Application
 		$raw_data = file_get_contents("php://input");
 
 		if ('' === $raw_data) {
-			return [];
+			return $_GET;
 		}
 		$input = json_decode($raw_data, true);
 

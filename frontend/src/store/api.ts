@@ -15,7 +15,11 @@ export const API_ENDPOINTS = {
     },
     tags: {
         list: `${API_BASE}?route=%2Ftags`,
-        deleteTag: (id: any) => `${API_BASE}?route=%2Ftags&tag-id=${id}`,
+        create: `${API_BASE}?route=/tags`,
+        deleteTag: (id: any) => `${API_BASE}?route=/tags&tag-id=${id}`,
+        updateTitle: (id: any) => `${API_BASE}?route=/tags/update-title&tag-id=${id}`,
+        updateColor: (id: any) => `${API_BASE}?route=/tags/update-color&tag-id=${id}`,
+        updatePinned: (id: any) => `${API_BASE}?route=/tags/update-pinned&tag-id=${id}`,
     },
     auth: {
         login: `${API_BASE}?route=%2Fauth`,

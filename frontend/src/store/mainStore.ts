@@ -1,5 +1,5 @@
 import { ActionType } from '@/components/dashboard/page';
-import { makeAutoObservable } from 'mobx';
+import {makeAutoObservable, toJS} from 'mobx';
 import { toast } from 'sonner';
 import { API_ENDPOINTS } from './api';
 
@@ -19,8 +19,30 @@ class mainStore {
         makeAutoObservable(this); // Makes state observable and actions transactional
     }
 
-    setTags = (val) => {
-        this.tags = val;
+    setTags = (tags) => {
+        const renderTagSegment = (tag) => {
+            let output = ''
+            if (tag.parent !== '0') {
+                const parentTag = Object.values(tags).find(t => t.id === tag.parent);
+                if (parentTag) {
+                    output += renderTagSegment(parentTag) + '/';
+                }
+            }
+            output += tag.title;
+            return output;
+        }
+
+        for (const tagID in tags) {
+            tags[tagID] = {
+                ...tags[tagID],
+                id: tags[tagID].id.toString(),
+                parent: tags[tagID].parent.toString(),
+                fullPath: renderTagSegment(tags[tagID])
+            };
+        }
+
+        console.log('tags', tags)
+        this.tags = tags;
     };
     setShowLoginPage = (val) => {
         this.showLoginPage = val;
@@ -43,7 +65,7 @@ class mainStore {
         };
         fetchTags();
     }
-    onDeleteTag = async (id: number) => {
+    onDeleteTag = async (tagID: number) => {
         confirm('Are you sure you want to delete this tag?');
 
         const options = {
@@ -52,7 +74,7 @@ class mainStore {
                 'Content-Type': 'application/json',
             },
         };
-        fetch(API_ENDPOINTS.tags.deleteTag(id), options)
+        fetch(API_ENDPOINTS.tags.deleteTag(tagID), options)
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {
@@ -62,27 +84,96 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then(() => toast('Deleted successfully', {
-                description: "Sunday, December 03, 2023 at 9:00 AM",
-                action: {
-                    label: "Ok",
-                    onClick: () => console.log("Undo"),
-                },
-            }))
+            .then((data) => toast(data.message))
             .catch(err => console.error(err))
             .finally(() => {
+                this.fetchTags()
                 this.fetchItems()
             })
     }
+    onChangeTagTitle = async (tagID: any, title: string) => {
+        const options = {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                title
+            })
+        };
+        fetch(API_ENDPOINTS.tags.updateTitle(tagID), options)
+          .then(response => {
+              if (!response.ok) {
+                  if (response.status === 403 || response.status === 401) {
+                      this.showLoginPage = true
+                  }
+                  throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              return response.json();
+          })
+          .then((data) => toast(data.message))
+          .catch(err => console.error(err))
+          .finally(() => {
+              this.fetchTags()
+          })
+
+
+    }
     onChangeTagColor = async (tagID: any, color: string) => {
-        alert('Changing color to ' + color)
+        const options = {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                color
+            })
+        };
+        fetch(API_ENDPOINTS.tags.updateColor(tagID), options)
+          .then(response => {
+              if (!response.ok) {
+                  if (response.status === 403 || response.status === 401) {
+                      this.showLoginPage = true
+                  }
+                  throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              return response.json();
+          })
+          .then((data) => toast(data.message))
+          .catch(err => console.error(err))
+          .finally(() => {
+              const tag = { ...this.tags[tagID], color }
+              this.tags = {...this.tags, [tagID]: tag };
+          })
     }
-    onTagPin = async (tagID: any) => {
-        alert('Pinning tag')
+    onChangeTagPinned = async (tagID: any, pinned: boolean) => {
+        const options = {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                pinned
+            })
+        };
+        fetch(API_ENDPOINTS.tags.updatePinned(tagID), options)
+          .then(response => {
+              if (!response.ok) {
+                  if (response.status === 403 || response.status === 401) {
+                      this.showLoginPage = true
+                  }
+                  throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              return response.json();
+          })
+          .then((data) => toast(data.message))
+          .catch(err => console.error(err))
+          .finally(() => {
+              const tag = { ...this.tags[tagID], pinned }
+              this.tags = {...this.tags, [tagID]: tag };
+          })
     }
-    onTagUnpin = async (tagID: any) => {
-        alert('Unpinning tag')
-    }
+
     setItems = (val) => {
         this.items = val;
     };
