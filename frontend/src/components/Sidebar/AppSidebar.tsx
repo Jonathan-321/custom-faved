@@ -16,9 +16,7 @@ import {
 } from "@tabler/icons-react"
 import styles from "./appSidebar.module.scss"
 
-import { NavDocuments } from "@/components/nav-documents"
 import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
 import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
@@ -29,7 +27,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
-  SidebarMenuSubItem, useSidebar,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import {
   Collapsible,
@@ -42,7 +40,7 @@ import {
   DropdownMenuItem, DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
-import { PresetActions } from "@/components/dashboard/preset-actions"
+import { PresetActions } from "@/components/dashboard/presetActions"
 import { StoreContext } from "@/store/storeContext.ts";
 
 const data = {

@@ -46,6 +46,8 @@ import { CardsEditAccountPassword } from "@/components/dashboard/CardsEditAccoun
 import { CardsEditAccountDisableAuth } from "@/components/dashboard/CardsEditAccountDisableAuth"
 import { CardsCreateAccount } from "@/components/dashboard/CreateAccount"
 import { StoreContext } from "@/store/storeContext"
+import { ImportModal } from "../Import/ImportModal"
+import { observer } from "mobx-react-lite"
 
 const data = {
   nav: [
@@ -72,15 +74,14 @@ const components = [
   { name: "Component2", component: <CardsEditAccountPassword /> },
   { name: "Component3", component: <CardsEditAccountDisableAuth /> },
 ];
-export function SettingsDialog({ open, setOpen }: Props) {
+export const SettingsDialog = observer(({ open, setOpen }: Props) => {
   const store = React.useContext(StoreContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const [isAuthSuccess, setIsAuthSuccess] = React.useState(false);
-  const [selectedItem, setSelectedItem] = React.useState("Authentication settings")
   React.useEffect(() => {
     store.getUser(setIsAuthSuccess)
   }, [])
-  console.log('isAuthSuccess', isAuthSuccess)
+  console.log('store.selectedItemSettingsModal', store.selectedItemSettingsModal)
   if (!open && isLoading) {
     return <div>{'Loading...'}</div>
   }
@@ -98,10 +99,12 @@ export function SettingsDialog({ open, setOpen }: Props) {
                 <SidebarGroupContent>
                   <SidebarMenu>
                     {data.nav.map((item) => (
-                      <SidebarMenuItem key={item.name} onClick={() => { setSelectedItem(item.name) }}>
+                      <SidebarMenuItem key={item.name} onClick={() => {
+                        store.setSelectedItemSettingsModal(item.name as string)
+                      }}>
                         <SidebarMenuButton
                           asChild
-                          isActive={item.name === selectedItem}
+                          isActive={item.name === store.selectedItemSettingsModal}
                         >
                           <a href="#">
                             <item.icon />
@@ -125,32 +128,28 @@ export function SettingsDialog({ open, setOpen }: Props) {
                     </BreadcrumbItem>
                     <BreadcrumbSeparator className="hidden md:block" />
                     <BreadcrumbItem>
-                      <BreadcrumbPage>{selectedItem}</BreadcrumbPage>
+                      <BreadcrumbPage>{store.selectedItemSettingsModal}</BreadcrumbPage>
                     </BreadcrumbItem>
                   </BreadcrumbList>
                 </Breadcrumb>
               </div>
             </header>
             <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 pt-0">
-              {!isAuthSuccess &&
-                selectedItem === "Authentication settings"
+              {store.selectedItemSettingsModal === "Authentication settings" && !isAuthSuccess
+
                 ?
                 <CardsCreateAccount setIsAuthSuccess={setIsAuthSuccess} />
                 :
-                selectedItem === "Authentication settings"
+                store.selectedItemSettingsModal === "Authentication settings"
                 && components.map((component, i) => (
                   <div
                     key={i}
                   // className="bg-muted/50 aspect-video max-w-3xl rounded-xl"
                   >{component.component}</div>
                 ))}
-
-
-
-              {selectedItem === "User edit" &&
-                <div>Import</div>
+              {store.selectedItemSettingsModal === "Import" &&
+                <ImportModal />
               }
-
             </div>
           </main>
         </SidebarProvider>
@@ -158,3 +157,4 @@ export function SettingsDialog({ open, setOpen }: Props) {
     </Dialog>
   )
 }
+)

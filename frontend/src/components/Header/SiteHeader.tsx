@@ -3,13 +3,15 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Import, LogOut } from "lucide-react"
-import { useState } from "react"
-import { ImportModal } from "./Import/ImportModal"
-import { LogOutModal } from "./Logout/LogOut"
-import { Popover, PopoverTrigger } from "./ui/popover"
+import { useContext, useState } from "react"
+import { ImportModal } from "../Import/ImportModal"
+import { LogOutModal } from "../Logout/LogOut"
+import { Popover, PopoverTrigger } from "../ui/popover"
+import { StoreContext } from "@/store/storeContext"
 
 export const SiteHeader: React.FC<{ setType: (val: ActionType) => void; setIsShowEditModal: (val: boolean) => void }> = ({ setType, setIsShowEditModal }) => {
-  const [isOpenImport, setIsOpenImport] = useState(false)
+  const store = useContext(StoreContext);
+  console.log('store.userName', store.userName)
 
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
@@ -20,24 +22,27 @@ export const SiteHeader: React.FC<{ setType: (val: ActionType) => void; setIsSho
           className="mx-2 data-[orientation=vertical]:h-4"
         />
         <Button variant="default" size="sm" className="hidden sm:flex" onClick={() => { setIsShowEditModal(true); setType(ActionType.CREATE) }}>
-
-          Nev item
+          New item
         </Button>
-        <Button onClick={() => { setIsOpenImport(true) }} variant="outline" size="sm" className="hidden sm:flex">
+        <Button onClick={() => {
+          store.setIsOpenSettingsModal(true);
+          store.setSelectedItemSettingsModal("Import")
+        }} variant="outline" size="sm" className="hidden sm:flex">
           <Import />
         </Button>
         <div className="ml-auto flex items-center gap-2">
-          <Popover >
+          {store.userName && <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" size="sm" className="hidden sm:flex">
                 <LogOut />
               </Button>
             </PopoverTrigger>
             <LogOutModal />
-          </Popover>
+          </Popover>}
+
 
         </div>
-        {isOpenImport && <ImportModal isOpen={isOpenImport} setIsOpen={setIsOpenImport} />}
+
 
 
       </div>

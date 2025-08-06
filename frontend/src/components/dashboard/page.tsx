@@ -1,6 +1,6 @@
 
 
-import { SiteHeader } from "@/components/site-header"
+import { SiteHeader } from "@/components/Header/SiteHeader"
 import {
   SidebarInset,
   SidebarProvider,

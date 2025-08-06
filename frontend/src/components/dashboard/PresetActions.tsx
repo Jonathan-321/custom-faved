@@ -4,25 +4,28 @@ import * as React from "react"
 import { SlidersHorizontal } from "lucide-react"
 import { DropdownMenu, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import { SettingsDialog } from "@/components/settings-dialog"
+import { SettingsDialog } from "@/components/Settings/SettingsModal"
+import { StoreContext } from "@/store/storeContext"
+import { observer } from "mobx-react-lite"
 
 
 
-export function PresetActions() {
-  const [open, setIsOpen] = React.useState(false)
+export const PresetActions = observer(() => {
+  const store = React.useContext(StoreContext);
+
   return (
     <div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="secondary" size="icon">
             <span className="sr-only">Actions</span>
-            <div onClick={() => { setIsOpen(true) }}><SlidersHorizontal /></div>
+            <div onClick={() => { store.setIsOpenSettingsModal(true) }}><SlidersHorizontal /></div>
           </Button>
         </DropdownMenuTrigger>
       </DropdownMenu>
       <div>
-        {open && <SettingsDialog open={open} setOpen={setIsOpen} />}
+        {store.isOpenSettingsModal && <SettingsDialog open={store.isOpenSettingsModal} setOpen={store.setIsOpenSettingsModal} />}
       </div>
     </div>
   )
-}
+})

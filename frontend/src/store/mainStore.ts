@@ -11,6 +11,8 @@ class mainStore {
     idItem = undefined;
     showLoginPage = false;
     error: string | null = null;
+    isOpenSettingsModal: boolean = false;
+    selectedItemSettingsModal: string = "Authentication settings";
 
     constructor() {
         makeAutoObservable(this); // Makes state observable and actions transactional
@@ -31,6 +33,12 @@ class mainStore {
     setIdItem = (val) => {
         this.idItem = val;
     };
+    setIsOpenSettingsModal = (val) => {
+        this.isOpenSettingsModal = val;
+    };
+    setSelectedItemSettingsModal = (val: string) => {
+        this.selectedItemSettingsModal = val;
+    };
     fetchItems = async () => {
         const fetchItems = async () => {
             try {
@@ -44,13 +52,40 @@ class mainStore {
                 const data = await response.json();
                 console.log('response', data)
                 this.setItems(data);
+
             } catch (err) {
                 this.error = (err instanceof Error ? err.message : 'Failed to fetch items');
                 toast(err.message)
             }
         };
-        fetchItems();
-        this.getUser(() => { })
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+
+        };
+
+        fetch(API_ENDPOINTS.settings.getUser, options)
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 403 || response.status === 401) {
+                        this.showLoginPage = true
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(({ data }) => {
+                fetchItems();
+                this.userName = data.user.username;
+            })
+            .catch(err => {
+                toast(err.message)
+
+            })
+
+
     }
     fetchTags = async () => {
         const fetchTags = async () => {
