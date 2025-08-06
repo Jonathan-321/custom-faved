@@ -13,14 +13,13 @@ use Framework\Exceptions\ValidationException;
 
 class Application
 {
-	public function __construct(protected array $routes, protected array $middleware_classes)
+	public function __construct(protected array $routes, protected array $middleware_classes, protected array $error_redirects)
 	{
 	}
 
 	public function run($route, $method)
 	{
 		$expects_json = str_contains(($_SERVER['HTTP_ACCEPT'] ?? '') . ($_SERVER['CONTENT_TYPE'] ?? ''), 'application/json');
-		$url_builder = ServiceContainer::get(UrlBuilder::class);
 
 		try {
 			foreach (array_reverse($this->middleware_classes) as $middleware_class) {
@@ -36,34 +35,22 @@ class Application
 			$controller = new $controller_class();
 			$response = $controller($input);
 
-		} catch (DatabaseNotFound $e) {
-			$response = redirect($url_builder->build('/setup'));
-		} catch (ValidationException|DataWriteException $e) {
+		} catch (\Exception $e) {
 			if ($expects_json) {
-				$response = data(['error' => $e->getMessage()], $e->getCode());
-			} else {
+				$response = data([
+					'success' => false,
+					'message' => $e->getMessage(),
+					'error' => $e->getMessage(),
+				], $e->getCode());
+			} elseif(isset($this->error_redirects[get_class($e)])) {
 				FlashMessages::set('error', $e->getMessage());
-				$referrer = $_SERVER['HTTP_REFERER'] ?? $url_builder->build('/');
-				$response = redirect($referrer);
-			}
-		} catch (UnauthorizedException $e) {
-			if ($expects_json) {
-				$response = data(['error' => $e->getMessage()], $e->getCode());
+				$redirect_url = $this->error_redirects[get_class($e)];
+				$response = redirect($redirect_url);
 			} else {
-				$response = redirect($url_builder->build('/login'));
+				http_response_code($e->getCode());
+				$response = page('error', ['message' => $e->getMessage()])
+					->layout('primary');
 			}
-		} catch (ForbiddenException $e) {
-			http_response_code(403);
-			$response = page('error', ['message' => "403 - {$e->getMessage()}"])
-				->layout('primary');
-		} catch (NotFoundException $e) {
-			http_response_code(404);
-			$response = page('error', ['message' => "404 - {$e->getMessage()}"])
-				->layout('primary');
-		} catch (Exception $e) {
-			http_response_code(500);
-			$response = page('error', ['message' => "500 - {$e->getMessage()}"])
-				->layout('primary');
 		}
 
 		$response->yield();

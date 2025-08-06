@@ -58,10 +58,18 @@ $middleware_classes = [
 	AuthenticationMiddleware::class,
 ];
 
+$url_builder = ServiceContainer::get(UrlBuilder::class);
+$error_redirects = [
+	Framework\Exceptions\DatabaseNotFound::class => '/setup',
+	Framework\Exceptions\UnauthorizedException::class => '/login',
+	Framework\Exceptions\ValidationException::class => ($_SERVER['HTTP_REFERER'] ?? $url_builder->build('/')),
+	Framework\Exceptions\DataWriteException::class => ($_SERVER['HTTP_REFERER'] ?? $url_builder->build('/')),
+];
+
 // Load project-specific files and services
 require_once ROOT_DIR . '/init.php';
 
 $route = $_GET["route"] ?? '/';
 $method = $_POST['force-method'] ?? $_SERVER["REQUEST_METHOD"];
-$app = new Application($routes, $middleware_classes);
+$app = new Application($routes, $middleware_classes, $error_redirects);
 $app->run($route, $method);

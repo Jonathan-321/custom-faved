@@ -16,7 +16,7 @@ class AuthenticationMiddleware extends MiddlewareAbstract
 		$route = $_GET['route'] ?? '/';
 
 		// Skip authentication for login route
-		if ($route === '/login') {
+		if ($route === '/login' || $route === '/auth') {
 			return $this->next && $this->next->handle();
 		}
 
