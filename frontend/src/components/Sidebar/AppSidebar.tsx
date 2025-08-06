@@ -51,7 +51,7 @@ import { StoreContext } from "@/store/storeContext.ts";
 
 const data = {
   user: {
-    name: "shadcn",
+    name: "m@example.comm@example.comm@example.comm@example.comm@example.comm@example.comm@example.com",
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
@@ -167,13 +167,13 @@ const data = {
 }
 
 const colorMap = {
-  'gray':  'bg-gray-600',
-    'green':  'bg-green-600',
-    'red':  'bg-red-600',
-    'yellow':  'bg-yellow-600',
-    'aqua':  'bg-blue-600',
-    'white ':  'bg-neutral-100',
-    'black':  'bg-neutral-950',
+  'gray': 'bg-gray-600',
+  'green': 'bg-green-600',
+  'red': 'bg-red-600',
+  'yellow': 'bg-yellow-600',
+  'aqua': 'bg-blue-600',
+  'white ': 'bg-neutral-100',
+  'black': 'bg-neutral-950',
 }
 
 export function AppSidebar({ allTags, ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -227,7 +227,7 @@ export function AppSidebar({ allTags, ...props }: React.ComponentProps<typeof Si
               <DropdownMenuSubTrigger> Color</DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
-                  { Object.keys(colorMap).map((color) => (
+                  {Object.keys(colorMap).map((color) => (
                     <DropdownMenuItem
                       key={color}
                       className={`text-${colorMap[color]}-foreground hover:bg-${colorMap[color]}-foreground/10`}
@@ -236,7 +236,7 @@ export function AppSidebar({ allTags, ...props }: React.ComponentProps<typeof Si
                       <span className={`w-3 h-3 rounded-full inline-block mr-1 ${colorMap[color]}`}></span> {color.charAt(0).toUpperCase() + color.slice(1)}
                       <span className="ml-auto">{tag.color === color ? "✓" : ""}</span>
                     </DropdownMenuItem>
-                  )) }
+                  ))}
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>
             </DropdownMenuSub>
@@ -309,8 +309,8 @@ export function AppSidebar({ allTags, ...props }: React.ComponentProps<typeof Si
           {renderTag(0)}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
+      <SidebarFooter>{store.userName && <NavUser />}
+
       </SidebarFooter>
     </Sidebar>
   )

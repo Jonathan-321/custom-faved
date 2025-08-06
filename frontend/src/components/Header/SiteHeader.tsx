@@ -5,7 +5,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Import, LogOut } from "lucide-react"
 import { useContext, useState } from "react"
 import { ImportModal } from "../Import/ImportModal"
-import { LogOutModal } from "../Logout/LogOut"
+// import { LogOutModal } from "../Logout/LogOut"
 import { Popover, PopoverTrigger } from "../ui/popover"
 import { StoreContext } from "@/store/storeContext"
 
@@ -37,7 +37,7 @@ export const SiteHeader: React.FC<{ setType: (val: ActionType) => void; setIsSho
                 <LogOut />
               </Button>
             </PopoverTrigger>
-            <LogOutModal />
+            {/* <LogOutModal /> */}
           </Popover>}
 
 
