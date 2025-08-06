@@ -10,10 +10,8 @@ import {
   IconHelp,
   IconReport,
   IconSearch,
-  IconSettings, IconTrash,
-  IconChevronRight,
-  IconPaletteOff,
-  type Icon, IconDotsVertical, IconEdit,
+  IconSettings,
+  type Icon
 } from "@tabler/icons-react"
 import styles from "./appSidebar.module.scss"
 
@@ -49,6 +47,7 @@ import {
 import { PresetActions } from "@/components/dashboard/presetActions"
 import { StoreContext } from "@/store/storeContext.ts";
 import { observer } from "mobx-react-lite"
+import {SidebarTag} from "@/components/Sidebar/SidebarTag.tsx";
 
 const data = {
   user: {
@@ -167,117 +166,29 @@ const data = {
   ],
 }
 
-const colorMap = {
-  'gray': 'bg-gray-600',
-  'green': 'bg-green-600',
-  'red': 'bg-red-600',
-  'yellow': 'bg-yellow-600',
-  'aqua': 'bg-blue-600',
-  'white ': 'bg-neutral-100',
-  'black': 'bg-neutral-950',
-}
+
 
 export const AppSidebar = observer(({ allTags, ...props }: React.ComponentProps<typeof Sidebar>) => {
 
   const store = React.useContext(StoreContext);
   const userName = store.userName;
 
-  const { isMobile } = useSidebar()
-
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   console.log('all_Tags_2', allTags, userName)
-
-
 
   function renderTag(parentID: integer, level = 0): JSX.Element[] {
     let output = []
     const tags = Object.values(allTags).filter((tag: any) => tag.parent === parentID);
-    console.log('tagList', Object.values(allTags), allTags, parentID, tags);
+    tags.sort((t) => t.pinned ? -1 : 1) // Pinned tags first
+    // console.log('tagList', Object.values(allTags), allTags, parentID, tags);
 
     level++
     for (const tag of tags) {
-      console.log('tag', tag.color)
-      const deleteTag = () => {
-        store.onDeleteTag(tag.id)
-      }
-
-      console.log(tag)
+      // console.log('tag', tag.color)
       const innerItems = renderTag(tag.id, level)
-      const actionButtons = (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuAction
-              className="data-[state=open]:bg-accent rounded-sm sidebar-menu-action"
-            >
-              <IconDotsVertical />
-              <span className="sr-only">More</span>
-            </SidebarMenuAction>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="w-24 rounded-lg"
-            side={isMobile ? "bottom" : "right"}
-            align={isMobile ? "end" : "start"}
-          >
-            <DropdownMenuItem>
-              <IconEdit />
-              <span>Edit</span>
-            </DropdownMenuItem>
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger> Color</DropdownMenuSubTrigger>
-              <DropdownMenuPortal>
-                <DropdownMenuSubContent>
-                  {Object.keys(colorMap).map((color) => (
-                    <DropdownMenuItem
-                      key={color}
-                      className={`text-${colorMap[color]}-foreground hover:bg-${colorMap[color]}-foreground/10`}
-                      onClick={() => store.onChangeTagColor(tag.id, color)}
-                    >
-                      <span className={`w-3 h-3 rounded-full inline-block mr-1 ${colorMap[color]}`}></span> {color.charAt(0).toUpperCase() + color.slice(1)}
-                      <span className="ml-auto">{tag.color === color ? "✓" : ""}</span>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuSubContent>
-              </DropdownMenuPortal>
-            </DropdownMenuSub>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive" onClick={deleteTag}>
-              <span>Delete</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-
-      const code = innerItems.length > 0 ? (<Collapsible className='group/collapsible'>
-        <SidebarMenuItem>
-          <SidebarMenuButton>
-            <CollapsibleTrigger asChild>
-              <IconChevronRight className={`transition-transform hover:cursor-pointer`} />
-            </CollapsibleTrigger>
-            <a href='#'>
-              <span className={`w-3 h-3 rounded-full inline-block mr-2 ${colorMap[tag.color]}`}></span>
-              <span>{tag.title}</span>
-            </a>
-            {actionButtons}
-          </SidebarMenuButton>
-
-          <CollapsibleContent>
-            <SidebarMenuSub>
-              {innerItems}
-            </SidebarMenuSub>
-          </CollapsibleContent>
-        </SidebarMenuItem>
-      </Collapsible>)
-        :
-        (<SidebarMenuItem>
-          <SidebarMenuButton>
-            <a href='#' className='ml-6'>
-              <span className={`w-3 h-3 rounded-full inline-block mr-2 ${colorMap[tag.color]}`}></span>
-              <span>{tag.title}</span>
-            </a>
-            {actionButtons}
-          </SidebarMenuButton>
-        </SidebarMenuItem>)
-
+      const code = (<SidebarTag tag={tag} innerItems={innerItems} level={level} />)
       output.push(code)
     }
 

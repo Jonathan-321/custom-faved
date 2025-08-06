@@ -74,6 +74,15 @@ class mainStore {
                 this.fetchItems()
             })
     }
+    onChangeTagColor = async (tagID: any, color: string) => {
+        alert('Changing color to ' + color)
+    }
+    onTagPin = async (tagID: any) => {
+        alert('Pinning tag')
+    }
+    onTagUnpin = async (tagID: any) => {
+        alert('Unpinning tag')
+    }
     setItems = (val) => {
         this.items = val;
     };
