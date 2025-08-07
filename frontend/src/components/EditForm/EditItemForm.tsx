@@ -1,6 +1,6 @@
 
 import React, { useContext, useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -17,14 +17,24 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { TagEdit } from "@/components/ui/tags"
-
-
 import styles from "./editForm.module.scss"
 import { Textarea } from '../ui/textarea';
 import { ActionType } from '@/components/dashboard/page';
 import { StoreContext } from '@/store/storeContext';
+import z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 
-
+const formSchema = z.object({
+  title: z.string().min(1, { message: "Title is required" }),
+  url: z.string().min(1, { message: "URL is required" }),
+  description: z.any().optional(),
+  comments: z.any().optional(),
+  imageURL: z.any().optional(),
+  tags: z.array(z.any()).optional(),
+  updated_at: z.any().optional(),
+  id: z.any().optional(),
+})
 const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModal }) => {
   const store = useContext(StoreContext);
   const [isOpenInPage, setIsOpenInPage] = useState(false)
@@ -39,23 +49,30 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
     url: ''
   }
   const defaultValues = store.type === ActionType.EDIT && store.items.length > 0 ? store.items.filter(el => el.id === store.idItem)[0] : store.type === ActionType.CREATE ? initialData : {};
-  const { reset, register, handleSubmit, formState: { errors }, control } = useForm({
-    defaultValues: defaultValues
-  });
+  // const { reset, register, handleSubmit, formState: { errors }, control } = useForm({
+  //   defaultValues: defaultValues
+  // });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: defaultValues,
+  })
   useEffect(() => {
-    reset(defaultValues)
+    form.reset(defaultValues)
   }, [store.idItem])
+  console.log('defaultValues', defaultValues)
   console.log('store.idItem', store.idItem)
   console.log('defaultValues', defaultValues)
   const onSubmit = (val) => {
+    console.log('val', val)
     store.onCreateItem(val, false)
     setIsShowEditModal(false)
-    reset()
+    form.reset()
   };
   const onSubmitSaveCopy = (val) => {
     store.onCreateItem(val, true)
     setIsShowEditModal(false)
-    reset()
+    form.reset()
   }
   const onSave = (val) => {
     store.onCreateItem(val, false, true)
@@ -63,216 +80,231 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
   const onDeleteItem = () => {
     store.onDeleteItem(store.idItem)
     setIsShowEditModal(false)
-    reset()
+    form.reset()
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <DialogPortal>
+          <DialogOverlay className="DialogOverlay">
+            <DialogContent className="sm:max-w-[1000px] max-h-[850px] overflow-y-auto">
+              <DialogHeader>
+                <div className={styles.header}>
+                  <DialogTitle className='pb-3'>{store.type === ActionType.EDIT ? "Edit item" : "Create item"}</DialogTitle>
+                  {isOpenInPage && <Button variant="link" >View list</Button>}
+                </div>
+              </DialogHeader>
+              <div className="grid gap-4">
+                <div className="grid gap-3">
 
-      <DialogPortal>
-        <DialogOverlay className="DialogOverlay">
-
-          <DialogContent className="sm:max-w-[1000px] overflow-y-auto">
-            <DialogHeader>
-              <div className={styles.header}>
-                <DialogTitle>{store.type === ActionType.EDIT ? "Edit item" : "Create item"}</DialogTitle>
-                {isOpenInPage && <Button variant="link" >View list</Button>}
+                  <FormField
+                    control={form.control}
+                    name="title"
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormLabel>Title</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              id="name-1"
+                              value={field.value ?? undefined}
+                              onChange={(value) => {
+                                field.onChange(value ?? null);
+                              }}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
+                  />
+                  <FormMessage />
+                </div>
+                <div className="grid gap-3">
+                  <FormField
+                    control={form.control}
+                    name="url"
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormLabel>URL</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              id="name-1"
+                              value={field.value ?? undefined}
+                              onChange={(value) => {
+                                field.onChange(value ?? null);
+                              }}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormLabel>Description</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              className=' max-h-[78px] overflow-y-auto'
+                              onChange={(value) => {
+                                field.onChange(value ?? null);
+                              }}
+                              placeholder="Type your message here."
+                              value={field.value ?? undefined}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <FormField
+                    control={form.control}
+                    name="comments"
+                    render={({ field }) => {
+                      return (<FormItem>
+                        <FormLabel>Comments</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            className=' max-h-[78px] overflow-y-auto'
+                            onChange={(value) => {
+                              field.onChange(value ?? null);
+                            }}
+                            placeholder="Type your message here."
+                            value={field.value ?? undefined} />
+                        </FormControl>
+                      </FormItem>
+                      );
+                    }}
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="name-1"></Label>
+                  <FormField
+                    control={form.control}
+                    name="imageURL"
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormLabel>Image URL</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              id="name-1"
+                              placeholder='https://'
+                              value={field.value ?? undefined}
+                              onChange={(value) => {
+                                field.onChange(value ?? null);
+                              }}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <FormField
+                    control={form.control}
+                    name="tags"
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormLabel>Tags</FormLabel>
+                          <FormControl>
+                            <TagEdit
+                              // className={styles.input}
+                              // type="text"
+                              // id="name-1"
+                              value={field.value ?? undefined}
+                              onChange={(value) => {
+                                field.onChange(value ?? null);
+                              }}
+                              values={field.value ?? []}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="name-1"></Label>
+                  <FormField
+                    control={form.control}
+                    name="created_at"
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormLabel>Created at</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              id="name-1"
+                              disabled
+                              value={field.value ?? undefined}
+                              onChange={(value) => {
+                                field.onChange(value ?? null);
+                              }}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <FormField
+                    control={form.control}
+                    name="updated_at"
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormLabel>Updated at</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              id="name-1"
+                              disabled
+                              value={field.value ?? undefined}
+                              onChange={(value) => {
+                                field.onChange(value ?? null);
+                              }}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
               </div>
-              {/* <DialogDescription>
-              Make changes to your profile here. Click save when you&apos;re
-              done.
-            </DialogDescription> */}
-            </DialogHeader>
-            <div className="grid gap-4">
-              <div className={styles.infoBlock}>
-                <Label htmlFor="name-1">Title</Label>
-                <Controller
-                  control={control}
-                  name="title"
-                  render={({ field }) => {
-                    return (
-                      <Input
-                        className={styles.input}
-                        type="text"
-                        id="name-1"
-                        value={field.value ?? undefined}
-                        style={{ marginLeft: 5 }}
-                        onChange={(value) => {
-                          field.onChange(value ?? null);
-                        }}
-                      />
-                    );
-                  }}
-                />
-                {/* <ValidationMessage message={errors.fileName?.message} /> */}
-              </div>
-              <div className={styles.infoBlock}>
-                <Label htmlFor="name-1">URL</Label>
-                <Controller
-                  control={control}
-                  name="url"
-                  render={({ field }) => {
-                    return (
-                      <Input
-                        className={styles.input}
-                        type="text"
-                        id="name-1"
-                        value={field.value ?? undefined}
-                        style={{ marginLeft: 5 }}
-                        onChange={(value) => {
-                          field.onChange(value ?? null);
-                        }}
-                      />
-                    );
-                  }}
-                />
-                {/* <ValidationMessage message={errors.fileName?.message} /> */}
-              </div>
-              <div className={styles.infoBlock}>
-                <Label htmlFor="name-1">Description</Label>
-                <Controller
-                  control={control}
-                  name="description"
-                  render={({ field }) => {
-                    return (
-                      <Textarea
-                        onChange={(value) => {
-                          field.onChange(value ?? null);
-                        }} className={styles.input} placeholder="Type your message here." value={field.value ?? undefined} style={{ marginLeft: 5 }} />
-
-                    );
-                  }}
-                />
-                {/* <ValidationMessage message={errors.fileName?.message} /> */}
-              </div>
-              <div className={styles.infoBlock}>
-                <Label htmlFor="name-1">Comments</Label>
-                <Controller
-                  control={control}
-                  name="comments"
-                  render={({ field }) => {
-                    return (
-                      <Textarea
-                        onChange={(value) => {
-                          field.onChange(value ?? null);
-                        }} className={styles.input} placeholder="Type your message here." value={field.value ?? undefined} style={{ marginLeft: 5 }} />
-                    );
-                  }}
-                />
-                {/* <ValidationMessage message={errors.fileName?.message} /> */}
-              </div>
-              <div className={styles.infoBlock}>
-                <Label htmlFor="name-1">Image URL</Label>
-                <Controller
-                  control={control}
-                  name="imageURL"
-                  render={({ field }) => {
-                    return (
-                      <Input
-                        className={styles.input}
-                        type="text"
-                        id="name-1"
-                        placeholder='https://'
-                        value={field.value ?? undefined}
-                        style={{ marginLeft: 5 }}
-                        onChange={(value) => {
-                          field.onChange(value ?? null);
-                        }}
-                      />
-                    );
-                  }}
-                />
-                {/* <ValidationMessage message={errors.fileName?.message} /> */}
-              </div>
-              <div className={styles.infoBlock}>
-                <Label htmlFor="name-1">Tags</Label>
-                <Controller
-                  control={control}
-                  name="tags"
-                  render={({ field }) => {
-                    return (
-                      <TagEdit
-                        className={styles.input}
-                        // type="text"
-                        // id="name-1"
-                        // style={{ marginLeft: 5 }}
-                        onChange={(value) => {
-                          field.onChange(value ?? []);
-                        }}
-                        values={field.value ?? []}
-                      />
-                    );
-                  }}
-                />
-                {/* <ValidationMessage message={errors.fileName?.message} /> */}
-              </div>
-              <div className={styles.infoBlock}>
-                <Label htmlFor="name-1">Created at</Label>
-                <Controller
-                  control={control}
-                  name="created_at"
-                  render={({ field }) => {
-                    return (
-                      <Input
-                        className={styles.input}
-                        type="text"
-                        id="name-1"
-                        disabled
-                        value={field.value ?? undefined}
-                        style={{ marginLeft: 5 }}
-                        onChange={(value) => {
-                          field.onChange(value ?? null);
-                        }}
-                      />
-                    );
-                  }}
-                />
-                {/* <ValidationMessage message={errors.fileName?.message} /> */}
-              </div>
-              <div className={styles.infoBlock}>
-                <Label htmlFor="name-1">Updated at</Label>
-                <Controller
-                  control={control}
-                  name="updated_at"
-                  render={({ field }) => {
-                    return (
-                      <Input
-                        className={styles.input}
-                        type="text"
-                        id="name-1"
-                        disabled
-                        value={field.value ?? undefined}
-                        style={{ marginLeft: 5 }}
-                        onChange={(value) => {
-                          field.onChange(value ?? null);
-                        }}
-                      />
-                    );
-                  }}
-                />
-                {/* <ValidationMessage message={errors.fileName?.message} /> */}
-              </div>
-
-            </div>
-            <DialogFooter>
-              <Button onClick={handleSubmit(onSubmit)} type="submit" variant="default">Save & Close</Button>
-              <Button onClick={handleSubmit(onSubmitSaveCopy)} type="submit" variant="secondary">Save as Copy</Button>
-              <Button onClick={handleSubmit(onSave)} type="submit" variant="secondary">Save</Button>
-              <Button onClick={() => {
-                setIsShowEditModal(false)
-                reset()
-              }} type="reset" variant="secondary">Close</Button>
-              <Button onClick={onDeleteItem} variant="destructive">Delete</Button>
-            </DialogFooter>
-          </DialogContent>
-        </DialogOverlay>
-      </DialogPortal>
-    </form>
-
-
-
-
-
+              <DialogFooter>
+                <Button onClick={form.handleSubmit(onSubmit)} type="submit" variant="default">Save & Close</Button>
+                <Button onClick={form.handleSubmit(onSubmitSaveCopy)} type="submit" variant="secondary">Save as Copy</Button>
+                <Button onClick={form.handleSubmit(onSave)} type="submit" variant="secondary">Save</Button>
+                <Button onClick={() => {
+                  setIsShowEditModal(false)
+                  form.reset()
+                }} type="reset" variant="secondary">Close</Button>
+                <Button onClick={onDeleteItem} variant="destructive">Delete</Button>
+              </DialogFooter>
+            </DialogContent >
+          </DialogOverlay >
+        </DialogPortal >
+      </form >
+    </Form >
   );
 };
 
