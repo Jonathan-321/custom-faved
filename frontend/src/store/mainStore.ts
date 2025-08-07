@@ -52,7 +52,9 @@ class mainStore {
     fetchTags = async () => {
         const fetchTags = async () => {
             try {
-                const response = await fetch(API_ENDPOINTS.tags.list);
+                const response = await fetch(API_ENDPOINTS.tags.list, {headers: {
+                    'Content-Type': 'application/json',
+                }});
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
