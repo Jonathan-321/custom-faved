@@ -45,6 +45,7 @@ import { StoreContext } from "@/store/storeContext"
 import { DataTableToolbar } from "./data-table-toolbar"
 import { Badge } from "../ui/badge"
 import { DataTableColumnHeader } from "./data-table-column-header"
+import {colorMap} from "@/lib/utils.ts";
 
 
 export type Payment = {
@@ -56,7 +57,9 @@ export type Payment = {
 const createColumns = (setIsShowEditModal: (val: boolean) => void,
   setType: (val: ActionType) => void,
   setIdItem: (val: any) => void,
-  onDeleteHandler: (val: any) => void, onCreateItem: any): ColumnDef<z.infer<typeof schema>>[] => [
+  onDeleteHandler: (val: any) => void,
+                       onCreateItem: any,
+                       tagList: Object): ColumnDef<z.infer<typeof schema>>[] => [
     {
       accessorKey: "url",
       header: ({ column }) => (
@@ -77,7 +80,13 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
                 {title}
               </h4></div>}
               {url && <div className={styles.title}><a className={styles.btnLink} href={url} target="_blank" rel="noopener noreferrer">{url}</a> </div>}
-              {tags && <div className={styles.titleTask} >{tags.map((e) => <Badge className="bg-blue-500 text-white dark:bg-blue-600">{e}</Badge>)} <p className="text-muted-foreground text-sm">{updatedAt ?? createdAt}</p></div>}
+              {tags && <div className={styles.titleTask} >{tags.map((tagID) => <Badge className="bg-white text-gray border-1 border-gray dark:bg-blue-600">
+                <span className={`w-3 h-3 rounded-full inline-block mr-1 ${colorMap[tagList[tagID]?.color || 'gray']}`}></span>
+                {tagList[tagID]?.fullPath}
+              </Badge>)
+              }
+
+                <p className="text-muted-foreground text-sm">{updatedAt ?? createdAt}</p></div>}
             </div>
 
           </div>
@@ -158,7 +167,7 @@ export function DataTable({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
-  const columns = createColumns(setIsShowEditModal, store.setType, store.setIdItem, store.onDeleteItem, store.onCreateItem);
+  const columns = createColumns(setIsShowEditModal, store.setType, store.setIdItem, store.onDeleteItem, store.onCreateItem, store.tags);
   const data = store.items
   const table = useReactTable({
     data,
