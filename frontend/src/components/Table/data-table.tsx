@@ -45,7 +45,7 @@ import { StoreContext } from "@/store/storeContext"
 import { DataTableToolbar } from "./data-table-toolbar"
 import { Badge } from "../ui/badge"
 import { DataTableColumnHeader } from "./data-table-column-header"
-import {colorMap} from "@/lib/utils.ts";
+import { colorMap } from "@/lib/utils.ts";
 
 
 export type Payment = {
@@ -58,15 +58,15 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
   setType: (val: ActionType) => void,
   setIdItem: (val: any) => void,
   onDeleteHandler: (val: any) => void,
-                       onCreateItem: any,
-                       tagList: Object): ColumnDef<z.infer<typeof schema>>[] => [
+  onCreateItem: any,
+  tagList: Object): ColumnDef<z.infer<typeof schema>>[] => [
     {
       accessorKey: "url",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Title" />
-      ),
+      // header: ({ column }) => (
+      //   <DataTableColumnHeader column={column} title="Title" />
+      // ),
       enableSorting: false,
-      enableHiding: true,
+      enableHiding: false,
       cell: ({ row }) => {
         const url = row.original.url;
         const title = row.original.title;
@@ -74,22 +74,39 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
         const updatedAt = row.original.updated_at;
         const createdAt = row.original.created_at;
         return (
-          <div className={styles.titleWrapper}>
-            <div className={styles.titleWrapperContaner}>
-              {title && <div className={styles.title}><h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
-                {title}
-              </h4></div>}
-              {url && <div className={styles.title}><a className={styles.btnLink} href={url} target="_blank" rel="noopener noreferrer">{url}</a> </div>}
-              {tags && <div className={styles.titleTask} >{tags.map((tagID) => <Badge className="bg-white text-gray border-1 border-gray dark:bg-blue-600">
-                <span className={`w-3 h-3 rounded-full inline-block mr-1 ${colorMap[tagList[tagID]?.color || 'gray']}`}></span>
-                {tagList[tagID]?.fullPath}
-              </Badge>)
-              }
-
-                <p className="text-muted-foreground text-sm">{updatedAt ?? createdAt}</p></div>}
+          <div className="flex flex-col items-start w-full flex-wrap">
+            {title && <span className="flex items-start text-left w-full flex-wrap pb-2"><h4 className="scroll-m-20 text-xl font-semibold tracking-tight "> {title} </h4></span>}
+            {url && <span className="pb-2"><a className={styles.btnLink} href={url} target="_blank" rel="noopener noreferrer">{url}</a></span>}
+            {
+              tags && <div className="flex items-start text-left w-full flex-wrap pb-2">
+                {tags.map((tagID) => <Badge className="bg-white text-gray border-1 border-gray dark:bg-blue-600 ">
+                  <span className={`w-3 h-3 rounded-full inline-block mr-1 ${colorMap[tagList[tagID]?.color || 'gray']}`}></span>
+                  {tagList[tagID]?.fullPath}
+                </Badge>)}
+              </div>
+            }
+            <div>
+              <p className="text-muted-foreground text-sm">{updatedAt ?? createdAt}</p>
             </div>
-
-          </div>
+          </div >
+          // <div className={styles.titleWrappers}>
+          //   <div className={styles.titleWrapperContaner}>
+          //     {title
+          //       &&
+          //       <div className={styles.title}>
+          //         <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+          //           {title}
+          //         </h4>
+          //       </div>}
+          //     {url && <div className={styles.title}><a className={styles.btnLink} href={url} target="_blank" rel="noopener noreferrer">{url}</a> </div>}
+          //     {tags && <div className={styles.titleTask} >{tags.map((tagID) => <Badge className="bg-white text-gray border-1 border-gray dark:bg-blue-600">
+          //       <span className={`w-3 h-3 rounded-full inline-block mr-1 ${colorMap[tagList[tagID]?.color || 'gray']}`}></span>
+          //       {tagList[tagID]?.fullPath}
+          //     </Badge>)
+          //     }
+          //       <p className="text-muted-foreground text-sm">{updatedAt ?? createdAt}</p></div>}
+          //   </div>
+          // </div>
         );
       },
     },
@@ -101,21 +118,18 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
       enableSorting: false,
       enableHiding: true,
       cell: ({ row }) => {
-
-
         return (
-          <div className="flex space-x-2" style={{ textAlign: "left" }}>
-            {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
-            <span
-              className={styles.title}
-            // className="max-w-[500px] truncate font-medium"
-            >
-              <p className="leading-7 [&:not(:first-child)]:mt-6">
-                {row.getValue("description")}
-              </p>
+          <div className="flex flex-col items-start w-full flex-wrap">
+            <div className="flex flex-col items-start text-start">
+              {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
+              <div>
+                <p className="leading-7 [&:not(:first-child)]:mt-6">
+                  {row.getValue("description")}
+                </p>
 
-            </span>
-          </div>
+              </div>
+            </div >
+          </div >
         )
       },
     },

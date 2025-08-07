@@ -3,14 +3,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from "@/components/ui/button"
 import {
-  Dialog,
-  DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   DialogOverlay,
   DialogPortal
 } from "@/components/ui/dialog"
@@ -24,17 +20,9 @@ import { StoreContext } from '@/store/storeContext';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
+import { formSchema } from './utils';
 
-const formSchema = z.object({
-  title: z.string().min(1, { message: "Title is required" }),
-  url: z.string().min(1, { message: "URL is required" }),
-  description: z.any().optional(),
-  comments: z.any().optional(),
-  imageURL: z.any().optional(),
-  tags: z.array(z.any()).optional(),
-  updated_at: z.any().optional(),
-  id: z.any().optional(),
-})
+
 const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModal }) => {
   const store = useContext(StoreContext);
   const [isOpenInPage, setIsOpenInPage] = useState(false)
@@ -49,9 +37,6 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
     url: ''
   }
   const defaultValues = store.type === ActionType.EDIT && store.items.length > 0 ? store.items.filter(el => el.id === store.idItem)[0] : store.type === ActionType.CREATE ? initialData : {};
-  // const { reset, register, handleSubmit, formState: { errors }, control } = useForm({
-  //   defaultValues: defaultValues
-  // });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -60,9 +45,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
   useEffect(() => {
     form.reset(defaultValues)
   }, [store.idItem])
-  console.log('defaultValues', defaultValues)
-  console.log('store.idItem', store.idItem)
-  console.log('defaultValues', defaultValues)
+
   const onSubmit = (val) => {
     console.log('val', val)
     store.onCreateItem(val, false)
@@ -88,7 +71,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <DialogPortal>
           <DialogOverlay className="DialogOverlay">
-            <DialogContent className="sm:max-w-[1000px] max-h-[850px] overflow-y-auto">
+            <DialogContent className="sm:max-w-[1000px] max-h-[870px] overflow-y-auto">
               <DialogHeader>
                 <div className={styles.header}>
                   <DialogTitle className='pb-3'>{store.type === ActionType.EDIT ? "Edit item" : "Create item"}</DialogTitle>
@@ -160,7 +143,6 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
                               onChange={(value) => {
                                 field.onChange(value ?? null);
                               }}
-                              placeholder="Type your message here."
                               value={field.value ?? undefined}
                             />
                           </FormControl>
@@ -182,7 +164,6 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
                             onChange={(value) => {
                               field.onChange(value ?? null);
                             }}
-                            placeholder="Type your message here."
                             value={field.value ?? undefined} />
                         </FormControl>
                       </FormItem>
@@ -251,6 +232,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
                           <FormLabel>Created at</FormLabel>
                           <FormControl>
                             <Input
+                              className='bg-gray-200 text-gray-500 cursor-not-allowed'
                               type="text"
                               id="name-1"
                               disabled
@@ -275,6 +257,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
                           <FormLabel>Updated at</FormLabel>
                           <FormControl>
                             <Input
+                              className='bg-gray-200 text-gray-500 cursor-not-allowed'
                               type="text"
                               id="name-1"
                               disabled
