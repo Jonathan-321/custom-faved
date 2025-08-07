@@ -322,7 +322,7 @@ class mainStore {
                 url: val.url || '',
                 comments: val.comments || '',
                 image: val.imageURL || '',
-                tags: "" // TODO: parse tags
+                tags: val.tags
             })
         };
 

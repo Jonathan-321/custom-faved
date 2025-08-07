@@ -34,7 +34,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
     comments: '',
     created_at: undefined,
     imageURL: undefined,
-    tags: undefined,
+    tags: [],
     updated_at: undefined,
     url: ''
   }
@@ -195,12 +195,11 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
                         className={styles.input}
                         // type="text"
                         // id="name-1"
-                        value={field.value ?? undefined}
                         // style={{ marginLeft: 5 }}
                         onChange={(value) => {
-                          field.onChange(value ?? null);
+                          field.onChange(value ?? []);
                         }}
-                        values={field.value}
+                        values={field.value ?? []}
                       />
                     );
                   }}

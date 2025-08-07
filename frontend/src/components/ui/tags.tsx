@@ -25,7 +25,7 @@ import {toJS} from "mobx";
 import { colorMap} from "@/lib/utils.ts";
 
 
-const TagEdit = observer(({className, values}: {className?: string, values: Array<string>}) => {
+const TagEdit = observer(({className, values, onChange}: {className?: string, values: Array<string>, onChange: (values: string[]) => void}) => {
   const store = useContext(StoreContext);
   const [open, setOpen] = React.useState(false)
   const [selected, setSelected] = React.useState(values.map(v => v.toString()))
@@ -46,6 +46,10 @@ const TagEdit = observer(({className, values}: {className?: string, values: Arra
     );
 
   }, [store.tags]);
+
+  React.useEffect(() => {
+    onChange(selected)
+  },[ selected ])
 
   const sort = () => {
     setTags(getSortedTags());

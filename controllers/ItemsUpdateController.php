@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Framework\ControllerInterface;
+use Framework\Exceptions\ValidationException;
 use Framework\Responses\ResponseInterface;
 use Framework\ServiceContainer;
 use Models\Repository;
@@ -24,6 +25,18 @@ class ItemsUpdateController implements ControllerInterface
 
 		$repository = ServiceContainer::get(Repository::class);
 
+		if(!isset($input['tags']) || !is_array($input['tags'])) {
+			return throw new ValidationException('Tags must be an array');
+		}
+
+		$new_tag_ids = array_map('intval', $input['tags']);
+
+		$tags = $repository->getTags();
+		$exising_tag_ids = array_keys($tags);
+		if ( array_diff($new_tag_ids, $exising_tag_ids) ) {;
+			return throw new ValidationException('Non-existing tags provided');
+		}
+
 		$title = $input['title'];
 		$description = $input['description'];
 		$url = $input['url'];
@@ -32,13 +45,7 @@ class ItemsUpdateController implements ControllerInterface
 
 		$repository->updateItem($title, $description, $url, $comments, $image, $item_id);
 
-		$item_tag_ids = [];
-
-		if (!empty($input['tags'])) {
-			$item_tag_ids = buildItemTagsFromInput($input['tags']);
-		}
-
-		$repository->updateItemTags($item_tag_ids, $item_id);
+		$repository->updateItemTags($new_tag_ids, $item_id);
 
 		return data([
 			'success' => true,
