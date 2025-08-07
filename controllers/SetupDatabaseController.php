@@ -9,12 +9,12 @@ use Framework\Responses\ResponseInterface;
 use Framework\ServiceContainer;
 use Framework\UrlBuilder;
 use Models\Repository;
-use Models\TagCreator;
 use PDO;
+use function Framework\data;
 use function Framework\redirect;
 use function Utils\createWelcomeContent;
 
-class SetupRunController
+class SetupDatabaseController
 {
 	public function __invoke(array $input): ResponseInterface
 	{
@@ -27,11 +27,11 @@ class SetupRunController
 			$db_exists = false;
 		}
 
-		$url_builder = ServiceContainer::get(UrlBuilder::class);
-
 		if ($db_exists) {
-			FlashMessages::set('info', 'Database already exists');
-			return redirect( $url_builder->build('/'));
+			return data([
+				'success' => false,
+				'message' => 'Database already exists'
+			], 400);
 		}
 
 		$db_path = Config::getDBPath();
@@ -43,13 +43,17 @@ class SetupRunController
 		$result = $repository->setupDatabase();
 
 		if (!$result) {
-			FlashMessages::set('error', 'Failed to set up database');
-			return redirect( $url_builder->build('/setup'));
+			return data([
+				'success' => false,
+				'message' => 'Failed to set up database'
+			], 500);
 		}
 
 		createWelcomeContent($repository);
 
-		FlashMessages::set('success', 'Database setup completed successfully');
-		return redirect( $url_builder->build('/'));
+		return data([
+			'success' => true,
+			'message' => 'Database setup completed successfully'
+		], 200);
 	}
 }

@@ -37,6 +37,7 @@ use Controllers\UserDeleteController;
 use Controllers\UserGetController;
 use Controllers\UserPasswordUpdateController;
 use Controllers\UserUsernameUpdateController;
+use Controllers\SetupDatabaseController;
 
 return [
 	'/' => [
@@ -119,5 +120,8 @@ return [
 	],
 	'/auth/logout' => [
 		'POST' => AuthLogoutController::class
+	],
+	'/setup/database' => [
+		'POST' => SetupDatabaseController::class
 	],
 ];
