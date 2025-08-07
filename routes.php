@@ -1,6 +1,7 @@
 <?php
 
 use Controllers\AuthController;
+use Controllers\AuthLogoutController;
 use Controllers\ItemCreateUpdateController;
 use Controllers\ItemDeleteController;
 use Controllers\ItemEditController;
@@ -115,5 +116,8 @@ return [
 	],
 	'/auth' => [
 		'POST' => AuthController::class,
+	],
+	'/auth/logout' => [
+		'POST' => AuthLogoutController::class
 	],
 ];
