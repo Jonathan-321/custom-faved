@@ -2,6 +2,7 @@
 
 use Controllers\AuthController;
 use Controllers\AuthLogoutController;
+use Controllers\ImportPocketController;
 use Controllers\ItemCreateUpdateController;
 use Controllers\ItemDeleteController;
 use Controllers\ItemEditController;
@@ -123,5 +124,8 @@ return [
 	],
 	'/setup/database' => [
 		'POST' => SetupDatabaseController::class
+	],
+	'/import/pocket' => [
+		'POST' => ImportPocketController::class,
 	],
 ];
