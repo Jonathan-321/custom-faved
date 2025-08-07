@@ -20,16 +20,8 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
 import {StoreContext} from "@/store/storeContext.ts";
+import { colorMap} from "@/lib/utils.ts";
 
-const colorMap = {
-  'gray': 'bg-gray-600',
-  'green': 'bg-green-600',
-  'red': 'bg-red-600',
-  'yellow': 'bg-yellow-600',
-  'aqua': 'bg-blue-600',
-  'white ': 'bg-neutral-100',
-  'black': 'bg-neutral-950',
-}
 
 export function SidebarTag({tag, innerItems = [], level}) {
   const [isRenaming, setIsRenaming] = React.useState(false);

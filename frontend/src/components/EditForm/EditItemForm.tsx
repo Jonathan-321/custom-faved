@@ -200,6 +200,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
                         onChange={(value) => {
                           field.onChange(value ?? null);
                         }}
+                        values={field.value}
                       />
                     );
                   }}

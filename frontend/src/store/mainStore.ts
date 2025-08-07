@@ -67,6 +67,40 @@ class mainStore {
         };
         fetchTags();
     }
+    onCreateTag = async (title: string) => {
+        let tagID = null;
+
+        const options = {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                title
+            })
+        };
+        await fetch(API_ENDPOINTS.tags.create, options)
+          .then(response => {
+              if (!response.ok) {
+                  if (response.status === 403 || response.status === 401) {
+                      this.showLoginPage = true
+                  }
+                  throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              return response.json();
+          })
+          .then((data) => {
+              toast(data.message);
+              tagID = data.data.tag_id;
+          })
+          .catch((err,data) => toast('Tag not created: ' + (err instanceof Error ? err.message : 'Unknown error')))
+          .finally(() => {
+              this.fetchTags()
+              this.fetchItems()
+          })
+
+        return tagID;
+    }
     onDeleteTag = async (tagID: number) => {
         confirm('Are you sure you want to delete this tag?');
 
