@@ -5,6 +5,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Import } from "lucide-react"
 import { useContext } from "react"
 import { StoreContext } from "@/store/storeContext"
+import { ModeToggle } from "../mode-toggle"
 
 export const SiteHeader: React.FC<{ setType: (val: ActionType) => void; setIsShowEditModal: (val: boolean) => void }> = ({ setType, setIsShowEditModal }) => {
   const store = useContext(StoreContext);
@@ -28,6 +29,7 @@ export const SiteHeader: React.FC<{ setType: (val: ActionType) => void; setIsSho
           <Import />
         </Button>
         <div className="ml-auto flex items-center gap-2">
+          <ModeToggle />
           {/* {store.userName && <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" size="sm" className="hidden sm:flex">

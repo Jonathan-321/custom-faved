@@ -106,7 +106,9 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
                 return (
                   <Badge
                     key={tagID}
-                    className="mr-2 bg-white text-gray border border-gray dark:bg-blue-600 relative" // Добавили relative для позиционирования tooltip
+                    variant={'secondary'}
+                    className="mr-2 mb-2"
+                    // className="mr-2 mb-2 bg-white text-gray border border-gray relative" // Добавили relative для позиционирования tooltip
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                   >

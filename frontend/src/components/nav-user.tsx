@@ -96,12 +96,12 @@ export const NavUser = observer(() => {
                   return response.json();
                 })
                 .then((response) => {
-                  toast(response.message)
+                  toast(response.message, { position: 'top-center', style: { width: "200px" } })
                   store.setShowLoginPage(true)
                   navigate('/login', { replace: true })
                 })
                 .catch((err) => {
-                  toast(err.message)
+                  toast(err.message, { position: 'top-center', style: { width: "200px" } })
                 })
 
             }}>

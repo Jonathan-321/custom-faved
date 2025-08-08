@@ -1,5 +1,5 @@
 import { ActionType } from '@/components/dashboard/page';
-import {makeAutoObservable, toJS} from 'mobx';
+import { makeAutoObservable, toJS } from 'mobx';
 import { toast } from 'sonner';
 import { API_ENDPOINTS } from './api';
 
@@ -52,9 +52,11 @@ class mainStore {
     fetchTags = async () => {
         const fetchTags = async () => {
             try {
-                const response = await fetch(API_ENDPOINTS.tags.list, {headers: {
-                    'Content-Type': 'application/json',
-                }});
+                const response = await fetch(API_ENDPOINTS.tags.list, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -82,24 +84,24 @@ class mainStore {
             })
         };
         await fetch(API_ENDPOINTS.tags.create, options)
-          .then(response => {
-              if (!response.ok) {
-                  if (response.status === 403 || response.status === 401) {
-                      this.showLoginPage = true
-                  }
-                  throw new Error(`HTTP error! status: ${response.status}`);
-              }
-              return response.json();
-          })
-          .then((data) => {
-              toast(data.message);
-              tagID = data.data.tag_id;
-          })
-          .catch((err,data) => toast('Tag not created: ' + (err instanceof Error ? err.message : 'Unknown error')))
-          .finally(() => {
-              this.fetchTags()
-              this.fetchItems()
-          })
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 403 || response.status === 401) {
+                        this.showLoginPage = true
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((data) => {
+                toast(data.message, { position: 'top-center', style: { width: "200px" } });
+                tagID = data.data.tag_id;
+            })
+            .catch((err, data) => toast('Tag not created: ' + (err instanceof Error ? err.message : 'Unknown error')), { position: 'top-center', style: { width: "200px" } })
+            .finally(() => {
+                this.fetchTags()
+                this.fetchItems()
+            })
 
         return tagID;
     }
@@ -122,8 +124,8 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then((data) => toast(data.message))
-            .catch((err,data) => toast('Tag not deleted: ' + (err instanceof Error ? err.message : 'Unknown error')))
+            .then((data) => toast(data.message, { position: 'top-center', style: { width: "200px" } }))
+            .catch((err, data) => toast('Tag not deleted: ' + (err instanceof Error ? err.message : 'Unknown error'), { position: 'top-center', }))
             .finally(() => {
                 this.fetchTags()
                 this.fetchItems()
@@ -140,20 +142,20 @@ class mainStore {
             })
         };
         fetch(API_ENDPOINTS.tags.updateTitle(tagID), options)
-          .then(response => {
-              if (!response.ok) {
-                  if (response.status === 403 || response.status === 401) {
-                      this.showLoginPage = true
-                  }
-                  throw new Error(`HTTP error! status: ${response.status}`);
-              }
-              return response.json();
-          })
-          .then((data) => toast(data.message))
-          .catch(err => console.error(err))
-          .finally(() => {
-              this.fetchTags()
-          })
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 403 || response.status === 401) {
+                        this.showLoginPage = true
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((data) => toast(data.message, { position: 'top-center', style: { width: "200px" } }))
+            .catch(err => console.error(err))
+            .finally(() => {
+                this.fetchTags()
+            })
 
 
     }
@@ -168,21 +170,21 @@ class mainStore {
             })
         };
         fetch(API_ENDPOINTS.tags.updateColor(tagID), options)
-          .then(response => {
-              if (!response.ok) {
-                  if (response.status === 403 || response.status === 401) {
-                      this.showLoginPage = true
-                  }
-                  throw new Error(`HTTP error! status: ${response.status}`);
-              }
-              return response.json();
-          })
-          .then((data) => toast(data.message))
-          .catch(err => console.error(err))
-          .finally(() => {
-              const tag = { ...this.tags[tagID], color }
-              this.tags = {...this.tags, [tagID]: tag };
-          })
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 403 || response.status === 401) {
+                        this.showLoginPage = true
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((data) => toast(data.message, { position: 'top-center', style: { width: "200px" } }))
+            .catch(err => console.error(err))
+            .finally(() => {
+                const tag = { ...this.tags[tagID], color }
+                this.tags = { ...this.tags, [tagID]: tag };
+            })
     }
     onChangeTagPinned = async (tagID: any, pinned: boolean) => {
         const options = {
@@ -195,21 +197,21 @@ class mainStore {
             })
         };
         fetch(API_ENDPOINTS.tags.updatePinned(tagID), options)
-          .then(response => {
-              if (!response.ok) {
-                  if (response.status === 403 || response.status === 401) {
-                      this.showLoginPage = true
-                  }
-                  throw new Error(`HTTP error! status: ${response.status}`);
-              }
-              return response.json();
-          })
-          .then((data) => toast(data.message))
-          .catch(err => console.error(err))
-          .finally(() => {
-              const tag = { ...this.tags[tagID], pinned }
-              this.tags = {...this.tags, [tagID]: tag };
-          })
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 403 || response.status === 401) {
+                        this.showLoginPage = true
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((data) => toast(data.message, { position: 'top-center', style: { width: "200px" } }))
+            .catch(err => console.error(err))
+            .finally(() => {
+                const tag = { ...this.tags[tagID], pinned }
+                this.tags = { ...this.tags, [tagID]: tag };
+            })
     }
 
     setItems = (val) => {
@@ -249,7 +251,7 @@ class mainStore {
 
             } catch (err) {
                 this.error = (err instanceof Error ? err.message : 'Failed to fetch items');
-                toast(err.message)
+                toast(err.message, { position: 'top-center', style: { width: "200px" } })
             }
         };
         const options = {
@@ -280,7 +282,7 @@ class mainStore {
                 }
             })
             .catch(err => {
-                toast(err.message)
+                toast(err.message, { position: 'top-center', style: { width: "200px" } })
 
             })
 
@@ -306,8 +308,8 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then((response) => toast(response.message))
-            .catch(err => toast(err.message))
+            .then((response) => toast(response.message, { position: 'top-center', style: { width: "200px" } }))
+            .catch(err => toast(err.message, { position: 'top-center', style: { width: "200px" } }))
             .finally(() => {
                 this.fetchItems()
             })
@@ -341,8 +343,8 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then(response => toast(response.message))
-            .catch(err => toast(err.message))
+            .then(response => toast(response.message, { position: 'top-center', style: { width: "200px" } }))
+            .catch(err => toast(err.message, { position: 'top-center', style: { width: "200px" } }))
             .finally(() => {
                 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                 !onSave && this.fetchItems()
@@ -380,7 +382,7 @@ class mainStore {
 
             })
             .catch(err => {
-                toast(err.message)
+                toast(err.message, { position: 'top-center', style: { width: "200px" } })
                 setIsAuthSuccess(false)
             })
 
@@ -414,10 +416,10 @@ class mainStore {
             .then((response) => {
                 setIsUserWasCreate(true);
                 this.userName = val.username;
-                toast(response.message)
+                toast(response.message, { position: 'top-center', style: { width: "200px" } })
             })
             .catch((err) => {
-                toast(err.message)
+                toast(err.message, { position: 'top-center', style: { width: "200px" } })
             })
 
     }
@@ -448,11 +450,11 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                toast(response.message)
+                toast(response.message, { position: 'top-center', style: { width: "200px" } })
                 this.userName = val.username;
             })
             .catch((err) => {
-                toast(err.message)
+                toast(err.message, { position: 'top-center', style: { width: "200px" } })
             })
     }
     createPassword = (val: any) => {
@@ -480,9 +482,9 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then((response) => { toast(response.message) })
+            .then((response) => { toast(response.message, { position: 'top-center', style: { width: "200px" } }) })
             .catch((err) => {
-                toast(err.message)
+                toast(err.message, { position: 'top-center', style: { width: "200px" } })
             })
     }
     deleteUser = () => {
@@ -506,9 +508,9 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then((response) => { toast(response.message) })
+            .then((response) => { toast(response.message, { position: 'top-center', style: { width: "200px" } }) })
             .catch((err) => {
-                toast(err.message)
+                toast(err.message, { position: 'top-center', style: { width: "200px" } })
             })
     }
     logOut = () => {
@@ -533,11 +535,11 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                toast(response.message)
+                toast(response.message, { position: 'top-center', style: { width: "200px" } })
                 this.showLoginPage = true;
             })
             .catch((err) => {
-                toast(err.message)
+                toast(err.message, { position: 'top-center', style: { width: "200px" } })
             })
     }
     login = (values) => {
@@ -566,11 +568,11 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                toast(response.message)
+                toast(response.message, { position: 'top-center', style: { width: "200px" } })
                 this.showLoginPage = false
             })
             .catch((err) => {
-                toast(err.message)
+                toast(err.message, { position: 'top-center', style: { width: "200px" } })
             })
     }
 

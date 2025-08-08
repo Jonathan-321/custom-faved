@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css'
 import { Page } from './components/dashboard/page';
-import { Toaster } from 'sonner';
 import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';
 import { StoreContext } from './store/storeContext';
 import { LoginPage } from './components/Login/LoginPage';
 import { Setup } from './components/Setup/Setup';
+import { Toaster } from './components/ui/sonner';
 
 
 
