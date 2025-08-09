@@ -606,6 +606,40 @@ class mainStore {
                 toast(err.message, { position: 'top-center', style: { width: "200px" } })
             })
     }
+    importBookmarks = (selectedFile: any) => {
+        const formData = new FormData();
+        formData.append('zipFile', selectedFile);
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: formData
+
+        };
+
+        fetch(API_ENDPOINTS.importBookmarks.import, options)
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 403 || response.status === 401) {
+                        this.showLoginPage = true
+                    }
+                    if (response.status === 424) {
+                        this.showInitializeDatabasePage = true
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((response) => {
+                console.log('importresponse', response)
+                this.fetchTags()
+                toast(response.message, { position: 'top-center', style: { width: "200px" } })
+            })
+            .catch((err) => {
+                toast(err.message, { position: 'top-center', style: { width: "200px" } })
+            })
+    }
 
 }
 

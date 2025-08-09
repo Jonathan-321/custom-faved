@@ -27,5 +27,8 @@ export const API_ENDPOINTS = {
     },
     setup: {
         setup: `${API_BASE}?route=/setup/database`,
+    },
+    importBookmarks: {
+        import: `${API_BASE}?route=/import/pocket`,
     }
 };
