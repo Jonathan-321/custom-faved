@@ -12,24 +12,27 @@ import { Label } from "@/components/ui/label"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import z from "zod"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { StoreContext } from "@/store/storeContext"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
+import { useNavigate } from "react-router-dom"
+import { observer } from "mobx-react-lite"
 const formSchema = z.object({
   username: z
     .string().min(1, { message: "Username is required" }),
   password: z
     .string().min(1, { message: "Password is required" })
 })
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+export const LoginForm = observer(({ className, ...props }: React.ComponentProps<"div">) => {
   const store = useContext(StoreContext);
   const initialData = {
     username: "",
     password: '',
   }
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!store.showLoginPage) navigate('/main', { replace: true });
+  }, [store.showLoginPage])
   const defaultValues = initialData;
   // const { reset, register, handleSubmit, formState: { errors }, control } = useForm<z.infer<typeof formSchema>>({
   //   defaultValues: defaultValues,
@@ -62,31 +65,15 @@ export function LoginForm({
               <form>
                 <div className="flex flex-col gap-6">
                   <div className="grid gap-3">
-                    {/* <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="m@example.com"
-                      required
-                    /> */}
                     <FormField
                       control={form.control}
                       name="username"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Username</FormLabel>
-                          {/* <Label htmlFor="email-create-account">Username</Label> */}
-                          {/* <Input
-                id="Username"
-                type="username"
-                placeholder="Username"
-              /> */}
                           <FormControl>
                             <Input placeholder="Username" {...field} />
                           </FormControl>
-                          {/* <FormDescription>
-                      This is your public display name.
-                    </FormDescription> */}
                           <FormMessage />
                         </FormItem>
                       )}
@@ -123,3 +110,4 @@ export function LoginForm({
     </div >
   )
 }
+)

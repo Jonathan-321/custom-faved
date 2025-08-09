@@ -23,6 +23,9 @@ export const API_ENDPOINTS = {
     },
     auth: {
         login: `${API_BASE}?route=%2Fauth`,
-        logout: `${API_BASE}?route=%2Flogout`,
+        logout: `${API_BASE}?route=/auth/logout`,
+    },
+    setup: {
+        setup: `${API_BASE}?route=/setup/database`,
     }
 };

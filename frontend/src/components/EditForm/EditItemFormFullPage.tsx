@@ -2,14 +2,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from "@/components/ui/button"
-import {
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogOverlay,
-  DialogPortal
-} from "@/components/ui/dialog"
+
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { TagEdit } from "@/components/ui/tags"
@@ -21,11 +14,12 @@ import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 import { formSchema } from './utils';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
 
 
-const EditItemForm: React.FC<{ isFullScreen: boolean; setIsShowEditModal: any }> = ({ isFullScreen, setIsShowEditModal }) => {
+const EditItemFormfullPage = () => {
   const store = useContext(StoreContext);
-  const [isOpenInPage, setIsOpenInPage] = useState(false)
+
   const initialData = {
     id: "",
     description: "",
@@ -49,12 +43,12 @@ const EditItemForm: React.FC<{ isFullScreen: boolean; setIsShowEditModal: any }>
   const onSubmit = (val) => {
     console.log('val', val)
     store.onCreateItem(val, false)
-    setIsShowEditModal(false)
+    // setIsShowEditModal(false)
     form.reset()
   };
   const onSubmitSaveCopy = (val) => {
     store.onCreateItem(val, true)
-    setIsShowEditModal(false)
+    // setIsShowEditModal(false)
     form.reset()
   }
   const onSave = (val) => {
@@ -62,22 +56,22 @@ const EditItemForm: React.FC<{ isFullScreen: boolean; setIsShowEditModal: any }>
   };
   const onDeleteItem = () => {
     store.onDeleteItem(store.idItem)
-    setIsShowEditModal(false)
+    // setIsShowEditModal(false)
     form.reset()
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <DialogPortal>
-          <DialogOverlay className="DialogOverlay">
-            <DialogContent className="sm:max-w-[1000px] max-h-[870px] overflow-y-auto">
-              <DialogHeader>
-                <div className={styles.header}>
-                  <DialogTitle className='pb-3'>{store.type === ActionType.EDIT ? "Edit item" : "Create item"}</DialogTitle>
-                  {isOpenInPage && <Button variant="link" >View list</Button>}
-                </div>
-              </DialogHeader>
+    <div className="flex items-center justify-center h-screen">
+      <Card className='w-[50%]' >
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <CardHeader className='pb-5'>
+              <div className={styles.header}>
+                <CardTitle className="text-2xl">Create item</CardTitle>
+                {/* <Button variant="link" >View list</Button> */}
+              </div>
+            </CardHeader >
+            <CardContent className="flex flex-col gap-4">
               <div className="grid gap-4">
                 <div className="grid gap-3">
 
@@ -172,7 +166,6 @@ const EditItemForm: React.FC<{ isFullScreen: boolean; setIsShowEditModal: any }>
                   />
                 </div>
                 <div className="grid gap-3">
-                  <Label htmlFor="name-1"></Label>
                   <FormField
                     control={form.control}
                     name="imageURL"
@@ -196,7 +189,7 @@ const EditItemForm: React.FC<{ isFullScreen: boolean; setIsShowEditModal: any }>
                     }}
                   />
                 </div>
-                <div className="grid gap-3">
+                <div className="grid gap-3 justify-start">
                   <FormField
                     control={form.control}
                     name="tags"
@@ -222,7 +215,6 @@ const EditItemForm: React.FC<{ isFullScreen: boolean; setIsShowEditModal: any }>
                   />
                 </div>
                 <div className="grid gap-3">
-                  <Label htmlFor="name-1"></Label>
                   <FormField
                     control={form.control}
                     name="created_at"
@@ -273,22 +265,22 @@ const EditItemForm: React.FC<{ isFullScreen: boolean; setIsShowEditModal: any }>
                   />
                 </div>
               </div>
-              <DialogFooter>
-                <Button onClick={form.handleSubmit(onSubmit)} type="submit" variant="default">Save & Close</Button>
-                <Button onClick={form.handleSubmit(onSubmitSaveCopy)} type="submit" variant="secondary">Save as Copy</Button>
-                <Button onClick={form.handleSubmit(onSave)} type="submit" variant="secondary">Save</Button>
-                <Button onClick={() => {
-                  setIsShowEditModal(false)
-                  form.reset()
-                }} type="reset" variant="secondary">Close</Button>
-                <Button onClick={onDeleteItem} variant="destructive">Delete</Button>
-              </DialogFooter>
-            </DialogContent >
-          </DialogOverlay >
-        </DialogPortal >
-      </form >
-    </Form >
+            </CardContent>
+            <CardFooter className='pt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end'>
+              <Button onClick={form.handleSubmit(onSubmit)} type="submit" variant="default">Save</Button>
+              <Button onClick={form.handleSubmit(onSubmitSaveCopy)} type="submit" variant="secondary">Save as Copy</Button>
+              {/* <Button onClick={form.handleSubmit(onSave)} type="submit" variant="secondary">Save</Button> */}
+              <Button onClick={() => {
+                // setIsShowEditModal(false)
+                form.reset()
+              }} type="reset" variant="secondary">Close</Button>
+              <Button onClick={onDeleteItem} variant="destructive">Delete</Button>
+            </CardFooter>
+          </form >
+        </Form >
+      </Card >
+    </div >
   );
 };
 
-export default EditItemForm;
+export default EditItemFormfullPage;

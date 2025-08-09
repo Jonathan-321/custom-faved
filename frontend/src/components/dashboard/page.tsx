@@ -43,14 +43,18 @@ export const Page = observer(() => {
     store.fetchTags().finally(() => { setIsLoading(false) })
   }, []);
 
-
+  console.log('store.showInitializeDatabasePage', store.showInitializeDatabasePage)
+  console.log('store.showLoginPage', store.showLoginPage)
   useEffect(() => {
     if (store.showLoginPage) {
       navigate('/login', { replace: true });
-    } else {
+    }
+    if (store.showInitializeDatabasePage) { navigate('/setup', { replace: true }); }
+    if (!store.showInitializeDatabasePage && !store.showLoginPage) {
       navigate('/main', { replace: true });
     }
-  }, [store.showLoginPage, navigate]);
+
+  }, [store.showLoginPage, store.showInitializeDatabasePage, navigate]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -86,7 +90,7 @@ export const Page = observer(() => {
           store.fetchItems()
         }
       }} open={isShowEditModal} >
-        {isShowEditModal && <EditItemForm setIsShowEditModal={setIsShowEditModal} />}
+        {isShowEditModal && <EditItemForm isFullScreen={true} setIsShowEditModal={setIsShowEditModal} />}
       </Dialog>
     </SidebarProvider >
   )

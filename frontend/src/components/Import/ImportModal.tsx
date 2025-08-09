@@ -4,8 +4,17 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card"
+import { observer } from "mobx-react-lite"
+import { useContext, useEffect } from "react"
+import { StoreContext } from "@/store/storeContext"
+import { useNavigate } from "react-router-dom"
 
-export const ImportModal: React.FC = () => {
+export const ImportModal: React.FC = observer(() => {
+    // const store = useContext(StoreContext);
+    // const navigate = useNavigate();
+    // useEffect(() => {
+    //     if (!store.showLoginPage) navigate('/main', { replace: true });
+    // }, [store.showLoginPage])
     return (
         <Card>
             <CardHeader>
@@ -55,4 +64,4 @@ export const ImportModal: React.FC = () => {
             </CardFooter>
         </Card >
     )
-}
+})

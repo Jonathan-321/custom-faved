@@ -7,6 +7,8 @@ import { StoreContext } from './store/storeContext';
 import { LoginPage } from './components/Login/LoginPage';
 import { Setup } from './components/Setup/Setup';
 import { Toaster } from './components/ui/sonner';
+import EditItemForm from './components/EditForm/EditItemForm';
+import EditItemFormfullPage from './components/EditForm/EditItemFormFullPage';
 
 
 
@@ -19,6 +21,7 @@ const App = observer(() => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/setup" element={<Setup />} />
         <Route path="/main" element={<Page />} />
+        <Route path="/edit" element={<EditItemFormfullPage />} />
         <Route
           path="/"
           element={store.showLoginPage ? <Navigate to="/login" replace={true} /> : <Navigate to="/main" />}

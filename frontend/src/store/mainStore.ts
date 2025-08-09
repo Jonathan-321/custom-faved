@@ -240,7 +240,7 @@ class mainStore {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
                     }
-                    if (response.status === 430) {
+                    if (response.status === 424) {
                         this.showInitializeDatabasePage = true
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -268,7 +268,7 @@ class mainStore {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
                     }
-                    if (response.status === 430) {
+                    if (response.status === 424) {
                         this.showInitializeDatabasePage = true
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -301,7 +301,7 @@ class mainStore {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
                     }
-                    if (response.status === 430) {
+                    if (response.status === 424) {
                         this.showInitializeDatabasePage = true
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -336,7 +336,7 @@ class mainStore {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
                     }
-                    if (response.status === 430) {
+                    if (response.status === 424) {
                         this.showInitializeDatabasePage = true
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -365,7 +365,7 @@ class mainStore {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
                     }
-                    if (response.status === 430) {
+                    if (response.status === 424) {
                         this.showInitializeDatabasePage = true
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -406,7 +406,7 @@ class mainStore {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
                     }
-                    if (response.status === 430) {
+                    if (response.status === 424) {
                         this.showInitializeDatabasePage = true
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -442,7 +442,7 @@ class mainStore {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
                     }
-                    if (response.status === 430) {
+                    if (response.status === 424) {
                         this.showInitializeDatabasePage = true
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -475,7 +475,7 @@ class mainStore {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
                     }
-                    if (response.status === 430) {
+                    if (response.status === 424) {
                         this.showInitializeDatabasePage = true
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -501,7 +501,7 @@ class mainStore {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
                     }
-                    if (response.status === 430) {
+                    if (response.status === 424) {
                         this.showInitializeDatabasePage = true
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -527,7 +527,7 @@ class mainStore {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
                     }
-                    if (response.status === 430) {
+                    if (response.status === 424) {
                         this.showInitializeDatabasePage = true
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -560,7 +560,7 @@ class mainStore {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
                     }
-                    if (response.status === 430) {
+                    if (response.status === 424) {
                         this.showInitializeDatabasePage = true
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -570,6 +570,37 @@ class mainStore {
             .then((response) => {
                 toast(response.message, { position: 'top-center', style: { width: "200px" } })
                 this.showLoginPage = false
+            })
+            .catch((err) => {
+                toast(err.message, { position: 'top-center', style: { width: "200px" } })
+            })
+    }
+    initialDatabase = () => {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+
+        };
+
+        fetch(API_ENDPOINTS.setup.setup, options)
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 403 || response.status === 401) {
+                        this.showLoginPage = true
+                    }
+                    if (response.status === 424) {
+                        this.showInitializeDatabasePage = true
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((response) => {
+                toast(response.message, { position: 'top-center', style: { width: "200px" } })
+                this.showLoginPage = false
+                this.showInitializeDatabasePage = false
             })
             .catch((err) => {
                 toast(err.message, { position: 'top-center', style: { width: "200px" } })
