@@ -14,38 +14,30 @@ import {
   type ColumnDef,
 } from "@tanstack/react-table"
 import { z } from "zod"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
 import styles from "./table.module.scss"
-
 import {
   IconDotsVertical,
 } from "@tabler/icons-react"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
 import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
-  TableHeader,
   TableRow,
 } from "@/components/ui/table"
 import { ActionType } from "@/components/dashboard/page"
 import { StoreContext } from "@/store/storeContext"
 import { DataTableToolbar } from "./data-table-toolbar"
 import { Badge } from "../ui/badge"
-import { DataTableColumnHeader } from "./data-table-column-header"
 import { colorMap } from "@/lib/utils.ts";
+import { observer } from "mobx-react-lite"
 
 
 export type Payment = {
@@ -187,11 +179,7 @@ export const schema = z.object({
   description: z.string(),
 })
 
-export function DataTable({
-  setIsShowEditModal,
-}: {
-  setIsShowEditModal: (val: boolean) => void,
-}) {
+export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }> = observer(({ setIsShowEditModal }) => {
   const [globalFilter, setGlobalFilter] = React.useState<any>([]);
   const store = React.useContext(StoreContext);
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -203,6 +191,7 @@ export function DataTable({
   const [rowSelection, setRowSelection] = React.useState({})
   const columns = createColumns(setIsShowEditModal, store.setType, store.setIdItem, store.onDeleteItem, store.onCreateItem, store.tags);
   const data = store.items
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const table = useReactTable({
     data,
     columns,
@@ -215,15 +204,31 @@ export function DataTable({
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
+    manualPagination: true,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
-      globalFilter
+      globalFilter,
+      pagination: {
+        pageIndex: store.currentPage - 1,
+        pageSize: rowsPerPage,
+      },
+    },
+    onPaginationChange: (updaterOrValue) => {
+      const newPagination =
+        typeof updaterOrValue === "function"
+          ? updaterOrValue(table.getState().pagination)
+          : updaterOrValue;
+
+      store.setCurrentPage(newPagination.pageIndex + 1);
+      setRowsPerPage(newPagination.pageSize);
     },
   })
-
+  const startIndex = (store.currentPage - 1) * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+  const currentRows = table.getRowModel().rows.slice(startIndex, endIndex);
   return (
     <div className="w-full">
       <div className="flex items-center py-4 m-[10px]">
@@ -233,8 +238,8 @@ export function DataTable({
       <div className="m-2 overflow-hidden ">
         <Table className="table-layout-fixed w-[100%]">
           <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+            {currentRows.length ? (
+              currentRows.map((row) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
@@ -267,10 +272,10 @@ export function DataTable({
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="text-muted-foreground flex-1 text-sm">
+        {/* <div className="text-muted-foreground flex-1 text-sm">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
+        </div> */}
         <div className="space-x-2 pr-[10px]">
           <Button
             variant="outline"
@@ -293,3 +298,4 @@ export function DataTable({
     </div>
   )
 }
+)

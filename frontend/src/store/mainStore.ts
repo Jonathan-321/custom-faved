@@ -14,11 +14,14 @@ class mainStore {
     error: string | null = null;
     isOpenSettingsModal: boolean = false;
     selectedItemSettingsModal: string = "Authentication settings";
+    currentPage: number = 1;
 
     constructor() {
         makeAutoObservable(this); // Makes state observable and actions transactional
     }
-
+    setCurrentPage = (val: numder) => {
+        this.currentPage = val;
+    }
     setTags = (tags) => {
         const renderTagSegment = (tag) => {
             let output = ''
@@ -347,7 +350,11 @@ class mainStore {
             .catch(err => toast(err.message, { position: 'top-center', style: { width: "200px" } }))
             .finally(() => {
                 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                !onSave && this.fetchItems()
+                if (!onSave) {
+                    this.fetchItems()
+                    this.setCurrentPage(this.currentPage)
+                }
+
             })
     }
     getUser = (setIsAuthSuccess: (val: boolean) => void) => {
