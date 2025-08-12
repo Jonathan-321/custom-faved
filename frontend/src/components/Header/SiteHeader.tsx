@@ -19,13 +19,13 @@ export const SiteHeader: React.FC<{ setType: (val: ActionType) => void; setIsSho
           orientation="vertical"
           className="mx-2 data-[orientation=vertical]:h-4"
         />
-        <Button variant="default" size="sm" className="hidden sm:flex" onClick={() => { setIsShowEditModal(true); setType(ActionType.CREATE) }}>
+        <Button variant="default" size="sm" className="sm:flex" onClick={() => { setIsShowEditModal(true); setType(ActionType.CREATE) }}>
           New item
         </Button>
         <Button onClick={() => {
           store.setIsOpenSettingsModal(true);
           store.setSelectedItemSettingsModal("Import")
-        }} variant="outline" size="sm" className="hidden sm:flex">
+        }} variant="outline" size="sm" className="sm:flex">
           <Import />
         </Button>
         <div className="ml-auto flex items-center gap-2">
