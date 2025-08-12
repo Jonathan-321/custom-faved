@@ -38,6 +38,8 @@ import { DataTableToolbar } from "./data-table-toolbar"
 import { Badge } from "../ui/badge"
 import { colorMap } from "@/lib/utils.ts";
 import { observer } from "mobx-react-lite"
+import { PopoverSort } from "./PopoverSort"
+import { Popover } from "../ui/popover"
 
 
 export type Payment = {
@@ -57,7 +59,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
       // header: ({ column }) => (
       //   <DataTableColumnHeader column={column} title="Title" />
       // ),
-      enableSorting: false,
+      enableSorting: true,
       enableHiding: false,
       cell: ({ row }) => {
         const url = row.original.url;
@@ -129,7 +131,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
       // header: ({ column }) => (
       //   <DataTableColumnHeader column={column} title="Description" />
       // ),
-      enableSorting: false,
+      enableSorting: true,
       enableHiding: false,
       cell: ({ row }) => {
         return (
@@ -229,10 +231,43 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
   const startIndex = (store.currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
   const currentRows = table.getRowModel().rows.slice(startIndex, endIndex);
+  const sortableColumns = columns.filter((column) => column.enableSorting);
+  const [selectedSortColumn, setSelectedSortColumn] = React.useState<string | null>(null);
+  const [sortDesc, setSortDesc] = React.useState(true);
+  const [showSort, setShowSort] = React.useState(false);
+  const handleSortChange = (columnAccessorKey: string) => {
+    if (columnAccessorKey === "") {
+      setSorting([]);
+      setSelectedSortColumn(null);
+      setSortDesc(false);
+      return;
+    }
+    setSelectedSortColumn(columnAccessorKey);
+
+    if (sorting[0]?.id === columnAccessorKey) {
+      setSortDesc(!sortDesc);
+    } else {
+      setSortDesc(false);
+    }
+
+
+    setSorting([{
+      id: columnAccessorKey,
+      desc: sortDesc,
+    }]);
+  };
   return (
     <div className="w-full">
       <div className="flex items-center py-4 m-[10px]">
         <DataTableToolbar table={table} globalFilter={globalFilter} />
+        <Popover open={showSort} onOpenChange={setShowSort}>
+          <PopoverSort
+            selectedSortColumn={selectedSortColumn}
+            handleSortChange={handleSortChange}
+            sortableColumns={sortableColumns}
+            setSortDesc={setSortDesc}
+          />
+        </Popover>
       </div>
 
       <div className="m-2 overflow-hidden ">

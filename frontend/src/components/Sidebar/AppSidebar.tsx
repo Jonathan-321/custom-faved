@@ -47,14 +47,9 @@ import {
 import { PresetActions } from "@/components/dashboard/presetActions"
 import { StoreContext } from "@/store/storeContext.ts";
 import { observer } from "mobx-react-lite"
-import {SidebarTag} from "@/components/Sidebar/SidebarTag.tsx";
+import { SidebarTag } from "@/components/Sidebar/SidebarTag.tsx";
 
 const data = {
-  user: {
-    name: "m@example.comm@example.comm@example.comm@example.comm@example.comm@example.comm@example.com",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
       title: "Untagged",
@@ -207,7 +202,7 @@ export const AppSidebar = observer(({ allTags, ...props }: React.ComponentProps<
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <a href="#">
-                <img src="/public/logo.png" alt="Faved logo" className="img-fluid " width="48"></img>
+                <img src="/public/logo.png" alt="Faved logo" className="img-fluid" width="48"></img>
                 <span className="text-base font-semibold">Faved.</span>
               </a>
             </SidebarMenuButton>
