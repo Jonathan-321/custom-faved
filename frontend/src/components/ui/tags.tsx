@@ -112,7 +112,6 @@ const TagEdit = observer(({ className, values, onChange }: { className?: string,
                   // keywords={[tag.fullPath]}
                   onSelect={async (currentValue) => {
                     const newTagID = await store.onCreateTag(query);
-                    console.log(newTagID)
                     if (!newTagID) {
                       return;
                     }

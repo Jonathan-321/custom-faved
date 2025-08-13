@@ -27,52 +27,7 @@ export const ImportModal: React.FC = observer(() => {
         setSelectedFile(file);
         setUploadError(null);
     };
-    // const handleUpload = async () => {
-    //     if (!selectedFile) {
-    //         return;
-    //     }
-    //     setIsUploading(true);
-    //     setUploadProgress(0);
 
-    //     try {
-    //         const formData = new FormData();
-    //         formData.append('zipFile', selectedFile);
-    //         console.log('formData', formData)
-
-    //         const response = await fetch('/api/index.php?route=/import/pocket', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: formData,
-    //             onUploadProgress: (progressEvent) => {
-    //                 const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-    //                 setUploadProgress(percentCompleted);
-    //             },
-    //         });
-
-
-    //         if (!response.ok) {
-    //             const errorData = await response.json();
-    //             throw new Error(errorData.message || 'Ошибка загрузки файла.');
-    //         }
-
-    //         console.log('Файл успешно загружен:', response);
-
-
-    //     } catch (error) {
-    //         console.error('Ошибка загрузки:', error);
-    //         setUploadError((error as Error).message);
-
-    //     } finally {
-
-    //         setIsUploading(false);
-    //         setSelectedFile(null);
-    //         if (inputRef.current) {
-    //             inputRef.current.value = ''; // Очищаем input после загрузки
-    //         }
-    //     }
-    // };
     return (
         <Card>
             <CardHeader>

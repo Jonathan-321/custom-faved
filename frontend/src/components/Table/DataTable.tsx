@@ -14,7 +14,6 @@ import {
   type ColumnDef,
 } from "@tanstack/react-table"
 import { z } from "zod"
-import styles from "./table.module.scss"
 import {
   IconDotsVertical,
 } from "@tabler/icons-react"
@@ -32,14 +31,14 @@ import {
   TableCell,
   TableRow,
 } from "@/components/ui/table"
-import { ActionType } from "@/components/dashboard/page"
 import { StoreContext } from "@/store/storeContext"
-import { DataTableToolbar } from "./data-table-toolbar"
+import { DataTableToolbar } from "./DataTableToolbar"
 import { Badge } from "../ui/badge"
 import { colorMap } from "@/lib/utils.ts";
 import { observer } from "mobx-react-lite"
 import { PopoverSort } from "./PopoverSort"
 import { Popover } from "../ui/popover"
+import { ActionType } from "../dashboard/types"
 
 
 export type Payment = {
@@ -78,7 +77,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
         return (
           <div className="flex flex-col items-start w-full flex-wrap w-[400px] table-layout-fixed">
             {title && <span className="flex items-start text-left w-full flex-wrap pb-2"><h4 className="scroll-m-20 text-xl font-semibold tracking-tight "> {title} </h4></span>}
-            {url && <span className="pb-2"><a className={styles.btnLink} href={url} target="_blank" rel="noopener noreferrer">{url}</a></span>}
+            {url && <span className="pb-2"><a className="text-custom-blue underline" href={url} target="_blank" rel="noopener noreferrer">{url}</a></span>}
 
             {/* {
               tags && <div className="flex items-start text-left w-full flex-wrap pb-2">
@@ -280,8 +279,6 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => {
-                    console.log('cell.id.split("_")', cell.id.split("_"))
-
                     return (
                       <TableCell key={cell.id} className={`${cell.id.split("_")[1] !== "id" ? 'w-[45%] pb-5 pt-5' : 'w-[3%] pb-5 pt-5'}`}>
                         {flexRender(

@@ -1,5 +1,5 @@
 import * as React from "react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import {
   IconCamera,
   IconDashboard,
@@ -11,9 +11,7 @@ import {
   IconReport,
   IconSearch,
   IconSettings,
-  type Icon
 } from "@tabler/icons-react"
-import styles from "./appSidebar.module.scss"
 
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
@@ -22,32 +20,15 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarMenu, SidebarMenuAction,
+  SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  useSidebar,
 } from "@/components/ui/sidebar"
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu.tsx";
-import { PresetActions } from "@/components/dashboard/presetActions"
+
 import { StoreContext } from "@/store/storeContext.ts";
 import { observer } from "mobx-react-lite"
 import { SidebarTag } from "@/components/Sidebar/SidebarTag.tsx";
+import { PresetActions } from "../dashboard/PresetActions"
 
 const data = {
   navMain: [
@@ -178,12 +159,9 @@ export const AppSidebar = observer(({ allTags, ...props }: React.ComponentProps<
       if (a.pinned && !b.pinned) return -1;
       if (!a.pinned && b.pinned) return 1;
       return a.title.localeCompare(b.title);
-    }) // Pinned tags first
-    // console.log('tagList', Object.values(allTags), allTags, parentID, tags);
-
+    })
     level++
     for (const tag of tags) {
-      // console.log('tag', tag.color)
       const innerItems = renderTag(tag.id, level)
       const code = (<SidebarTag key={tag.id} tag={tag} innerItems={innerItems} level={level} />)
       output.push(code)
@@ -196,7 +174,7 @@ export const AppSidebar = observer(({ allTags, ...props }: React.ComponentProps<
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem className={styles.headeBtnWrapper}>
+          <SidebarMenuItem className="flex">
             <SidebarMenuButton
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"

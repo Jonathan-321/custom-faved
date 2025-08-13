@@ -1,4 +1,3 @@
-import { ActionType } from "@/components/dashboard/page"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
@@ -6,10 +5,10 @@ import { Import } from "lucide-react"
 import { useContext } from "react"
 import { StoreContext } from "@/store/storeContext"
 import { ModeToggle } from "../mode-toggle"
+import { ActionType } from "../dashboard/types"
 
 export const SiteHeader: React.FC<{ setType: (val: ActionType) => void; setIsShowEditModal: (val: boolean) => void }> = ({ setType, setIsShowEditModal }) => {
   const store = useContext(StoreContext);
-  console.log('store.userName', store.userName)
 
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
@@ -30,16 +29,6 @@ export const SiteHeader: React.FC<{ setType: (val: ActionType) => void; setIsSho
         </Button>
         <div className="ml-auto flex items-center gap-2">
           <ModeToggle />
-          {/* {store.userName && <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" size="sm" className="hidden sm:flex">
-                <LogOut />
-              </Button>
-            </PopoverTrigger>
-            <LogOutModal />
-          </Popover>} */}
-
-
         </div>
 
 

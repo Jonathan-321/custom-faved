@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import styles from "./dashboard.module.scss"
 import { useContext } from "react"
 import { StoreContext } from "@/store/storeContext"
 
@@ -11,10 +10,8 @@ import { StoreContext } from "@/store/storeContext"
 
 export function CardsEditAccountDisableAuth() {
   const store = useContext(StoreContext);
-
-
   return (
-    <Card className={styles.cardWrapper}>
+    <Card>
       <CardHeader>
         <CardTitle className="text-2xl">Disable authentication</CardTitle>
         <CardDescription>

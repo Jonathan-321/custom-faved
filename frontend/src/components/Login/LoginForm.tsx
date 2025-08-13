@@ -8,7 +8,6 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import z from "zod"
@@ -25,19 +24,10 @@ const formSchema = z.object({
 })
 export const LoginForm = observer(({ className, ...props }: React.ComponentProps<"div">) => {
   const store = useContext(StoreContext);
-  const initialData = {
-    username: "",
-    password: '',
-  }
   const navigate = useNavigate();
   useEffect(() => {
     if (!store.showLoginPage) navigate('/main', { replace: true });
   }, [store.showLoginPage])
-  const defaultValues = initialData;
-  // const { reset, register, handleSubmit, formState: { errors }, control } = useForm<z.infer<typeof formSchema>>({
-  //   defaultValues: defaultValues,
-  //   resolver: zodResolver(formSchema)
-  // });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -47,7 +37,6 @@ export const LoginForm = observer(({ className, ...props }: React.ComponentProps
   })
   function onSubmit(values: z.infer<typeof formSchema>) {
     store.login(values)
-    console.log('values', values)
   }
   return (
 

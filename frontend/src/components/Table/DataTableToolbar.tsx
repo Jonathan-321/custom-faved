@@ -2,10 +2,6 @@
 
 import type { Table } from "@tanstack/react-table"
 import { X } from "lucide-react"
-
-
-// import { priorities, statuses } from "../data/data"
-// import { DataTableFacetedFilter } from "./data-table-faceted-filter"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 

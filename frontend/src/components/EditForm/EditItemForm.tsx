@@ -13,19 +13,18 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { TagEdit } from "@/components/ui/tags"
-import styles from "./editForm.module.scss"
 import { Textarea } from '../ui/textarea';
-import { ActionType } from '@/components/dashboard/page';
 import { StoreContext } from '@/store/storeContext';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 import { formSchema } from './utils';
+import { ActionType } from '../dashboard/types';
 
 
-const EditItemForm: React.FC<{ isFullScreen: boolean; setIsShowEditModal: any }> = ({ isFullScreen, setIsShowEditModal }) => {
+const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModal }) => {
   const store = useContext(StoreContext);
-  const [isOpenInPage, setIsOpenInPage] = useState(false)
+  const [isOpenInPage] = useState(false)
   const initialData = {
     id: "",
     description: "",
@@ -47,7 +46,6 @@ const EditItemForm: React.FC<{ isFullScreen: boolean; setIsShowEditModal: any }>
   }, [store.idItem])
 
   const onSubmit = (val) => {
-    console.log('val', val)
     store.onCreateItem(val, false)
     setIsShowEditModal(false)
     form.reset()
@@ -73,7 +71,7 @@ const EditItemForm: React.FC<{ isFullScreen: boolean; setIsShowEditModal: any }>
           <DialogOverlay className="DialogOverlay">
             <DialogContent className="sm:max-w-[1000px] max-h-[870px] overflow-y-auto">
               <DialogHeader>
-                <div className={styles.header}>
+                <div className="flex flex-row justify-between items-center">
                   <DialogTitle className='pb-3'>{store.type === ActionType.EDIT ? "Edit item" : "Create item"}</DialogTitle>
                   {isOpenInPage && <Button variant="link" >View list</Button>}
                 </div>
@@ -206,7 +204,6 @@ const EditItemForm: React.FC<{ isFullScreen: boolean; setIsShowEditModal: any }>
                           <FormLabel>Tags</FormLabel>
                           <FormControl>
                             <TagEdit
-                              // className={styles.input}
                               // type="text"
                               // id="name-1"
                               value={field.value ?? undefined}

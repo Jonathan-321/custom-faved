@@ -1,20 +1,18 @@
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from "@/components/ui/button"
 
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { TagEdit } from "@/components/ui/tags"
-import styles from "./editForm.module.scss"
 import { Textarea } from '../ui/textarea';
-import { ActionType } from '@/components/dashboard/page';
 import { StoreContext } from '@/store/storeContext';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 import { formSchema } from './utils';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
+import { ActionType } from '../dashboard/types';
 
 
 const EditItemFormfullPage = () => {
@@ -41,14 +39,11 @@ const EditItemFormfullPage = () => {
   }, [store.idItem])
 
   const onSubmit = (val) => {
-    console.log('val', val)
     store.onCreateItem(val, false)
-    // setIsShowEditModal(false)
     form.reset()
   };
   const onSubmitSaveCopy = (val) => {
     store.onCreateItem(val, true)
-    // setIsShowEditModal(false)
     form.reset()
   }
   const onSave = (val) => {
@@ -66,7 +61,7 @@ const EditItemFormfullPage = () => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <CardHeader className='pb-5'>
-              <div className={styles.header}>
+              <div className="flex flex-row justify-between items-center">
                 <CardTitle className="text-2xl">Create item</CardTitle>
                 {/* <Button variant="link" >View list</Button> */}
               </div>

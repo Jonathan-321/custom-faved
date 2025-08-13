@@ -1,7 +1,8 @@
-import { ActionType } from '@/components/dashboard/page';
-import { makeAutoObservable, toJS } from 'mobx';
+
+import { makeAutoObservable } from 'mobx';
 import { toast } from 'sonner';
 import { API_ENDPOINTS } from './api';
+import type { ActionType } from '@/components/dashboard/types';
 
 class mainStore {
     items = [];
@@ -45,8 +46,6 @@ class mainStore {
                 pinned: !!tags[tagId].pinned
             };
         }
-
-        console.log('tags', tags)
         this.tags = tags;
     };
     setShowLoginPage = (val) => {
@@ -65,7 +64,6 @@ class mainStore {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
-                console.log('response-tags', data)
                 this.setTags(data);
             } catch (err) {
                 this.error = (err instanceof Error ? err.message : 'Failed to fetch tags');
@@ -249,9 +247,7 @@ class mainStore {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
-                console.log('response', data)
                 this.setItems(data);
-
             } catch (err) {
                 this.error = (err instanceof Error ? err.message : 'Failed to fetch items');
                 toast(err.message, { position: 'top-center', style: { width: "200px" } })
@@ -622,7 +618,6 @@ class mainStore {
                 'Content-Type': 'application/json',
             },
             body: formData
-
         };
 
         fetch(API_ENDPOINTS.importBookmarks.import, options)
@@ -639,7 +634,6 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                console.log('importresponse', response)
                 this.fetchTags()
                 toast(response.message, { position: 'top-center', style: { width: "200px" } })
             })

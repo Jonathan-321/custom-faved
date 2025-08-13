@@ -1,20 +1,18 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css'
-import { Page } from './components/dashboard/page';
 import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';
 import { StoreContext } from './store/storeContext';
 import { LoginPage } from './components/Login/LoginPage';
 import { Setup } from './components/Setup/Setup';
 import { Toaster } from './components/ui/sonner';
-import EditItemForm from './components/EditForm/EditItemForm';
 import EditItemFormfullPage from './components/EditForm/EditItemFormFullPage';
+import { Page } from './components/dashboard/page';
 
 
 
 const App = observer(() => {
   const store = useContext(StoreContext);
-  console.log('showLoginPage', store.showLoginPage)
   return (
     <BrowserRouter>
       <Routes>

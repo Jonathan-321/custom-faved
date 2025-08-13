@@ -12,8 +12,6 @@ import { StoreContext } from "@/store/storeContext"
 
 export const LogOutModal = observer(() => {
     const store = useContext(StoreContext);
-    console.log('store.userName', store.userName)
-
     return (
         <PopoverContent className="w-50">
             <div className="grid gap-4">

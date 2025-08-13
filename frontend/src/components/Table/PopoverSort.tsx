@@ -43,7 +43,6 @@ export const PopoverSort: React.FC<{
                     </SelectContent>
 
                 </Select>
-
                 <div >
                     {selectedSortColumn && <Select
                         defaultValue="ASC"
