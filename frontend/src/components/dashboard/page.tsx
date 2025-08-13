@@ -13,6 +13,7 @@ import { StoreContext } from "@/store/storeContext"
 import { AppSidebar } from "@/components/Sidebar/AppSidebar"
 import { useNavigate } from "react-router-dom"
 import { DataTable } from "../Table/DataTable"
+import { SettingsDialog } from "../Settings/SettingsModal"
 
 
 export const Page = observer(() => {
@@ -67,6 +68,7 @@ export const Page = observer(() => {
         }
       }} open={isShowEditModal} >
         {isShowEditModal && <EditItemForm setIsShowEditModal={setIsShowEditModal} />}
+        {store.isOpenSettingsModal && <SettingsDialog open={store.isOpenSettingsModal} setOpen={store.setIsOpenSettingsModal} />}
       </Dialog>
     </SidebarProvider >
   )

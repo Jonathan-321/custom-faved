@@ -24,7 +24,7 @@ export const PresetActions = observer(() => {
         </DropdownMenuTrigger>
       </DropdownMenu>
       <div>
-        {store.isOpenSettingsModal && <SettingsDialog open={store.isOpenSettingsModal} setOpen={store.setIsOpenSettingsModal} />}
+
       </div>
     </div>
   )

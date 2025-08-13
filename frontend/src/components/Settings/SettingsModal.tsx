@@ -87,7 +87,7 @@ export const SettingsDialog = observer(({ open, setOpen }: Props) => {
   }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="overflow-hidden p-0 md:max-h-[600px] md:max-w-[900px] lg:max-w-[900px]">
+      <DialogContent className="overflow-hidden p-0 sm:h-[100%] md:max-h-[750px] sm:max-w-[750px] md:max-w-[900px] lg:max-w-[900px]">
         <DialogTitle className="sr-only">Settings</DialogTitle>
         <SidebarProvider className="items-start">
           <Sidebar collapsible="icon" className="hidden md:flex">
@@ -115,7 +115,7 @@ export const SettingsDialog = observer(({ open, setOpen }: Props) => {
               </SidebarGroup>
             </SidebarContent>
           </Sidebar>
-          <main className="flex h-[600px] md:h-[800px] sm:h-[800px] flex-1 flex-col overflow-hidden">
+          <main className="flex h-[900px] md:h-[800px] sm:h-[100%] lg:max-h-[600px] flex-1 flex-col overflow-hidden">
             <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
 
               <div className="flex items-center gap-2 px-4">
