@@ -1,15 +1,15 @@
-
 import { makeAutoObservable } from 'mobx';
 import { toast } from 'sonner';
 import { API_ENDPOINTS } from './api';
-import type { ActionType } from '@/components/dashboard/types';
+import { ActionType } from '@/components/dashboard/types';
+import type { LoginType, PasswordType, UsernameType, UsetType, ItemType, TagsObjectType, TagType, BookmarkType } from '@/types/types';
 
 class mainStore {
-    items = [];
-    tags = [];
+    items: BookmarkType[] = [];
+    tags: TagsObjectType[] = [];
     type: ActionType = "" as ActionType
     userName: string = "" as string
-    idItem = undefined;
+    idItem: number | undefined = undefined;
     showLoginPage = false;
     showInitializeDatabasePage = false;
     error: string | null = null;
@@ -20,11 +20,11 @@ class mainStore {
     constructor() {
         makeAutoObservable(this); // Makes state observable and actions transactional
     }
-    setCurrentPage = (val: numder) => {
+    setCurrentPage = (val: number) => {
         this.currentPage = val;
     }
-    setTags = (tags) => {
-        const renderTagSegment = (tag) => {
+    setTags = (tags: TagsObjectType) => {
+        const renderTagSegment = (tag: TagType) => {
             let output = ''
             if (tag.parent !== '0') {
                 const parentTag = Object.values(tags).find(t => t.id.toString() === tag.parent.toString());
@@ -46,9 +46,9 @@ class mainStore {
                 pinned: !!tags[tagId].pinned
             };
         }
-        this.tags = tags;
+        this.tags = tags as unknown as TagsObjectType[];
     };
-    setShowLoginPage = (val) => {
+    setShowLoginPage = (val: boolean) => {
         this.showLoginPage = val;
     };
     fetchTags = async () => {
@@ -132,7 +132,7 @@ class mainStore {
                 this.fetchItems()
             })
     }
-    onChangeTagTitle = async (tagID: any, title: string) => {
+    onChangeTagTitle = async (tagID: string, title: string) => {
         const options = {
             method: "PATCH",
             headers: {
@@ -160,7 +160,7 @@ class mainStore {
 
 
     }
-    onChangeTagColor = async (tagID: any, color: string) => {
+    onChangeTagColor = async (tagID: string, color: string) => {
         const options = {
             method: "PATCH",
             headers: {
@@ -183,11 +183,11 @@ class mainStore {
             .then((data) => toast(data.message, { position: 'top-center', style: { width: "200px" } }))
             .catch(err => console.error(err))
             .finally(() => {
-                const tag = { ...this.tags[tagID], color }
+                const tag = { ...this.tags[tagID as unknown as number], color }
                 this.tags = { ...this.tags, [tagID]: tag };
             })
     }
-    onChangeTagPinned = async (tagID: any, pinned: boolean) => {
+    onChangeTagPinned = async (tagID: string, pinned: boolean) => {
         const options = {
             method: "PATCH",
             headers: {
@@ -210,24 +210,25 @@ class mainStore {
             .then((data) => toast(data.message, { position: 'top-center', style: { width: "200px" } }))
             .catch(err => console.error(err))
             .finally(() => {
-                const tag = { ...this.tags[tagID], pinned }
+                const tag = { ...this.tags[tagID as unknown as number], pinned }
                 this.tags = { ...this.tags, [tagID]: tag };
             })
     }
 
-    setItems = (val) => {
+    setItems = (val: BookmarkType[]) => {
+        console.log('setItems', val)
         this.items = val;
     };
-    createItem = (val) => {
+    createItem = (val: BookmarkType) => {
         this.items = this.items.concat(val);
     };
     setType = (val: ActionType) => {
         this.type = val;
     };
-    setIdItem = (val) => {
+    setIdItem = (val: number) => {
         this.idItem = val;
     };
-    setIsOpenSettingsModal = (val) => {
+    setIsOpenSettingsModal = (val: boolean) => {
         this.isOpenSettingsModal = val;
     };
     setSelectedItemSettingsModal = (val: string) => {
@@ -313,7 +314,7 @@ class mainStore {
                 this.fetchItems()
             })
     }
-    onCreateItem = (val, isCreateCopy = false as boolean, onSave = false) => {
+    onCreateItem = (val: ItemType, isCreateCopy = false as boolean, onSave = false) => {
         const options = {
             method: onSave ? 'PATCH' : !isCreateCopy ? this.type === ActionType.EDIT ? 'PATCH' : 'POST' : 'POST',
             headers: {
@@ -390,7 +391,7 @@ class mainStore {
             })
 
     }
-    onCreateUser = (val: any, setIsUserWasCreate: (val: boolean) => void) => {
+    onCreateUser = (val: UsetType, setIsUserWasCreate: (val: boolean) => void) => {
         const options = {
             method: 'POST',
             headers: {
@@ -427,7 +428,7 @@ class mainStore {
 
     }
 
-    createUserName = (val: any) => {
+    createUserName = (val: UsernameType) => {
         const options = {
             method: 'PATCH',
             headers: {
@@ -460,7 +461,7 @@ class mainStore {
                 toast(err.message, { position: 'top-center', style: { width: "200px" } })
             })
     }
-    createPassword = (val: any) => {
+    createPassword = (val: PasswordType) => {
         const options = {
             method: 'PATCH',
             headers: {
@@ -545,7 +546,7 @@ class mainStore {
                 toast(err.message, { position: 'top-center', style: { width: "200px" } })
             })
     }
-    login = (values) => {
+    login = (values: LoginType) => {
         const options = {
             method: 'POST',
             headers: {
@@ -609,7 +610,7 @@ class mainStore {
                 toast(err.message, { position: 'top-center', style: { width: "200px" } })
             })
     }
-    importBookmarks = (selectedFile: any) => {
+    importBookmarks = (selectedFile: File) => {
         const formData = new FormData();
         formData.append('pocket-zip', selectedFile);
         const options = {
