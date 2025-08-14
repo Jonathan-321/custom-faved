@@ -92,7 +92,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
             } */}
             {tags && <div className="flex flex-start text-left w-full flex-wrap pb-2">
               {tags.map((tagID) => {
-                const fullPath = tagList[tagID]?.fullPath;
+                const fullPath = tagList[tagID]?.fullPath; // TODO: fix - this errors out on tag delete
                 const tagName = getTagName(fullPath);
                 const [isHovered, setIsHovered] = React.useState(false);
 
