@@ -64,7 +64,7 @@ const TagEdit = observer(({ className, values, onChange }: { className?: string,
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className={['text-left'].join(' ')}
+            className={['text-left h-auto whitespace-normal'].join(' ')}
           >
             {selected.length > 0
               ? selected.map(v => tags.find(t => t.id === v)?.fullPath).join(', ')

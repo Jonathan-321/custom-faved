@@ -121,12 +121,17 @@ class mainStore {
                     if (response.status === 403 || response.status === 401) {
                         this.showLoginPage = true
                     }
-                    throw new Error(`HTTP error! status: ${response.status}`);
+
+                    return response.json().then(data => {
+                        throw new Error(data.message || `HTTP error! status: ${response.status}`);
+                    });
                 }
                 return response.json();
             })
             .then((data) => toast(data.message, { position: 'top-center', style: { width: "200px" } }))
-            .catch((err, data) => toast('Tag not deleted: ' + (err instanceof Error ? err.message : 'Unknown error'), { position: 'top-center', }))
+            .catch((err) => {
+                toast.error((err instanceof Error ? err.message : 'Tag not deleted'), {position: 'top-center'})
+            })
             .finally(() => {
                 this.fetchTags()
                 this.fetchItems()
@@ -582,9 +587,9 @@ class mainStore {
     initialDatabase = () => {
         const options = {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            // headers: {
+            //     'Content-Type': 'multipart/form-data; boundary=geckoformboundary262df991ff6535437a260f8dd5e61d8b',
+            // },
 
         };
 
