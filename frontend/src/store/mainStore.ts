@@ -611,12 +611,9 @@ class mainStore {
     }
     importBookmarks = (selectedFile: any) => {
         const formData = new FormData();
-        formData.append('zipFile', selectedFile);
+        formData.append('pocket-zip', selectedFile);
         const options = {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
             body: formData
         };
 
@@ -624,23 +621,26 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {
-                        this.showLoginPage = true
+                        this.showLoginPage = true;
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true
+                        this.showInitializeDatabasePage = true;
                     }
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    return response.headers.get('Content-Type')?.includes('application/json')
+                        ? response.json().then(json => Promise.reject(json))
+                        : response.text().then(text => Promise.reject(new Error(text)));
                 }
                 return response.json();
             })
             .then((response) => {
-                this.fetchTags()
-                toast(response.message, { position: 'top-center', style: { width: "200px" } })
+                this.fetchItems();
+                this.fetchTags();
+                toast(response.message, { position: 'top-center', style: { width: "200px" } });
             })
             .catch((err) => {
-                toast(err.message, { position: 'top-center', style: { width: "200px" } })
-            })
-    }
+                toast(err.message, { position: 'top-center', style: { width: "200px" } });
+            });
+    };
 
 }
 
