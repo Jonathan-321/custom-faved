@@ -75,10 +75,14 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
         };
 
         return (
-          <div className="flex flex-col items-start w-full flex-wrap w-[400px] table-layout-fixed">
-            {title && <span className="flex items-start text-left w-full flex-wrap pb-2"><h4 className="scroll-m-20 text-xl font-semibold tracking-tight "> {title} </h4></span>}
-            {url && <span className="pb-2"><a className="text-custom-blue underline" href={url} target="_blank" rel="noopener noreferrer">{url}</a></span>}
-
+          <div className="flex flex-col items-start w-full flex-wrap w-[400px] table-layout-fixed break-words">
+            {title && <span className="flex items-start text-left w-full flex-wrap pb-2 break-words"><h4 className="scroll-m-20 text-xl font-semibold tracking-tight "> {title} </h4></span>}
+            {url &&
+              <span className="flex items-start text-left w-full flex-wrap pb-2 break-all">
+                <a className="text-custom-blue underline" href={url} target="_blank" rel="noopener noreferrer">
+                  {url}
+                </a>
+              </span>}
             {/* {
               tags && <div className="flex items-start text-left w-full flex-wrap pb-2">
                 {tags.map((tagID) => {
@@ -133,6 +137,8 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
       enableSorting: true,
       enableHiding: false,
       cell: ({ row }) => {
+        const comments = row.original.comments;
+
         return (
           <div className="flex flex-col items-start w-full flex-wrap">
             <div className="flex flex-col items-start text-start">
@@ -140,7 +146,12 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
                 <p className="leading-7 [&:not(:first-child)]:mt-6">
                   {row.getValue("description")}
                 </p>
+              </div>
+              <div>
+                {/* <p className="leading-7 [&:not(:first-child)]:mt-6"> */}
+                <blockquote className="mt-6 border-l-2 pl-6 italic">    {comments}</blockquote>
 
+                {/* </p> */}
               </div>
             </div >
           </div >
@@ -270,7 +281,7 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
       </div>
 
       <div className="m-2 overflow-hidden ">
-        <Table className="table-layout-fixed w-[100%]">
+        <Table className=" table-fixed w-full">
           <TableBody>
             {currentRows.length ? (
               currentRows.map((row) => (
@@ -280,7 +291,7 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
                 >
                   {row.getVisibleCells().map((cell) => {
                     return (
-                      <TableCell key={cell.id} className={`${cell.id.split("_")[1] !== "id" ? 'w-[45%] pb-5 pt-5' : 'w-[3%] pb-5 pt-5'}`}>
+                      <TableCell key={cell.id} className={`${cell.id.split("_")[1] !== "id" ? 'w-[45%] pb-5 pt-5 break-words' : 'w-[3%] pb-5 pt-5 break-words'}`}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
