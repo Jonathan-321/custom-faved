@@ -66,14 +66,14 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
         const tags = row.original.tags;
         const updatedAt = row.original.updated_at;
         const createdAt = row.original.created_at;
-        const getTagName = (fullPath) => {
-          const lastSlashIndex = fullPath.lastIndexOf('/');
-          if (lastSlashIndex === -1) {
-            return fullPath;
-          } else {
-            return fullPath.substring(lastSlashIndex);
+        const getTagName = (fullPath: string | undefined): string => { // Handle undefined fullPath
+          if (!fullPath) {
+            return "";
           }
+          return fullPath.substring(fullPath.lastIndexOf("/") + 1);
+
         };
+
         return (
           <div className="flex flex-col items-start w-full flex-wrap w-[400px] table-layout-fixed">
             {title && <span className="flex items-start text-left w-full flex-wrap pb-2"><h4 className="scroll-m-20 text-xl font-semibold tracking-tight "> {title} </h4></span>}
@@ -92,7 +92,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
             } */}
             {tags && <div className="flex flex-start text-left w-full flex-wrap pb-2">
               {tags.map((tagID) => {
-                const fullPath = tagList[tagID]?.fullPath; // TODO: fix - this errors out on tag delete
+                const fullPath = tagList[tagID]?.fullPath;
                 const tagName = getTagName(fullPath);
                 const [isHovered, setIsHovered] = React.useState(false);
 
