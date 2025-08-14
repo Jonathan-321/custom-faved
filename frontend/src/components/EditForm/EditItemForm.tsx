@@ -20,9 +20,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 import { formSchema } from './utils';
 import { ActionType } from '../dashboard/types';
+import type { ItemType } from '@/types/types';
 
 
-const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModal }) => {
+const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void }> = ({ setIsShowEditModal }) => {
   const store = useContext(StoreContext);
   const [isOpenInPage] = useState(false)
   const initialData = {
@@ -45,21 +46,21 @@ const EditItemForm: React.FC<{ setIsShowEditModal: any }> = ({ setIsShowEditModa
     form.reset(defaultValues)
   }, [store.idItem])
 
-  const onSubmit = (val) => {
+  const onSubmit = (val: ItemType) => {
     store.onCreateItem(val, false)
     setIsShowEditModal(false)
     form.reset()
   };
-  const onSubmitSaveCopy = (val) => {
+  const onSubmitSaveCopy = (val: ItemType) => {
     store.onCreateItem(val, true)
     setIsShowEditModal(false)
     form.reset()
   }
-  const onSave = (val) => {
+  const onSave = (val: ItemType) => {
     store.onCreateItem(val, false, true)
   };
   const onDeleteItem = () => {
-    store.onDeleteItem(store.idItem)
+    store.onDeleteItem(store.idItem as number)
     setIsShowEditModal(false)
     form.reset()
   }

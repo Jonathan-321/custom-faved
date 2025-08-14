@@ -9,4 +9,5 @@ export const formSchema = z.object({
     tags: z.array(z.any()).optional(),
     updated_at: z.any().optional(),
     id: z.any().optional(),
+    created_at: z.any().optional(),
 })

@@ -2,10 +2,10 @@ import { makeAutoObservable } from 'mobx';
 import { toast } from 'sonner';
 import { API_ENDPOINTS } from './api';
 import { ActionType } from '@/components/dashboard/types';
-import type { LoginType, PasswordType, UsernameType, UsetType, ItemType, TagsObjectType, TagType, BookmarkType } from '@/types/types';
+import type { LoginType, PasswordType, UsernameType, UsetType, ItemType, TagsObjectType, TagType } from '@/types/types';
 
 class mainStore {
-    items: BookmarkType[] = [];
+    items: ItemType[] = [];
     tags: TagsObjectType[] = [];
     type: ActionType = "" as ActionType
     userName: string = "" as string
@@ -215,11 +215,11 @@ class mainStore {
             })
     }
 
-    setItems = (val: BookmarkType[]) => {
+    setItems = (val: ItemType[]) => {
         console.log('setItems', val)
         this.items = val;
     };
-    createItem = (val: BookmarkType) => {
+    createItem = (val: ItemType) => {
         this.items = this.items.concat(val);
     };
     setType = (val: ActionType) => {

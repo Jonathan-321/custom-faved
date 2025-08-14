@@ -15,6 +15,8 @@ export type ItemType = {
     comments: string;
     imageURL: string;
     tags: string[];
+    created_at: string;
+    updated_at: string | null;
 }
 export type TagType = {
     id: number | string;
@@ -31,14 +33,14 @@ export type TagsObjectType = {
     [tagId: number | string]: TagType; // Use number if tagId is a number, otherwise use string
 }
 
-export type BookmarkType = {
-    id: number;
-    title: string;
-    description: string;
-    url: string;
-    comments: string;
-    image: string;
-    tags: number[]; // Assuming tag IDs are numbers
-    created_at: string;
-    updated_at: string | null;
-}
+// export type BookmarkType = {
+//     id: number;
+//     title: string;
+//     description: string;
+//     url: string;
+//     comments: string;
+//     image: string;
+//     tags: number[]; // Assuming tag IDs are numbers
+//     created_at: string;
+//     updated_at: string | null;
+// }

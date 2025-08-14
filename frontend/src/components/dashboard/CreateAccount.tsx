@@ -28,7 +28,7 @@ const formSchema = z.object({
 );
 
 
-export const CardsCreateAccount: React.FC<{ setIsAuthSuccess: any }> = ({ setIsAuthSuccess }) => {
+export const CardsCreateAccount: React.FC<{ setIsAuthSuccess: (val: boolean) => void }> = ({ setIsAuthSuccess }) => {
   const store = useContext(StoreContext);
 
 
