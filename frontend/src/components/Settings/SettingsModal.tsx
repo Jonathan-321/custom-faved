@@ -115,9 +115,8 @@ export const SettingsDialog = observer(({ open, setOpen }: Props) => {
               </SidebarGroup>
             </SidebarContent>
           </Sidebar>
-          <main className="flex h-[900px] md:h-[800px] sm:h-[100%] lg:max-h-[600px] flex-1 flex-col overflow-hidden">
+          <main className="flex md:h-[800px] sm:h-[100%] lg:max-h-[800px] flex-1 flex-col overflow-hidden">
             <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-
               <div className="flex items-center gap-2 px-4">
                 <SidebarTrigger className="-ml-1" />
                 <Breadcrumb>
