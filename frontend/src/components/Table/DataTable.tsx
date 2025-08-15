@@ -62,6 +62,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
       enableHiding: false,
       cell: ({ row }) => {
         const url = row.original.url;
+        const imageURL = row.original.image;
         const title = row.original.title;
         const tags = row.original.tags;
         const updatedAt = row.original.updated_at;
@@ -75,15 +76,27 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
         };
 
         return (
-          <div className="flex flex-col items-start w-full flex-wrap w-[400px] table-layout-fixed break-words">
-            {title && <span className="flex items-start text-left w-full flex-wrap pb-2 break-words"><h4 className="scroll-m-20 text-xl font-semibold tracking-tight "> {title} </h4></span>}
-            {url &&
-              <span className="flex items-start text-left w-full flex-wrap pb-2 break-all">
-                <a className="text-custom-blue underline" href={url} target="_blank" rel="noopener noreferrer">
-                  {url}
-                </a>
-              </span>}
-            {/* {
+          <div className="flex flex-column flex-wrap sm:flex-row  md:flex-nowrap lg:flex-nowrap md:flex-row kg:flex-row items-start w-full">
+            {imageURL &&
+              <div className="flex w-[175px] pb-4 md:pr-4 lg:pr-4 ">
+                <img className="w-auto h-auto max-w-[175px] w-[175px] pr-4" src={imageURL} />
+              </div>
+            }
+            <div className="flex flex-col items-start flex-wrap  table-layout-fixed break-words">
+              {title && <span className="flex items-start text-left w-full flex-wrap pb-2 break-words">
+                <h4 className="scroll-m-20 text-xl font-semibold tracking-tight ">
+                  {title
+                  }
+                </h4>
+              </span>
+              }
+              {url &&
+                <span className="flex items-start text-left w-full flex-wrap pb-2 break-all">
+                  <a className="text-custom-blue underline" href={url} target="_blank" rel="noopener noreferrer">
+                    {url}
+                  </a>
+                </span>}
+              {/* {
               tags && <div className="flex items-start text-left w-full flex-wrap pb-2">
                 {tags.map((tagID) => {
                   console.log(' {tagList[tagID]?.fullPath}', tagList[tagID]?.fullPath)
@@ -94,38 +107,41 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
                 })}
               </div>
             } */}
-            {tags && <div className="flex flex-start text-left w-full flex-wrap pb-2">
-              {tags.map((tagID) => {
-                const fullPath = tagList[tagID]?.fullPath;
-                const tagName = getTagName(fullPath);
-                const [isHovered, setIsHovered] = React.useState(false);
+              {tags && <div className="flex flex-start text-left w-full flex-wrap pb-2">
+                {tags.map((tagID) => {
+                  const fullPath = tagList[tagID]?.fullPath;
+                  const tagName = getTagName(fullPath);
+                  const [isHovered, setIsHovered] = React.useState(false);
 
-                return (
-                  <Badge
-                    key={tagID}
-                    variant={'secondary'}
-                    className="mr-2 mb-2"
-                    // className="mr-2 mb-2 bg-white text-gray border border-gray relative" // Добавили relative для позиционирования tooltip
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                  >
-                    <span
-                      className={`w-3 h-3 rounded-full inline-block mr-1 ${colorMap[tagList[tagID]?.color || 'gray']}`}
-                    ></span>
-                    <span>{isHovered ? fullPath : tagName}</span>
-                    {isHovered && (
-                      <div className="absolute top-full left-0 mt-1 p-2 bg-gray-800 text-white text-xs rounded z-10">
-                        {fullPath}
-                      </div>
-                    )}
-                  </Badge>
-                );
-              })}
-            </div>}
-            <div>
-              <p className="text-muted-foreground text-sm">{updatedAt ?? createdAt}</p>
-            </div>
-          </div >
+                  return (
+                    <Badge
+                      key={tagID}
+                      variant={'secondary'}
+                      className="mr-2 mb-2"
+                      // className="mr-2 mb-2 bg-white text-gray border border-gray relative" // Добавили relative для позиционирования tooltip
+                      onMouseEnter={() => setIsHovered(true)}
+                      onMouseLeave={() => setIsHovered(false)}
+                    >
+                      <span
+                        className={`w-3 h-3 rounded-full inline-block mr-1 ${colorMap[tagList[tagID]?.color || 'gray']}`}
+                      ></span>
+                      <span>{isHovered ? fullPath : tagName}</span>
+                      {isHovered && (
+                        <div className="absolute top-full left-0 mt-1 p-2 bg-gray-800 text-white text-xs rounded z-10">
+                          {fullPath}
+                        </div>
+                      )}
+                    </Badge>
+                  );
+                })}
+              </div>}
+              <div>
+                <p className="text-muted-foreground text-sm">{updatedAt ?? createdAt}</p>
+              </div>
+
+            </div >
+          </div>
+
         );
       },
     },

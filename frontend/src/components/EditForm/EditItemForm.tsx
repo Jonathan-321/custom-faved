@@ -31,7 +31,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void }> = (
     description: "",
     comments: '',
     created_at: undefined,
-    imageURL: undefined,
+    image: undefined,
     tags: [],
     updated_at: undefined,
     url: ''
@@ -174,7 +174,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void }> = (
                   <Label htmlFor="name-1"></Label>
                   <FormField
                     control={form.control}
-                    name="imageURL"
+                    name="image"
                     render={({ field }) => {
                       return (
                         <FormItem>

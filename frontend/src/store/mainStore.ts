@@ -130,7 +130,7 @@ class mainStore {
             })
             .then((data) => toast(data.message, { position: 'top-center', style: { width: "200px" } }))
             .catch((err) => {
-                toast.error((err instanceof Error ? err.message : 'Tag not deleted'), {position: 'top-center'})
+                toast.error((err instanceof Error ? err.message : 'Tag not deleted'), { position: 'top-center' })
             })
             .finally(() => {
                 this.fetchTags()
@@ -330,7 +330,7 @@ class mainStore {
                 description: val.description || '',
                 url: val.url || '',
                 comments: val.comments || '',
-                image: val.imageURL || '',
+                image: val.image || '',
                 tags: val.tags
             })
         };
@@ -382,7 +382,7 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                if (response.message === "User created successfully.") {
+                if (response.message === "User created successfully." || response.message === "User retrieved successfully.") {
                     setIsAuthSuccess(true);
                 }
                 if (response.data.user !== null) {
@@ -615,14 +615,14 @@ class mainStore {
                 toast(err.message, { position: 'top-center', style: { width: "200px" } })
             })
     }
-    importBookmarks = (selectedFile: File) => {
+    importBookmarks = (selectedFile: File, setIsLoading: (val: boolean) => void) => {
         const formData = new FormData();
         formData.append('pocket-zip', selectedFile);
         const options = {
             method: 'POST',
             body: formData
         };
-
+        setIsLoading(true)
         fetch(API_ENDPOINTS.importBookmarks.import, options)
             .then(response => {
                 if (!response.ok) {
@@ -645,7 +645,8 @@ class mainStore {
             })
             .catch((err) => {
                 toast(err.message, { position: 'top-center', style: { width: "200px" } });
-            });
+            })
+            .finally(() => setIsLoading(false))
     };
 
 }

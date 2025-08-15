@@ -8,6 +8,7 @@ import { observer } from "mobx-react-lite"
 import { useContext, useEffect, useRef, useState } from "react"
 import { StoreContext } from "@/store/storeContext"
 import { useNavigate } from "react-router-dom"
+import { Loader2Icon } from "lucide-react"
 
 export const ImportModal: React.FC = observer(() => {
     const store = useContext(StoreContext);
@@ -18,6 +19,7 @@ export const ImportModal: React.FC = observer(() => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [isUploading, setIsUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
     const [uploadError, setUploadError] = useState<string | null>(null);
     const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -74,7 +76,9 @@ export const ImportModal: React.FC = observer(() => {
                     <div className="grid gap-4">
                         <div className="grid gap-3">
                             <div className="grid w-full max-w-sm pb-[20px] items-center gap-3">
-                                <Button onClick={() => { store.importBookmarks(selectedFile) }} variant={"default"} type="submit" >Import Bookmarks</Button>
+                                <Button onClick={() => { store.importBookmarks(selectedFile, setIsLoading) }} variant={"default"} disabled={!selectedFile} type="submit" >
+                                    {isLoading && <Loader2Icon className="animate-spin" />}
+                                    Import Bookmarks</Button>
                             </div>
                         </div>
 

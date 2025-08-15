@@ -13,7 +13,7 @@ export type ItemType = {
     description: string;
     url: string;
     comments: string;
-    imageURL: string;
+    image: string;
     tags: string[];
     created_at: string;
     updated_at: string | null;
