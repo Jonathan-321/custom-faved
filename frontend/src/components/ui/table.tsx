@@ -57,7 +57,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
     <tr
       data-slot="table-row"
       className={cn(
-        "align-top border-b hover:bg-muted/50 data-[state=selected]:bg-muted transition-colors", // align-top добавлено
+        "align-top border-b hover:bg-muted/50 data-[state=selected]:bg-muted transition-colors",
         className
       )}
       {...props}
@@ -82,13 +82,8 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
   return (
     <td
       data-slot="table-cell"
-      style={{
-        wordWrap: "break-word",
-        overflowWrap: "break-word",
-        hyphens: "auto"
-      }}
       className={cn(
-        "p-2 align-top whitespace-normal", // align-top и whitespace-normal добавлено
+        "p-2 align-top whitespace-normal break-words hyphenate",
         className
       )}
       {...props}

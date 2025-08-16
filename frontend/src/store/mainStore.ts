@@ -317,6 +317,7 @@ class mainStore {
             .catch(err => toast(err.message, { position: 'top-center', style: { width: "200px" } }))
             .finally(() => {
                 this.fetchItems()
+                this.fetchTags()
             })
     }
     onCreateItem = (val: ItemType, isCreateCopy = false as boolean, onSave = false) => {
@@ -354,6 +355,7 @@ class mainStore {
                 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                 if (!onSave) {
                     this.fetchItems()
+                    this.fetchTags()
                     this.setCurrentPage(this.currentPage)
                 }
 

@@ -272,14 +272,17 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void }> = (
                 </div>
               </div>
               <DialogFooter>
-                <Button onClick={form.handleSubmit(onSubmit)} type="submit" variant="default">Save & Close</Button>
-                <Button onClick={form.handleSubmit(onSubmitSaveCopy)} type="submit" variant="secondary">Save as Copy</Button>
-                <Button onClick={form.handleSubmit(onSave)} type="submit" variant="secondary">Save</Button>
+                <Button onClick={form.handleSubmit(onSubmit)} type="submit" variant="default">{store.type === ActionType.EDIT ? 'Save & Close' : 'Save'}</Button>
+                {store.type === ActionType.EDIT && <Button onClick={form.handleSubmit(onSubmitSaveCopy)} type="submit" variant="secondary">Save as Copy</Button>}
+                {store.type === ActionType.EDIT && <Button onClick={form.handleSubmit(onSave)} type="submit" variant="secondary">Save</Button>}
+
                 <Button onClick={() => {
+                  store.fetchItems()
+                  store.fetchTags()
                   setIsShowEditModal(false)
                   form.reset()
                 }} type="reset" variant="secondary">Close</Button>
-                <Button onClick={onDeleteItem} variant="destructive">Delete</Button>
+                {store.type === ActionType.EDIT && <Button onClick={onDeleteItem} variant="destructive">Delete</Button>}
               </DialogFooter>
             </DialogContent >
           </DialogOverlay >

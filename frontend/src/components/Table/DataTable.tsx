@@ -83,7 +83,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
               </div>
             }
             <div className="flex flex-col items-start flex-wrap  table-layout-fixed break-words">
-              {title && <span className="flex items-start text-left w-full flex-wrap pb-2 break-words">
+              {title && <span className="flex items-start text-left w-full flex-wrap pb-2 break-words break-all">
                 <h4 className="scroll-m-20 text-xl font-semibold tracking-tight ">
                   {title
                   }
@@ -156,7 +156,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
         const comments = row.original.comments;
 
         return (
-          <div className="flex flex-col items-start w-full flex-wrap">
+          <div className="flex flex-col items-start w-full flex-wrap break-words break-all">
             <div className="flex flex-col items-start text-start">
               <div>
                 <p className="leading-7 [&:not(:first-child)]:mt-6">
@@ -180,6 +180,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
       accessorKey: "id",
       enableHiding: false,
       cell: ({ row }) => (
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -198,6 +199,8 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
             <DropdownMenuItem variant="destructive" onClick={() => onDeleteHandler(row.getValue("id"))}>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+
+
       ),
     },
   ]
@@ -307,7 +310,7 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
                 >
                   {row.getVisibleCells().map((cell) => {
                     return (
-                      <TableCell key={cell.id} className={`${cell.id.split("_")[1] !== "id" ? 'w-[45%] pb-5 pt-5 break-words' : 'w-[3%] pb-5 pt-5 break-words'}`}>
+                      <TableCell key={cell.id} className={`${cell.id.split("_")[1] !== "id" ? 'w-[47%] pb-5 pt-5 break-words ' : 'pb-5 pt-5 flex justify-center '}`}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
