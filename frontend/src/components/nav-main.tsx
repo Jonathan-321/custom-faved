@@ -8,8 +8,11 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import {StoreContext} from "@/store/storeContext.ts";
+import * as React from "react";
+import {observer} from "mobx-react-lite";
 
-export function NavMain({
+export const NavMain = observer(({
   items,
 }: {
   items: {
@@ -17,27 +20,40 @@ export function NavMain({
     url: string
     icon?: Icon
   }[]
-}) {
+}) => {
+  const store = React.useContext(StoreContext)
+
+  const setAllTags = () => {
+    store.setCurrentTagId(0);
+    store.setCurrentPage(1);
+  }
+
+  const setNoTags = () => {
+    store.setCurrentTagId(null);
+    store.setCurrentPage(1);
+  }
+
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">
             <SidebarMenuButton
-              tooltip="All item"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
+              onClick={setAllTags}
+              tooltip="All items"
+              className={"active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear" + (store.selectedTagId === '0' ? " !bg-primary !text-primary-foreground" : "")}
             >
-              {/* <IconCirclePlusFilled /> */}
               <span>All items</span>
             </SidebarMenuButton>
-            {/* <Button
-              size="icon"
-              className="size-8 group-data-[collapsible=icon]:opacity-0"
-              variant="outline"
+          </SidebarMenuItem>
+          <SidebarMenuItem className="flex items-center gap-2">
+            <SidebarMenuButton
+              onClick={setNoTags}
+              tooltip="Untagged items"
+              className={"active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear" + (store.selectedTagId === null ? " !bg-primary !text-primary-foreground" : "")}
             >
-              <IconMail />
-              <span className="sr-only">Inbox</span>
-            </Button> */}
+              <span>Untagged</span>
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>
@@ -53,4 +69,4 @@ export function NavMain({
       </SidebarGroupContent>
     </SidebarGroup>
   )
-}
+})

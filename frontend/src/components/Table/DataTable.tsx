@@ -60,7 +60,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
       // ),
       enableSorting: true,
       enableHiding: false,
-      cell: ({ row }) => {
+      cell: observer(({ row }) => {
         const url = row.original.url;
         const imageURL = row.original.image;
         const title = row.original.title;
@@ -112,12 +112,19 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
                   const fullPath = tagList[tagID]?.fullPath;
                   const tagName = getTagName(fullPath);
                   const [isHovered, setIsHovered] = React.useState(false);
+                  const store = React.useContext(StoreContext);
+
+                  const setTag = () => {
+                    store.setCurrentTagId(tagID);
+                    store.setCurrentPage(1);
+                  }
 
                   return (
                     <Badge
                       key={tagID}
                       variant={'secondary'}
-                      className="mr-2 mb-2"
+                      className="mr-2 mb-2 cursor-pointer"
+                      onClick={setTag}
                       // className="mr-2 mb-2 bg-white text-gray border border-gray relative" // Добавили relative для позиционирования tooltip
                       onMouseEnter={() => setIsHovered(true)}
                       onMouseLeave={() => setIsHovered(false)}
@@ -143,7 +150,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
           </div>
 
         );
-      },
+      }),
     },
     {
       accessorKey: "description",
@@ -221,7 +228,9 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
   const columns = createColumns(setIsShowEditModal, store.setType, store.setIdItem, store.onDeleteItem, store.onCreateItem, store.tags);
-  const data = store.items
+  const data = store.selectedTagId === '0' ? store.items : store.items.filter((item => {
+    return (store.selectedTagId === null && item.tags.length === 0) || item.tags.includes(Number(store.selectedTagId));
+  } ))
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const table = useReactTable({
     data,

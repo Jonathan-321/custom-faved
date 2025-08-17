@@ -16,9 +16,13 @@ class mainStore {
     isOpenSettingsModal: boolean = false;
     selectedItemSettingsModal: string = "Authentication settings";
     currentPage: number = 1;
+    selectedTagId: string | null = '0'; // Default to '0' for no tag selected
 
     constructor() {
         makeAutoObservable(this); // Makes state observable and actions transactional
+    }
+    setCurrentTagId = (val: string | null) => {
+        this.selectedTagId = val === null ? null : val.toString();
     }
     setCurrentPage = (val: number) => {
         this.currentPage = val;
