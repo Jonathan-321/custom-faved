@@ -6,6 +6,7 @@ import {
 import { observer } from "mobx-react-lite"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { ArrowDownUp, X } from "lucide-react"
+import { useState } from "react"
 
 
 const capitalizeFirstLetter = ([first, ...rest]) => {
@@ -17,8 +18,8 @@ export const PopoverSort: React.FC<{
     selectedSortColumn: any;
     handleSortChange: any;
     sortableColumns: any;
-    setSortDesc: any;
-}> = observer(({ selectedSortColumn, handleSortChange, sortableColumns, setSortDesc }) => {
+}> = observer(({ selectedSortColumn, handleSortChange, sortableColumns }) => {
+    const [sortDirection, setSortDirection] = useState()
     return (
         <div>
             <PopoverTrigger asChild>
@@ -27,7 +28,7 @@ export const PopoverSort: React.FC<{
             <PopoverContent className=" flex flex-row flex-nowrap w-[320px] justify-between items-center" >
                 <Select
                     value={selectedSortColumn || ""}
-                    onValueChange={(e) => { handleSortChange(e) }}
+                    onValueChange={(e) => { handleSortChange(e, sortDirection) }}
                 >
                     <SelectTrigger className="w-[130px]">
                         <SelectValue placeholder="Sort by..." />
@@ -44,27 +45,27 @@ export const PopoverSort: React.FC<{
 
                 </Select>
                 <div >
-                    {selectedSortColumn && <Select
-                        defaultValue="ASC"
-                        onValueChange={(e) => {
-                            if (e === 'ASC') {
-                                setSortDesc(false); handleSortChange(selectedSortColumn);
-                            } else {
-                                setSortDesc(true); handleSortChange(selectedSortColumn);
-                            }
-                        }}
-                    >
-                        <SelectTrigger className="w-[90px]">
-                            <SelectValue placeholder="ASC" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectGroup>
-                                <SelectItem value="ASC">ASC</SelectItem>
-                                <SelectItem value="DESC">DESC</SelectItem>
-                            </SelectGroup>
-                        </SelectContent>
+                    {selectedSortColumn
+                        &&
+                        <Select
+                            defaultValue="ASC"
 
-                    </Select>
+                            onValueChange={(e) => {
+                                handleSortChange(selectedSortColumn, e === "ASC" ? "asc" : "desc")
+                                setSortDirection(e === "ASC" ? "asc" : "desc")
+                            }}
+                        >
+                            <SelectTrigger className="w-[90px]">
+                                <SelectValue placeholder="ASC" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectItem value="ASC">ASC</SelectItem>
+                                    <SelectItem value="DESC">DESC</SelectItem>
+                                </SelectGroup>
+                            </SelectContent>
+
+                        </Select>
                     }
                 </div>
                 {selectedSortColumn && <Button variant={"ghost"} onClick={() => { handleSortChange("") }} className="flex "> <X color="#7b7474" strokeWidth={1} /></Button>}

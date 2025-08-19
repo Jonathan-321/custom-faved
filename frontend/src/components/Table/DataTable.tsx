@@ -49,15 +49,14 @@ export type Payment = {
 
 const createColumns = (setIsShowEditModal: (val: boolean) => void,
   setType: (val: ActionType) => void,
-  setIdItem: (val: any) => void,
-  onDeleteHandler: (val: any) => void,
+  setIdItem: (val: number) => void,
+  onDeleteHandler: (val: number) => void,
   onCreateItem: any,
-  tagList: Object): ColumnDef<z.infer<typeof schema>>[] => [
+  tagList: Object,
+): ColumnDef<z.infer<typeof schema>>[] => [
     {
       accessorKey: "url",
-      // header: ({ column }) => (
-      //   <DataTableColumnHeader column={column} title="Title" />
-      // ),
+      header: 'url',
       enableSorting: true,
       enableHiding: false,
       cell: ({ row }) => {
@@ -147,14 +146,11 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
     },
     {
       accessorKey: "description",
-      // header: ({ column }) => (
-      //   <DataTableColumnHeader column={column} title="Description" />
-      // ),
+      header: 'description',
       enableSorting: true,
       enableHiding: false,
       cell: ({ row }) => {
         const comments = row.original.comments;
-
         return (
           <div className="flex flex-col items-start w-full flex-wrap break-words break-all">
             <div className="flex flex-col items-start text-start">
@@ -164,10 +160,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
                 </p>
               </div>
               <div>
-                {/* <p className="leading-7 [&:not(:first-child)]:mt-6"> */}
-                <blockquote className="mt-6 border-l-2 pl-6 italic">    {comments}</blockquote>
-
-                {/* </p> */}
+                <blockquote className="mt-6 border-l-2 pl-6 italic">{comments}</blockquote>
               </div>
             </div >
           </div >
@@ -175,12 +168,31 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
       },
     },
     {
+      accessorKey: "title",
+      enableSorting: true,
+      enableHiding: true,
+    },
+    {
+      accessorKey: "created_at",
+      enableSorting: true,
+      enableHiding: true,
+    },
+    {
+      accessorKey: "updated_at",
+      enableSorting: true,
+      enableHiding: true,
+    },
+    {
+      accessorKey: "comments",
+      enableSorting: true,
+      enableHiding: true,
+    },
+    {
       header: "",
       // id: "actions",
       accessorKey: "id",
       enableHiding: false,
       cell: ({ row }) => (
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -208,6 +220,9 @@ export const schema = z.object({
   id: z.number(),
   url: z.string(),
   description: z.string(),
+  created_at: z.string(),
+  updated_at: z.string(),
+  title: z.string(),
 })
 
 export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }> = observer(({ setIsShowEditModal }) => {
@@ -217,6 +232,8 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
+  console.log('sorting', sorting);
+  const [selectedSortColumn, setSelectedSortColumn] = React.useState<string | null>(null);
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
@@ -261,30 +278,41 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
   const endIndex = startIndex + rowsPerPage;
   const currentRows = table.getRowModel().rows.slice(startIndex, endIndex);
   const sortableColumns = columns.filter((column) => column.enableSorting);
-  const [selectedSortColumn, setSelectedSortColumn] = React.useState<string | null>(null);
-  const [sortDesc, setSortDesc] = React.useState(true);
+
   const [showSort, setShowSort] = React.useState(false);
-  const handleSortChange = (columnAccessorKey: string) => {
+  const handleSortChange = (columnAccessorKey: string, sortDirection: 'asc' | 'desc') => {
+    console.log('sortDirection', sortDirection)
     if (columnAccessorKey === "") {
       setSorting([]);
       setSelectedSortColumn(null);
-      setSortDesc(false);
       return;
     }
+
     setSelectedSortColumn(columnAccessorKey);
 
-    if (sorting[0]?.id === columnAccessorKey) {
-      setSortDesc(!sortDesc);
-    } else {
-      setSortDesc(false);
-    }
+    const currentSort = sorting[0];
+    const isCurrentColumn = currentSort?.id === columnAccessorKey;
 
+    let newSortDesc = sortDirection === 'desc' || (!isCurrentColumn ? false : !currentSort?.desc)
 
     setSorting([{
       id: columnAccessorKey,
-      desc: sortDesc,
+      desc: newSortDesc,
     }]);
   };
+
+  React.useEffect(() => {
+    table
+      .getAllColumns()
+      .filter(
+        (column) =>
+          typeof column.accessorFn !== "undefined" && column.getCanHide()
+      )
+      .map((column) => {
+        column.toggleVisibility(false)
+      })
+  }, [])
+
   return (
     <div className="w-full">
       <div className="flex items-center py-4 m-[10px]">
@@ -294,9 +322,9 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
             selectedSortColumn={selectedSortColumn}
             handleSortChange={handleSortChange}
             sortableColumns={sortableColumns}
-            setSortDesc={setSortDesc}
           />
         </Popover>
+
       </div>
 
       <div className="m-2 overflow-hidden ">

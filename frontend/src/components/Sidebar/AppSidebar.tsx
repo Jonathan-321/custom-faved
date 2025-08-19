@@ -179,8 +179,8 @@ export const AppSidebar = observer(({ allTags, ...props }: React.ComponentProps<
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
-                <img src="/public/logo.png" alt="Faved logo" className="img-fluid" width="48"></img>
+              <a>
+                <img src="/public/logo.png" alt="Faved logo" className="img-fluid" width="36"></img>
                 <span className="text-base font-semibold">Faved.</span>
               </a>
             </SidebarMenuButton>
