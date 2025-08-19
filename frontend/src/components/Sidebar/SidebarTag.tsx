@@ -23,8 +23,9 @@ import {StoreContext} from "@/store/storeContext.ts";
 import { colorMap} from "@/lib/utils.ts";
 
 
-export function SidebarTag({tag, innerItems = [], level}) {
+export function SidebarTag({tag, innerItems = [], level, isTagSelected, isChildTagSelected}) {
   const [isRenaming, setIsRenaming] = React.useState(false);
+  const [isCollapsibleOpen, setIsCollapsibleOpen] = React.useState(false);
 
   const [newTagTitle, setNewTagTitle] = React.useState(tag.fullPath);
   const inputRef = React.useRef(null);
@@ -58,10 +59,19 @@ export function SidebarTag({tag, innerItems = [], level}) {
     setIsRenaming(false);
   }
 
+  const setTag = () => {
+    if (isRenaming) {
+      return;
+    }
+
+    store.setCurrentTagId(tag.id);
+    store.setCurrentPage(1);
+  }
 
 
   const tagContent = (className = '') => {
-    return (<><a href='#' className={`${className} flex items-center gap-2`}>
+    return (<>
+      <button onClick={setTag} className={`${className} flex items-center gap-2 flex-grow-1 py-2`}>
         <span className={`w-2.5 h-2.5 rounded-full ${colorMap[tag.color]}`}></span>
         <input
           ref={inputRef}
@@ -79,11 +89,10 @@ export function SidebarTag({tag, innerItems = [], level}) {
           onBlur={revert}
         />
         {!isRenaming && <span>{tag.title}</span>}
-      </a>
-        {!!tag.pinned && (<IconPinned className={'ms-auto'}/>)}
-        {actionButtons}
-      </>
-    )
+      </button>
+      {!!tag.pinned && (<IconPinned className={'ms-auto'}/>)}
+      {actionButtons}
+    </>)
   }
 
   const actionButtons = (
@@ -132,9 +141,12 @@ export function SidebarTag({tag, innerItems = [], level}) {
     </DropdownMenu>
   )
 
-  const code = innerItems.length > 0 ? (<Collapsible className='group/collapsible'>
+  const code = innerItems.length > 0 ? (<Collapsible className='group/collapsible'  open={isCollapsibleOpen || isChildTagSelected}
+    onOpenChange={(open: boolean)=> setIsCollapsibleOpen(open) }
+
+>
       <SidebarMenuItem>
-        <SidebarMenuButton>
+        <SidebarMenuButton className={'py-0 active:bg-primary/90 active:text-primary-foreground' + (isTagSelected ? ' !bg-primary !text-primary-foreground' : '') }>
           <CollapsibleTrigger asChild>
             <IconChevronRight className={`transition-transform hover:cursor-pointer`} />
           </CollapsibleTrigger>
@@ -149,9 +161,9 @@ export function SidebarTag({tag, innerItems = [], level}) {
       </SidebarMenuItem>
     </Collapsible>)
     :
-    (<SidebarMenuItem>
-      <SidebarMenuButton>
-        {tagContent('ml-6')}
+    (<SidebarMenuItem >
+      <SidebarMenuButton className={'py-0 active:bg-primary/90 active:text-primary-foreground' + (isTagSelected ? ' !bg-primary !text-primary-foreground' : '') }>
+        {tagContent('pl-6')}
       </SidebarMenuButton>
     </SidebarMenuItem>)
 

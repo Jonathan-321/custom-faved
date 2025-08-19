@@ -32,11 +32,11 @@ import { PresetActions } from "../dashboard/PresetActions"
 
 const data = {
   navMain: [
-    {
-      title: "Untagged",
-      url: "#",
-      icon: IconDashboard,
-    },
+    // {
+    //   title: "Untagged",
+    //   url: "#",
+    //   icon: IconDashboard,
+    // },
     // {
     //   title: "Lifecycle",
     //   url: "#",
@@ -147,10 +147,7 @@ const data = {
 export const AppSidebar = observer(({ allTags, ...props }: React.ComponentProps<typeof Sidebar>) => {
 
   const store = React.useContext(StoreContext);
-  const userName = store.userName;
-
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const selectedTag = allTags[store.selectedTagId] || null;
 
   function renderTag(parentID: string, level = 0): JSX.Element[] {
     let output = []
@@ -163,7 +160,9 @@ export const AppSidebar = observer(({ allTags, ...props }: React.ComponentProps<
     level++
     for (const tag of tags) {
       const innerItems = renderTag(tag.id, level)
-      const code = (<SidebarTag key={tag.id} tag={tag} innerItems={innerItems} level={level} />)
+      const isTagSelected = store.selectedTagId === tag.id;
+      const isChildTagSelected = !isTagSelected && selectedTag && selectedTag.fullPath.indexOf(tag.fullPath) === 0
+      const code = (<SidebarTag key={tag.id} tag={tag} innerItems={innerItems} level={level} isTagSelected={isTagSelected} isChildTagSelected={isChildTagSelected} />)
       output.push(code)
     }
 
