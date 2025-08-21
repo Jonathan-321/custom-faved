@@ -275,12 +275,14 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {
-                        this.showLoginPage = true
+                        this.showLoginPage = true;
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true
+                        this.showInitializeDatabasePage = true;
                     }
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    return response.headers.get('Content-Type')?.includes('application/json')
+                        ? response.json().then(json => Promise.reject(json))
+                        : response.text().then(text => Promise.reject(new Error(text)));
                 }
                 return response.json();
             })
@@ -308,12 +310,14 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {
-                        this.showLoginPage = true
+                        this.showLoginPage = true;
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true
+                        this.showInitializeDatabasePage = true;
                     }
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    return response.headers.get('Content-Type')?.includes('application/json')
+                        ? response.json().then(json => Promise.reject(json))
+                        : response.text().then(text => Promise.reject(new Error(text)));
                 }
                 return response.json();
             })
@@ -344,12 +348,14 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {
-                        this.showLoginPage = true
+                        this.showLoginPage = true;
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true
+                        this.showInitializeDatabasePage = true;
                     }
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    return response.headers.get('Content-Type')?.includes('application/json')
+                        ? response.json().then(json => Promise.reject(json))
+                        : response.text().then(text => Promise.reject(new Error(text)));
                 }
                 return response.json();
             })
@@ -378,12 +384,14 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {
-                        this.showLoginPage = true
+                        this.showLoginPage = true;
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true
+                        this.showInitializeDatabasePage = true;
                     }
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    return response.headers.get('Content-Type')?.includes('application/json')
+                        ? response.json().then(json => Promise.reject(json))
+                        : response.text().then(text => Promise.reject(new Error(text)));
                 }
                 return response.json();
             })
@@ -419,12 +427,14 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {
-                        this.showLoginPage = true
+                        this.showLoginPage = true;
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true
+                        this.showInitializeDatabasePage = true;
                     }
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    return response.headers.get('Content-Type')?.includes('application/json')
+                        ? response.json().then(json => Promise.reject(json))
+                        : response.text().then(text => Promise.reject(new Error(text)));
                 }
                 return response.json();
             })
@@ -455,12 +465,14 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {
-                        this.showLoginPage = true
+                        this.showLoginPage = true;
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true
+                        this.showInitializeDatabasePage = true;
                     }
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    return response.headers.get('Content-Type')?.includes('application/json')
+                        ? response.json().then(json => Promise.reject(json))
+                        : response.text().then(text => Promise.reject(new Error(text)));
                 }
                 return response.json();
             })
@@ -488,12 +500,14 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {
-                        this.showLoginPage = true
+                        this.showLoginPage = true;
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true
+                        this.showInitializeDatabasePage = true;
                     }
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    return response.headers.get('Content-Type')?.includes('application/json')
+                        ? response.json().then(json => Promise.reject(json))
+                        : response.text().then(text => Promise.reject(new Error(text)));
                 }
                 return response.json();
             })
@@ -514,12 +528,14 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {
-                        this.showLoginPage = true
+                        this.showLoginPage = true;
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true
+                        this.showInitializeDatabasePage = true;
                     }
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    return response.headers.get('Content-Type')?.includes('application/json')
+                        ? response.json().then(json => Promise.reject(json))
+                        : response.text().then(text => Promise.reject(new Error(text)));
                 }
                 return response.json();
             })
@@ -540,12 +556,14 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {
-                        this.showLoginPage = true
+                        this.showLoginPage = true;
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true
+                        this.showInitializeDatabasePage = true;
                     }
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    return response.headers.get('Content-Type')?.includes('application/json')
+                        ? response.json().then(json => Promise.reject(json))
+                        : response.text().then(text => Promise.reject(new Error(text)));
                 }
                 return response.json();
             })
@@ -557,7 +575,7 @@ class mainStore {
                 toast(err.message, { position: 'top-center', style: { width: "200px" } })
             })
     }
-    login = (values: LoginType) => {
+    login = (values: LoginType, setIsLoading: (val: boolean) => void) => {
         const options = {
             method: 'POST',
             headers: {
@@ -568,17 +586,19 @@ class mainStore {
                 password: values.password || '',
             })
         };
-
+        setIsLoading(true)
         fetch(API_ENDPOINTS.auth.login, options)
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {
-                        this.showLoginPage = true
+                        this.showLoginPage = true;
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true
+                        this.showInitializeDatabasePage = true;
                     }
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    return response.headers.get('Content-Type')?.includes('application/json')
+                        ? response.json().then(json => Promise.reject(json))
+                        : response.text().then(text => Promise.reject(new Error(text)));
                 }
                 return response.json();
             })
@@ -589,6 +609,7 @@ class mainStore {
             .catch((err) => {
                 toast(err.message, { position: 'top-center', style: { width: "200px" } })
             })
+            .finally(() => { setIsLoading(false) })
     }
     initialDatabase = () => {
         const options = {
@@ -603,12 +624,14 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {
-                        this.showLoginPage = true
+                        this.showLoginPage = true;
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true
+                        this.showInitializeDatabasePage = true;
                     }
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    return response.headers.get('Content-Type')?.includes('application/json')
+                        ? response.json().then(json => Promise.reject(json))
+                        : response.text().then(text => Promise.reject(new Error(text)));
                 }
                 return response.json();
             })

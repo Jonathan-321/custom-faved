@@ -11,11 +11,12 @@ import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import z from "zod"
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import { StoreContext } from "@/store/storeContext"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 import { useNavigate } from "react-router-dom"
 import { observer } from "mobx-react-lite"
+import { Loader2Icon } from "lucide-react"
 const formSchema = z.object({
   username: z
     .string().min(1, { message: "Username is required" }),
@@ -23,6 +24,7 @@ const formSchema = z.object({
     .string().min(1, { message: "Password is required" })
 })
 export const LoginForm = observer(({ className, ...props }: React.ComponentProps<"div">) => {
+  const [isLoading, setIsLoading] = useState(false);
   const store = useContext(StoreContext);
   const navigate = useNavigate();
   useEffect(() => {
@@ -36,7 +38,7 @@ export const LoginForm = observer(({ className, ...props }: React.ComponentProps
     },
   })
   function onSubmit(values: z.infer<typeof formSchema>) {
-    store.login(values)
+    store.login(values, setIsLoading)
   }
   return (
 
@@ -47,7 +49,7 @@ export const LoginForm = observer(({ className, ...props }: React.ComponentProps
             <CardHeader>
               <CardTitle>Login to your account</CardTitle>
               <CardDescription>
-                Enter your email below to login to your account
+                Enter your Username below to login to your account
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -61,7 +63,7 @@ export const LoginForm = observer(({ className, ...props }: React.ComponentProps
                         <FormItem>
                           <FormLabel>Username</FormLabel>
                           <FormControl>
-                            <Input placeholder="Username" {...field} />
+                            <Input placeholder="Username" {...field} disabled={isLoading} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -78,7 +80,7 @@ export const LoginForm = observer(({ className, ...props }: React.ComponentProps
                             <FormLabel>Password</FormLabel>
                           </div>
                           <FormControl>
-                            <Input placeholder="Password" {...field} />
+                            <Input type="password" placeholder="Password" {...field} disabled={isLoading} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -87,6 +89,7 @@ export const LoginForm = observer(({ className, ...props }: React.ComponentProps
                   </div>
                   <div className="flex flex-col gap-3">
                     <Button onClick={form.handleSubmit(onSubmit)} type="submit" className="w-full">
+                      {isLoading && <Loader2Icon className=" mr-2 h-4 w-4 animate-spin" />}
                       Login
                     </Button>
                   </div>

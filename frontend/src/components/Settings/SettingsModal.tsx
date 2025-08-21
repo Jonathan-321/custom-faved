@@ -87,7 +87,7 @@ export const SettingsDialog = observer(({ open, setOpen }: Props) => {
   }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="overflow-hidden p-0 sm:h-[100%] md:max-h-[750px] sm:max-w-[750px] md:max-w-[900px] lg:max-w-[900px]">
+      <DialogContent className="overflow-hidden p-0 sm:h-[100%] md:max-h-[800px] sm:max-w-[750px] md:max-w-[900px] lg:max-w-[900px]">
         <DialogTitle className="sr-only">Settings</DialogTitle>
         <SidebarProvider className="items-start">
           <Sidebar collapsible="icon" className="hidden md:flex">
