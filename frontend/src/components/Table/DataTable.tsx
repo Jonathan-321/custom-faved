@@ -39,6 +39,7 @@ import { observer } from "mobx-react-lite"
 import { PopoverSort } from "./PopoverSort"
 import { Popover } from "../ui/popover"
 import { ActionType } from "../dashboard/types"
+import { DataTablePagination } from "./data-table-pagination"
 
 
 export type Payment = {
@@ -247,7 +248,7 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
   const columns = createColumns(setIsShowEditModal, store.setType, store.setIdItem, store.onDeleteItem, store.onCreateItem, store.tags);
   const data = store.selectedTagId === '0' ? store.items : store.items.filter((item => {
     return (store.selectedTagId === null && item.tags.length === 0) || item.tags.includes(Number(store.selectedTagId));
-  } ))
+  }))
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const table = useReactTable({
     data,
@@ -262,6 +263,27 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
     onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
     manualPagination: true,
+    globalFilterFn: (row, columnId, value, addMeta) => {
+      const searchValue = String(value).toLocaleLowerCase().trim();
+
+      if (searchValue === "") {
+        return true;
+      }
+
+      const searchTerms = searchValue.split(/[ ,.;\t\n]+/).filter(term => term !== "");
+
+      return searchTerms.every(term => {
+        for (const cell of row.getAllCells()) {
+          const cellValue = String(cell.getValue()).toLocaleLowerCase();
+
+          if (cellValue.includes(term)) {
+            store.setCurrentPage(1)
+            return true;
+          }
+        }
+        return false;
+      });
+    },
     state: {
       sorting,
       columnFilters,
@@ -290,7 +312,7 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
 
   const [showSort, setShowSort] = React.useState(false);
   const handleSortChange = (columnAccessorKey: string, sortDirection: 'asc' | 'desc') => {
-    console.log('sortDirection', sortDirection)
+    store.setCurrentPage(1);
     if (columnAccessorKey === "") {
       setSorting([]);
       setSelectedSortColumn(null);
@@ -370,30 +392,7 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        {/* <div className="text-muted-foreground flex-1 text-sm">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div> */}
-        <div className="space-x-2 pr-[10px]">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
+      <DataTablePagination table={table} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} />
     </div>
   )
 }
