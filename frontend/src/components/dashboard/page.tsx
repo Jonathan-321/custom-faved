@@ -14,6 +14,12 @@ import { AppSidebar } from "@/components/Sidebar/AppSidebar"
 import { useNavigate } from "react-router-dom"
 import { DataTable } from "../Table/DataTable"
 import { SettingsDialog } from "../Settings/SettingsModal"
+import { SectionCards } from "./section-cards"
+import { DataSectionsToolbar } from "./DataSectionsToolbar"
+import { Popover } from "../ui/popover"
+import { PopoverSort } from "../Table/PopoverSort"
+import { PopoverSortSections } from "./PopoverSortSections"
+
 
 
 export const Page = observer(() => {
@@ -21,6 +27,7 @@ export const Page = observer(() => {
   const store = useContext(StoreContext);
   const [isLoading, setIsLoading] = useState(true);
   const [isShowEditModal, setIsShowEditModal] = useState(false);
+  const [showSort, setShowSort] = useState(false);
   useEffect(() => {
     store.fetchItems().finally(() => { setIsLoading(false) })
     store.fetchTags().finally(() => { setIsLoading(false) })
@@ -55,9 +62,24 @@ export const Page = observer(() => {
         <SiteHeader setType={store.setType} setIsShowEditModal={setIsShowEditModal} />
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">
-            <div className="flex flex-col gap-4 md:gap-6">
-              <DataTable setIsShowEditModal={setIsShowEditModal} />
-            </div >
+            {
+              store.isTableView ?
+                <div className="flex flex-col gap-4 md:gap-6">
+                  <DataTable setIsShowEditModal={setIsShowEditModal} />
+                </div >
+                :
+                <div className="flex flex-col gap-4 md:gap-6">
+                  <div className="w-full">
+                    <div className="flex items-center py-4 m-[10px]">
+                      <DataSectionsToolbar />
+                      <Popover open={showSort} onOpenChange={setShowSort}>
+                        <PopoverSortSections />
+                      </Popover>
+                    </div>
+                    <SectionCards setIsShowEditModal={setIsShowEditModal} />
+                  </div>
+                </div>
+            }
           </div >
         </div >
       </SidebarInset >

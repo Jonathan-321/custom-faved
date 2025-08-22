@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { Import } from "lucide-react"
+import { Blocks, Import, Table } from "lucide-react"
 import { useContext } from "react"
 import { StoreContext } from "@/store/storeContext"
 import { ModeToggle } from "../mode-toggle"
@@ -26,6 +26,13 @@ export const SiteHeader: React.FC<{ setType: (val: ActionType) => void; setIsSho
           store.setSelectedItemSettingsModal("Import")
         }} variant="outline" size="sm" className="sm:flex">
           <Import />
+        </Button>
+        <Button onClick={() => {
+          store.setIsTableView(!store.isTableView);
+          store.setItems(store.itemsOriginal)
+
+        }} variant="outline" size="sm" className="sm:flex">
+          {!store.isTableView ? <Table /> : <Blocks />}
         </Button>
         <div className="ml-auto flex items-center gap-2">
           <ModeToggle />

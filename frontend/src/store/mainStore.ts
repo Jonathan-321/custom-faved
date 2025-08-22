@@ -17,15 +17,22 @@ class mainStore {
     selectedItemSettingsModal: string = "Authentication settings";
     currentPage: number = 1;
     selectedTagId: string | null = '0'; // Default to '0' for no tag selected
-
+    itemsOriginal: ItemType[] = [];
+    isTableView: boolean = true;
     constructor() {
         makeAutoObservable(this); // Makes state observable and actions transactional
     }
     setCurrentTagId = (val: string | null) => {
         this.selectedTagId = val === null ? null : val.toString();
     }
+    setIsTableView = (val: boolean) => {
+        this.isTableView = val;
+    }
     setCurrentPage = (val: number) => {
         this.currentPage = val;
+    }
+    setItemsOriginal = (val: ItemType[]) => {
+        this.itemsOriginal = val;
     }
     setTags = (tags: TagsObjectType) => {
         const renderTagSegment = (tag: TagType) => {
@@ -258,6 +265,7 @@ class mainStore {
                 }
                 const data = await response.json();
                 this.setItems(data);
+                this.setItemsOriginal(data)
             } catch (err) {
                 this.error = (err instanceof Error ? err.message : 'Failed to fetch items');
                 toast(err.message, { position: 'top-center', style: { width: "200px" } })
