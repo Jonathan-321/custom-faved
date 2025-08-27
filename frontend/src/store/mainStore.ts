@@ -4,6 +4,11 @@ import { API_ENDPOINTS } from './api';
 import { ActionType } from '@/components/dashboard/types';
 import type { LoginType, PasswordType, UsernameType, UsetType, ItemType, TagsObjectType, TagType } from '@/types/types';
 
+const stylesTost = {
+    width: "200px",
+    left: '50%',
+    transform: 'translateX(-50%)'
+}
 class mainStore {
     items: ItemType[] = [];
     tags: TagsObjectType[] = [];
@@ -19,11 +24,15 @@ class mainStore {
     selectedTagId: string | null = '0'; // Default to '0' for no tag selected
     itemsOriginal: ItemType[] = [];
     isTableView: boolean = true;
+    isAuthSuccess: boolean = false;
     constructor() {
         makeAutoObservable(this); // Makes state observable and actions transactional
     }
     setCurrentTagId = (val: string | null) => {
         this.selectedTagId = val === null ? null : val.toString();
+    }
+    setIsAuthSuccess = (val: boolean) => {
+        this.isAuthSuccess = val;
     }
     setIsTableView = (val: boolean) => {
         this.isTableView = val;
@@ -106,10 +115,10 @@ class mainStore {
                 return response.json();
             })
             .then((data) => {
-                toast(data.message, { position: 'top-center', style: { width: "200px" } });
+                toast(data.message, { position: 'top-center', style: stylesTost });
                 tagID = data.data.tag_id;
             })
-            .catch((err, data) => toast('Tag not created: ' + (err instanceof Error ? err.message : 'Unknown error')), { position: 'top-center', style: { width: "200px" } })
+            .catch((err, data) => toast('Tag not created: ' + (err instanceof Error ? err.message : 'Unknown error')), { position: 'top-center', style: stylesTost })
             .finally(() => {
                 this.fetchTags()
                 this.fetchItems()
@@ -139,9 +148,9 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then((data) => toast(data.message, { position: 'top-center', style: { width: "200px" } }))
+            .then((data) => toast(data.message, { position: 'top-center', style: stylesTost }))
             .catch((err) => {
-                toast.error((err instanceof Error ? err.message : 'Tag not deleted'), { position: 'top-center' })
+                toast.error((err instanceof Error ? err.message : 'Tag not deleted'), { position: 'top-center', style: stylesTost })
             })
             .finally(() => {
                 this.fetchTags()
@@ -168,7 +177,7 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then((data) => toast(data.message, { position: 'top-center', style: { width: "200px" } }))
+            .then((data) => toast(data.message, { position: 'top-center', style: stylesTost }))
             .catch(err => console.error(err))
             .finally(() => {
                 this.fetchTags()
@@ -196,7 +205,7 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then((data) => toast(data.message, { position: 'top-center', style: { width: "200px" } }))
+            .then((data) => toast(data.message, { position: 'top-center', style: stylesTost }))
             .catch(err => console.error(err))
             .finally(() => {
                 const tag = { ...this.tags[tagID as unknown as number], color }
@@ -223,7 +232,7 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then((data) => toast(data.message, { position: 'top-center', style: { width: "200px" } }))
+            .then((data) => toast(data.message, { position: 'top-center', style: stylesTost }))
             .catch(err => console.error(err))
             .finally(() => {
                 const tag = { ...this.tags[tagID as unknown as number], pinned }
@@ -268,7 +277,7 @@ class mainStore {
                 this.setItemsOriginal(data)
             } catch (err) {
                 this.error = (err instanceof Error ? err.message : 'Failed to fetch items');
-                toast(err.message, { position: 'top-center', style: { width: "200px" } })
+                toast(err.message, { position: 'top-center', style: stylesTost })
             }
         };
         const options = {
@@ -301,7 +310,7 @@ class mainStore {
                 }
             })
             .catch(err => {
-                toast(err.message, { position: 'top-center', style: { width: "200px" } })
+                toast(err.message, { position: 'top-center', style: stylesTost })
 
             })
 
@@ -329,14 +338,14 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then((response) => toast(response.message, { position: 'top-center', style: { width: "200px" } }))
-            .catch(err => toast(err.message, { position: 'top-center', style: { width: "200px" } }))
+            .then((response) => toast(response.message, { position: 'top-center', style: stylesTost }))
+            .catch(err => toast(err.message, { position: 'top-center', style: stylesTost }))
             .finally(() => {
                 this.fetchItems()
                 this.fetchTags()
             })
     }
-    onCreateItem = (val: ItemType, isCreateCopy = false as boolean, onSave = false) => {
+    onCreateItem = (val: ItemType, isCreateCopy = false as boolean, onSave = false, window) => {
         const options = {
             method: onSave ? 'PATCH' : !isCreateCopy ? this.type === ActionType.EDIT ? 'PATCH' : 'POST' : 'POST',
             headers: {
@@ -367,8 +376,11 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then(response => toast(response.message, { position: 'top-center', style: { width: "200px" } }))
-            .catch(err => toast(err.message, { position: 'top-center', style: { width: "200px" } }))
+            .then(response => {
+                toast(response.message, { position: 'top-center', style: stylesTost })
+                window.close()
+            })
+            .catch(err => toast(err.message, { position: 'top-center', style: stylesTost }))
             .finally(() => {
                 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                 if (!onSave) {
@@ -379,7 +391,7 @@ class mainStore {
 
             })
     }
-    getUser = (setIsAuthSuccess: (val: boolean) => void) => {
+    getUser = () => {
         const options = {
             method: 'GET',
             headers: {
@@ -405,7 +417,7 @@ class mainStore {
             })
             .then((response) => {
                 if (response.message === "User created successfully." || response.message === "User retrieved successfully.") {
-                    setIsAuthSuccess(true);
+                    this.isAuthSuccess = true;
                 }
                 if (response.data.user !== null) {
                     this.userName = response.data.user.username;
@@ -413,12 +425,12 @@ class mainStore {
 
             })
             .catch(err => {
-                toast(err.message, { position: 'top-center', style: { width: "200px" } })
-                setIsAuthSuccess(false)
+                toast(err.message, { position: 'top-center', style: stylesTost })
+                this.isAuthSuccess = false
             })
 
     }
-    onCreateUser = (val: UsetType, setIsUserWasCreate: (val: boolean) => void) => {
+    onCreateUser = (val: UsetType) => {
         const options = {
             method: 'POST',
             headers: {
@@ -447,12 +459,12 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                setIsUserWasCreate(true);
+                this.isAuthSuccess = true;
                 this.userName = val.username;
-                toast(response.message, { position: 'top-center', style: { width: "200px" } })
+                toast(response.message, { position: 'top-center', style: stylesTost })
             })
             .catch((err) => {
-                toast(err.message, { position: 'top-center', style: { width: "200px" } })
+                toast(err.message, { position: 'top-center', style: stylesTost })
             })
 
     }
@@ -485,14 +497,14 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                toast(response.message, { position: 'top-center', style: { width: "200px" } })
+                toast(response.message, { position: 'top-center', style: stylesTost })
                 this.userName = val.username;
             })
             .catch((err) => {
-                toast(err.message, { position: 'top-center', style: { width: "200px" } })
+                toast(err.message, { position: 'top-center', style: stylesTost })
             })
     }
-    createPassword = (val: PasswordType) => {
+    createPassword = (val: PasswordType, reset: any) => {
         const options = {
             method: 'PATCH',
             headers: {
@@ -519,9 +531,12 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then((response) => { toast(response.message, { position: 'top-center', style: { width: "200px" } }) })
+            .then((response) => {
+                toast(response.message, { position: 'top-center', style: stylesTost })
+                reset()
+            })
             .catch((err) => {
-                toast(err.message, { position: 'top-center', style: { width: "200px" } })
+                toast(err.message, { position: 'top-center', style: stylesTost })
             })
     }
     deleteUser = () => {
@@ -547,9 +562,12 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then((response) => { toast(response.message, { position: 'top-center', style: { width: "200px" } }) })
+            .then((response) => {
+                toast(response.message, { position: 'top-center', style: stylesTost })
+                this.isAuthSuccess = false
+            })
             .catch((err) => {
-                toast(err.message, { position: 'top-center', style: { width: "200px" } })
+                toast(err.message, { position: 'top-center', style: stylesTost })
             })
     }
     logOut = () => {
@@ -576,11 +594,11 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                toast(response.message, { position: 'top-center', style: { width: "200px" } })
+                toast(response.message, { position: 'top-center', style: stylesTost })
                 this.showLoginPage = true;
             })
             .catch((err) => {
-                toast(err.message, { position: 'top-center', style: { width: "200px" } })
+                toast(err.message, { position: 'top-center', style: stylesTost })
             })
     }
     login = (values: LoginType, setIsLoading: (val: boolean) => void) => {
@@ -611,11 +629,15 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                toast(response.message, { position: 'top-center', style: { width: "200px" } })
+                // toast(response.message, {
+                //     position: 'top-center', style: stylesTost
+                // })
                 this.showLoginPage = false
             })
             .catch((err) => {
-                toast(err.message, { position: 'top-center', style: { width: "200px" } })
+                toast(err.message, {
+                    position: 'top-center', style: stylesTost
+                })
             })
             .finally(() => { setIsLoading(false) })
     }
@@ -644,12 +666,16 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                toast(response.message, { position: 'top-center', style: { width: "200px" } })
+                toast(response.message, {
+                    position: 'top-center', style: stylesTost
+                })
                 this.showLoginPage = false
                 this.showInitializeDatabasePage = false
             })
             .catch((err) => {
-                toast(err.message, { position: 'top-center', style: { width: "200px" } })
+                toast(err.message, {
+                    position: 'top-center', style: stylesTost
+                })
             })
     }
     importBookmarks = (selectedFile: File, setIsLoading: (val: boolean) => void) => {
@@ -676,12 +702,14 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
+                this.selectedItemSettingsModal = "";
+                this.isOpenSettingsModal = false;
                 this.fetchItems();
                 this.fetchTags();
-                toast(response.message, { position: 'top-center', style: { width: "200px" } });
+                toast(response.message, { position: 'top-center', style: stylesTost });
             })
             .catch((err) => {
-                toast(err.message, { position: 'top-center', style: { width: "200px" } });
+                toast(err.message, { position: 'top-center', style: stylesTost });
             })
             .finally(() => setIsLoading(false))
     };

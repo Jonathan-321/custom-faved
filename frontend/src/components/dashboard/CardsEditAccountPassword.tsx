@@ -30,7 +30,7 @@ export function CardsEditAccountPassword() {
     },
   })
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    store.createPassword(values)
+    store.createPassword(values, form.reset)
   }
   return (
     <Card>
@@ -48,7 +48,7 @@ export function CardsEditAccountPassword() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input placeholder="Password" {...field} />
+                      <Input type="password" placeholder="Password" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -63,7 +63,7 @@ export function CardsEditAccountPassword() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input placeholder="Confirm Password" {...field} />
+                      <Input type="password" placeholder="Confirm Password" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

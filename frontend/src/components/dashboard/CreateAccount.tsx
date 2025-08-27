@@ -28,7 +28,7 @@ const formSchema = z.object({
 );
 
 
-export const CardsCreateAccount: React.FC<{ setIsAuthSuccess: (val: boolean) => void }> = ({ setIsAuthSuccess }) => {
+export const CardsCreateAccount: React.FC = () => {
   const store = useContext(StoreContext);
 
 
@@ -42,7 +42,7 @@ export const CardsCreateAccount: React.FC<{ setIsAuthSuccess: (val: boolean) => 
   })
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    store.onCreateUser(values, setIsAuthSuccess)
+    store.onCreateUser(values)
   }
   return (
     <Card>
@@ -75,7 +75,7 @@ export const CardsCreateAccount: React.FC<{ setIsAuthSuccess: (val: boolean) => 
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input placeholder="Password" {...field} />
+                      <Input type="password" placeholder="Password" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -90,7 +90,7 @@ export const CardsCreateAccount: React.FC<{ setIsAuthSuccess: (val: boolean) => 
                   <FormItem>
                     <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
-                      <Input placeholder="Confirm Password" {...field} />
+                      <Input type="password" placeholder="Confirm Password" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -9,9 +9,14 @@ import { ArrowDownUp, X } from "lucide-react"
 import { useState } from "react"
 
 
-const capitalizeFirstLetter = ([first, ...rest]) => {
-    if (!first) { return ""; }
-    return first.toUpperCase() + rest.join('').toLowerCase();
+const formatDateFieldName = (fieldName) => {
+    if (fieldName === 'created_at' || fieldName === 'updated_at') {
+        return fieldName.charAt().toUpperCase() + fieldName.slice(1).replace('_', ' ').toLowerCase();
+    }
+    if (!fieldName) {
+        return "";
+    }
+    return fieldName.charAt().toUpperCase() + fieldName.slice(1).toLowerCase();
 }
 
 export const PopoverSort: React.FC<{
@@ -37,7 +42,7 @@ export const PopoverSort: React.FC<{
                         <SelectGroup>
                             {sortableColumns.map((column) => (
                                 <SelectItem key={column.accessorKey} value={column.accessorKey}>
-                                    {capitalizeFirstLetter(column.accessorKey)}
+                                    {formatDateFieldName(column.accessorKey)}
                                 </SelectItem>
                             ))}
                         </SelectGroup>

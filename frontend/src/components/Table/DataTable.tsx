@@ -40,6 +40,7 @@ import { PopoverSort } from "./PopoverSort"
 import { Popover } from "../ui/popover"
 import { ActionType } from "../dashboard/types"
 import { DataTablePagination } from "./data-table-pagination"
+import { CardView } from "./CardView"
 
 
 export type Payment = {
@@ -143,7 +144,8 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
                 })}
               </div>}
               <div>
-                <p className="text-muted-foreground text-sm">{updatedAt ?? createdAt}</p>
+
+                <p className="text-muted-foreground text-sm"><small className="text-sm leading-none font-medium">{updatedAt ? "Updated at :" : "Created at :"}</small> {updatedAt ?? createdAt}</p>
               </div>
 
             </div >
@@ -160,15 +162,15 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
       cell: ({ row }) => {
         const comments = row.original.comments;
         return (
-          <div className="flex flex-col items-start w-full flex-wrap break-words break-all">
+          <div className="flex flex-col items-start w-full flex-wrap break-words break-all ">
             <div className="flex flex-col items-start text-start">
               <div>
-                <p className="leading-7 [&:not(:first-child)]:mt-6">
+                <p className="leading-7 [&:not(:first-child)]:mt-6 whitespace-pre-line">
                   {row.getValue("description")}
                 </p>
               </div>
               <div>
-                <blockquote className="mt-6 border-l-2 pl-6 italic">{comments}</blockquote>
+                <blockquote className="mt-6 border-l-2 pl-6 italic whitespace-pre-line">{comments}</blockquote>
               </div>
             </div >
           </div >
@@ -343,7 +345,6 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
         column.toggleVisibility(false)
       })
   }, [])
-
   return (
     <div className="w-full">
       <div className="flex items-center py-4 m-[10px]">
@@ -359,7 +360,7 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
       </div>
 
       <div className="m-2 overflow-hidden ">
-        <Table className=" table-fixed w-full">
+        {store.isTableView ? <Table className=" table-fixed w-full">
           <TableBody>
             {currentRows.length ? (
               currentRows.map((row) => (
@@ -390,7 +391,25 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
               </TableRow>
             )}
           </TableBody>
-        </Table>
+        </Table> :
+          <div className="grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+            {currentRows.length > 0 ? (
+              currentRows.map((row) => {
+                const el = row.original;
+                return (
+                  <CardView setIsShowEditModal={setIsShowEditModal} el={el} />)
+              })
+            ) : (
+              <div className="col-span-full text-center py-8 text-muted-foreground">
+                No results found.
+              </div>
+            )}
+          </div >
+
+
+
+        }
+
       </div>
       <DataTablePagination table={table} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} />
     </div>

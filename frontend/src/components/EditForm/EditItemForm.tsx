@@ -21,14 +21,44 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { formSchema } from './utils';
 import { ActionType } from '../dashboard/types';
 import type { ItemType } from '@/types/types';
+import { useLocation } from 'react-router-dom';
 
 
-const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void }> = ({ setIsShowEditModal }) => {
+const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFullScreen: boolean }> = ({ setIsShowEditModal, isFullScreen }) => {
   const store = useContext(StoreContext);
   const [isOpenInPage] = useState(false)
+
+  const location = useLocation();
+  const [url, setUrl] = useState('');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+
+  useEffect(() => {
+    // Парсим параметры из URL
+    const searchParams = new URLSearchParams(location.search);
+
+    // Для прямого доступа через /edit?url=...&title=...
+    const directUrl = searchParams.get('url');
+    const directTitle = searchParams.get('title');
+    const directDescription = searchParams.get('description');
+
+    // Для доступа через /edit/index.php?route=/item&url=...
+    const route = searchParams.get('route');
+    if (route === '/item') {
+      setUrl(decodeURIComponent(searchParams.get('url') || ''));
+      setTitle(decodeURIComponent(searchParams.get('title') || ''));
+      setDescription(decodeURIComponent(searchParams.get('description') || ''));
+    } else if (directUrl) {
+      setUrl(decodeURIComponent(directUrl));
+      setTitle(decodeURIComponent(directTitle || ''));
+      setDescription(decodeURIComponent(directDescription || ''));
+    }
+  }, [location.search]);
+
   const initialData = {
     id: "",
     description: "",
+    title: "",
     comments: '',
     created_at: undefined,
     image: undefined,
@@ -45,10 +75,19 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void }> = (
   useEffect(() => {
     form.reset(defaultValues)
   }, [store.idItem])
+  useEffect(() => {
+    if (isFullScreen) {
+      form.setValue('title', title)
+      form.setValue('description', description)
+      form.setValue('url', url)
+    }
+
+  }, [isFullScreen, title, description, url])
 
   const onSubmit = (val: ItemType) => {
-    store.onCreateItem(val, false)
+    store.onCreateItem(val, false, false, window)
     setIsShowEditModal(false)
+
     form.reset()
   };
   const onSubmitSaveCopy = (val: ItemType) => {
@@ -70,7 +109,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void }> = (
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <DialogPortal>
           <DialogOverlay className="DialogOverlay">
-            <DialogContent className="sm:max-w-[1000px] max-h-[870px] overflow-y-auto">
+            <DialogContent className="sm:max-w-[1000px] max-h-[870px] overflow-y-auto" showCloseButton={!isFullScreen}>
               <DialogHeader>
                 <div className="flex flex-row justify-between items-center">
                   <DialogTitle className='pb-3'>{store.type === ActionType.EDIT ? "Edit item" : "Create item"}</DialogTitle>
@@ -219,7 +258,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void }> = (
                     }}
                   />
                 </div>
-                <div className="grid gap-3">
+                {store.type === ActionType.EDIT && <div className="grid gap-3">
                   <Label htmlFor="name-1"></Label>
                   <FormField
                     control={form.control}
@@ -244,8 +283,8 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void }> = (
                       );
                     }}
                   />
-                </div>
-                <div className="grid gap-3">
+                </div>}
+                {store.type === ActionType.EDIT && <div className="grid gap-3">
                   <FormField
                     control={form.control}
                     name="updated_at"
@@ -269,20 +308,69 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void }> = (
                       );
                     }}
                   />
-                </div>
-              </div>
-              <DialogFooter>
-                <Button onClick={form.handleSubmit(onSubmit)} type="submit" variant="default">{store.type === ActionType.EDIT ? 'Save & Close' : 'Save'}</Button>
-                {store.type === ActionType.EDIT && <Button onClick={form.handleSubmit(onSubmitSaveCopy)} type="submit" variant="secondary">Save as Copy</Button>}
-                {store.type === ActionType.EDIT && <Button onClick={form.handleSubmit(onSave)} type="submit" variant="secondary">Save</Button>}
+                </div>}
 
-                <Button onClick={() => {
-                  store.fetchItems()
-                  store.fetchTags()
-                  setIsShowEditModal(false)
-                  form.reset()
-                }} type="reset" variant="secondary">Close</Button>
-                {store.type === ActionType.EDIT && <Button onClick={onDeleteItem} variant="destructive">Delete</Button>}
+              </div>
+              <DialogFooter className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 gap-2">
+                {/* Основные кнопки */}
+                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                  <Button
+                    onClick={() => {
+                      store.fetchItems()
+                      store.fetchTags()
+                      setIsShowEditModal(false)
+                      if (isFullScreen) window.close()
+                      form.reset()
+                    }}
+                    type="reset"
+                    variant="secondary"
+                    className="w-full sm:w-auto"
+                  >
+                    Close
+                  </Button>
+
+                  {store.type === ActionType.EDIT && (
+                    <Button
+                      onClick={form.handleSubmit(onSave)}
+                      type="button"
+                      variant="secondary"
+                      className="w-full sm:w-auto"
+                    >
+                      Save
+                    </Button>
+                  )}
+
+                  {store.type === ActionType.EDIT && (
+                    <Button
+                      onClick={form.handleSubmit(onSubmitSaveCopy)}
+                      type="button"
+                      variant="secondary"
+                      className="w-full sm:w-auto"
+                    >
+                      Save as Copy
+                    </Button>
+                  )}
+
+                  <Button
+                    onClick={form.handleSubmit(onSubmit)}
+                    type="submit"
+                    variant="default"
+                    className="w-full sm:w-auto"
+                  >
+                    Save & Close
+                  </Button>
+                </div>
+
+                {/* Кнопка Delete - всегда внизу на мобильных и справа на десктопе */}
+                {store.type === ActionType.EDIT && (
+                  <Button
+                    onClick={onDeleteItem}
+                    variant="destructive"
+                    className="w-full sm:w-auto order-first sm:order-last mt-2 sm:mt-0"
+                  >
+                    Delete
+                  </Button>
+                )}
               </DialogFooter>
             </DialogContent >
           </DialogOverlay >

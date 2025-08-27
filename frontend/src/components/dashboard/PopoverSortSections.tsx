@@ -46,6 +46,8 @@ export const PopoverSortSections: React.FC = observer(() => {
 
         });
         store.setItems(sortedItems);
+        store.setCurrentPage(1)
+
     }, [sortBy, sortOrder]);
 
     const sortableFields: (keyof ItemType)[] = ['url', 'description', 'title', 'created_at', 'updated_at', 'comments'];

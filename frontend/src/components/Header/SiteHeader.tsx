@@ -6,6 +6,7 @@ import { useContext } from "react"
 import { StoreContext } from "@/store/storeContext"
 import { ModeToggle } from "../mode-toggle"
 import { ActionType } from "../dashboard/types"
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
 export const SiteHeader: React.FC<{ setType: (val: ActionType) => void; setIsShowEditModal: (val: boolean) => void }> = ({ setType, setIsShowEditModal }) => {
   const store = useContext(StoreContext);
@@ -21,19 +22,35 @@ export const SiteHeader: React.FC<{ setType: (val: ActionType) => void; setIsSho
         <Button variant="default" size="sm" className="sm:flex" onClick={() => { setIsShowEditModal(true); setType(ActionType.CREATE) }}>
           New item
         </Button>
-        <Button onClick={() => {
-          store.setIsOpenSettingsModal(true);
-          store.setSelectedItemSettingsModal("Import")
-        }} variant="outline" size="sm" className="sm:flex">
-          <Import />
-        </Button>
-        <Button onClick={() => {
-          store.setIsTableView(!store.isTableView);
-          store.setItems(store.itemsOriginal)
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button onClick={() => {
+              store.setIsOpenSettingsModal(true);
+              store.setSelectedItemSettingsModal("Import")
+            }} variant="outline" size="sm" className="sm:flex">
+              <Import />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Import Bookmarks</p>
+          </TooltipContent>
+        </Tooltip>
 
-        }} variant="outline" size="sm" className="sm:flex">
-          {!store.isTableView ? <Table /> : <Blocks />}
-        </Button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button onClick={() => {
+              store.setIsTableView(!store.isTableView);
+              store.setItems(store.itemsOriginal)
+
+            }} variant="outline" size="sm" className="sm:flex">
+              {!store.isTableView ? <Table /> : <Blocks />}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p> {!store.isTableView ? "Table view" : "Card view"}</p>
+          </TooltipContent>
+        </Tooltip>
+
         <div className="ml-auto flex items-center gap-2">
           <ModeToggle />
         </div>
