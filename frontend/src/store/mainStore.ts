@@ -345,7 +345,7 @@ class mainStore {
                 this.fetchTags()
             })
     }
-    onCreateItem = (val: ItemType, isCreateCopy = false as boolean, onSave = false, window) => {
+    onCreateItem = (val: ItemType, isCreateCopy = false as boolean, onSave = false, window = null) => {
         const options = {
             method: onSave ? 'PATCH' : !isCreateCopy ? this.type === ActionType.EDIT ? 'PATCH' : 'POST' : 'POST',
             headers: {

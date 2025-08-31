@@ -22,6 +22,7 @@ import { formSchema } from './utils';
 import { ActionType } from '../dashboard/types';
 import type { ItemType } from '@/types/types';
 import { useLocation } from 'react-router-dom';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
 
 
 const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFullScreen: boolean }> = ({ setIsShowEditModal, isFullScreen }) => {
@@ -361,15 +362,32 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
                   </Button>
                 </div>
 
-                {/* Кнопка Delete - всегда внизу на мобильных и справа на десктопе */}
+
                 {store.type === ActionType.EDIT && (
-                  <Button
-                    onClick={onDeleteItem}
-                    variant="destructive"
-                    className="w-full sm:w-auto order-first sm:order-last mt-2 sm:mt-0"
-                  >
-                    Delete
-                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger>
+                      <Button
+                        variant="destructive"
+                        className="w-full sm:w-auto order-first sm:order-last mt-2 sm:mt-0">
+                        Delete
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently delete your item
+                          and remove your data from our servers.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={onDeleteItem} className="w-full sm:w-auto order-first sm:order-last mt-2 sm:mt-0 bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60">
+                          Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 )}
               </DialogFooter>
             </DialogContent >

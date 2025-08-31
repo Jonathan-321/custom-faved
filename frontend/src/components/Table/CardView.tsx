@@ -15,6 +15,7 @@ import { Button } from "../ui/button";
 import { ActionType } from "../dashboard/types"
 import { StoreContext } from "@/store/storeContext"
 import { TagBadge } from "./TagBadge"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"
 
 export const CardView: React.FC<{ setIsShowEditModal: (val: boolean) => void; el: any }> = observer(({ setIsShowEditModal, el }) => {
     const store = React.useContext(StoreContext);
@@ -43,14 +44,35 @@ export const CardView: React.FC<{ setIsShowEditModal: (val: boolean) => void; el
                         >
                             Edit
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => { store.onCreateItem(el, true); }}>Make a copy</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => { store.onCreateItem(el, true, false, null); }}>Make a copy</DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                            variant="destructive"
-                            onClick={() => store.onDeleteItem(el.id)}
-                        >
-                            Delete
-                        </DropdownMenuItem>
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <div
+                                    className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 hover:bg-destructive/90 hover:text-white"
+                                >
+                                    Delete
+                                </div>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        This action cannot be undone. This will permanently delete your item
+                                        and remove your data from our servers.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction
+                                        onClick={() => store.onDeleteItem(el.id)}
+                                        className="w-full sm:w-auto order-first sm:order-last mt-2 sm:mt-0 bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"
+                                    >
+                                        Delete
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </CardAction>
