@@ -23,7 +23,7 @@ class mainStore {
     currentPage: number = 1;
     selectedTagId: string | null = '0'; // Default to '0' for no tag selected
     itemsOriginal: ItemType[] = [];
-    isTableView: boolean = true;
+    isTableView: boolean = false;
     isAuthSuccess: boolean = false;
     constructor() {
         makeAutoObservable(this); // Makes state observable and actions transactional
