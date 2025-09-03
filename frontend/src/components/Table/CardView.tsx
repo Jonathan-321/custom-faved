@@ -58,8 +58,7 @@ export const CardView: React.FC<{ setIsShowEditModal: (val: boolean) => void; el
                                 <AlertDialogHeader>
                                     <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                                     <AlertDialogDescription>
-                                        This action cannot be undone. This will permanently delete your item
-                                        and remove your data from our servers.
+                                        This action cannot be undone. This will permanently delete your item.
                                     </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
