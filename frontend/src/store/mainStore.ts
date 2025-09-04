@@ -381,13 +381,11 @@ class mainStore {
             })
             .then(response => {
                 toast(response.message, { position: 'top-center', style: stylesTost })
-                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                 if (window !== null) window.close()
 
             })
             .catch(err => toast(err.message, { position: 'top-center', style: stylesTost }))
             .finally(() => {
-                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                 if (!onSave) {
                     this.fetchItems()
                     this.fetchTags()

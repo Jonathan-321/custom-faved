@@ -108,7 +108,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <DialogPortal>
-          <DialogOverlay className="ы">
+          <DialogOverlay>
             <DialogContent className="sm:max-w-[1000px] max-h-[870px] overflow-y-auto" showCloseButton={!isFullScreen}>
               <DialogHeader>
                 <div className="flex flex-row justify-between items-center">
@@ -312,9 +312,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
 
               </div>
               <DialogFooter className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 gap-2">
-                {/* Основные кнопки - мобильная версия (порядок изменен) */}
                 <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto order-2 sm:order-1">
-                  {/* Save & Close - первая кнопка на мобильных */}
                   <Button
                     onClick={form.handleSubmit(onSubmit)}
                     type="submit"
@@ -323,8 +321,6 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
                   >
                     Save & Close
                   </Button>
-
-                  {/* Save as Copy - вторая кнопка на мобильных */}
                   {store.type === ActionType.EDIT && (
                     <Button
                       onClick={form.handleSubmit(onSubmitSaveCopy)}
@@ -335,8 +331,6 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
                       Save as Copy
                     </Button>
                   )}
-
-                  {/* Save - третья кнопка на мобильных */}
                   {store.type === ActionType.EDIT && (
                     <Button
                       onClick={form.handleSubmit(onSave)}
@@ -347,8 +341,6 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
                       Save
                     </Button>
                   )}
-
-                  {/* Close - четвертая кнопка на мобильных */}
                   <Button
                     onClick={() => {
                       store.fetchItems()
@@ -364,8 +356,6 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
                     Close
                   </Button>
                 </div>
-
-                {/* Кнопка Delete - пятая кнопка на мобильных */}
                 {store.type === ActionType.EDIT && (
                   <div className="order-1 sm:order-2 w-full sm:w-auto">
                     <AlertDialog>
