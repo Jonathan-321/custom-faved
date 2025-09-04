@@ -31,6 +31,9 @@ class mainStore {
     setCurrentTagId = (val: string | null) => {
         this.selectedTagId = val === null ? null : val.toString();
     }
+    setUserName = (val: string) => {
+        this.userName = val
+    }
     setIsAuthSuccess = (val: boolean) => {
         this.isAuthSuccess = val;
     }
@@ -306,7 +309,7 @@ class mainStore {
             .then(({ data }) => {
                 fetchItems();
                 if (data.user !== null) {
-                    this.userName = data.user.username;
+                    this.setUserName(data.user.username);
                 }
             })
             .catch(err => {
@@ -378,7 +381,9 @@ class mainStore {
             })
             .then(response => {
                 toast(response.message, { position: 'top-center', style: stylesTost })
-                window.close()
+                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                if (window !== null) window.close()
+
             })
             .catch(err => toast(err.message, { position: 'top-center', style: stylesTost }))
             .finally(() => {
@@ -420,7 +425,8 @@ class mainStore {
                     this.isAuthSuccess = true;
                 }
                 if (response.data.user !== null) {
-                    this.userName = response.data.user.username;
+                    this.setUserName(response.data.user.username);
+
                 }
 
             })
@@ -460,7 +466,8 @@ class mainStore {
             })
             .then((response) => {
                 this.isAuthSuccess = true;
-                this.userName = val.username;
+                this.setUserName(val.username);
+
                 toast(response.message, { position: 'top-center', style: stylesTost })
             })
             .catch((err) => {
@@ -498,7 +505,8 @@ class mainStore {
             })
             .then((response) => {
                 toast(response.message, { position: 'top-center', style: stylesTost })
-                this.userName = val.username;
+                this.setUserName(val.username);
+
             })
             .catch((err) => {
                 toast(err.message, { position: 'top-center', style: stylesTost })

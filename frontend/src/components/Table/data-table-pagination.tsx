@@ -1,5 +1,3 @@
-
-
 import type { Table } from "@tanstack/react-table"
 import {
   ChevronLeft,
@@ -10,14 +8,10 @@ import {
 import { Button } from "../ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 
-
-
-
 interface DataTablePaginationProps<TData> {
   table: Table<TData>
   rowsPerPage: number
   setRowsPerPage: (val: number) => void;
-
 }
 
 export function DataTablePagination<TData>({
@@ -27,13 +21,17 @@ export function DataTablePagination<TData>({
 }: DataTablePaginationProps<TData>) {
   console.log('rowsPerPage', rowsPerPage)
   return (
-    <div className="flex items-center justify-between px-2">
-      <div className="flex-1 text-sm text-muted-foreground">
+    <div className="flex flex-col sm:flex-row items-center justify-between px-2 gap-2 sm:gap-0">
+      {/* Счетчик элементов - на мобильных отдельная строка, на десктопе в одной строке с выравниванием по правому краю */}
+      <div className="flex-1 text-sm text-muted-foreground w-full sm:w-auto text-center sm:text-right pr-10">
         {table.getFilteredRowModel().rows.length} item(s) total.
       </div>
-      <div className="flex items-center space-x-6 lg:space-x-8">
+
+      {/* Элементы управления пагинацией */}
+      <div className="flex flex-wrap items-center justify-center sm:justify-end gap-4 w-full sm:w-auto">
         <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium">Rows per page</p>
+          <p className="text-sm font-medium hidden sm:block">Rows per page</p>
+          <p className="text-sm font-medium sm:hidden">Rows:</p>
           <Select
             value={rowsPerPage.toString()}
             onValueChange={(value) => {
@@ -43,7 +41,6 @@ export function DataTablePagination<TData>({
             }}
           >
             <SelectTrigger className="h-8 w-[70px]">
-              {/* <SelectValue placeholder={table.getState().pagination.pageSize} /> */}
               <SelectValue placeholder={rowsPerPage} />
             </SelectTrigger>
             <SelectContent side="top">
@@ -55,10 +52,12 @@ export function DataTablePagination<TData>({
             </SelectContent>
           </Select>
         </div>
-        <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+
+        <div className="flex items-center justify-center text-sm font-medium min-w-[100px]">
           Page {table.getState().pagination.pageIndex + 1} of{" "}
           {table.getPageCount()}
         </div>
+
         <div className="flex items-center space-x-2">
           <Button
             variant="outline"

@@ -1,4 +1,5 @@
 body {
+    pointer-events: auto !important;
     padding: 20px;
     font-size: 14px;
 }
@@ -58,7 +59,8 @@ a:hover {
     display: block;
 }
 
-.select2-container-multi .select2-choices, .select2-container-multi.select2-container-active .select2-choices {
+.select2-container-multi .select2-choices,
+.select2-container-multi.select2-container-active .select2-choices {
     border: 2px solid RGBA(108, 117, 125, 1);
     border-radius: 4px;
     background-image: none;
@@ -87,7 +89,8 @@ a:hover {
 .select2-drop {
     font-size: 14px;
     width: 100%;
-    margin-top: 4px; /* -1px; */
+    margin-top: 4px;
+    /* -1px; */
     margin-bottom: 4px;
     position: absolute;
     z-index: 9999;
@@ -223,11 +226,12 @@ a:hover {
     color: inherit;
 }
 
-.tag-container:hover > .tag-edit-button {
+.tag-container:hover>.tag-edit-button {
     display: inline;
 }
 
-ul.tags-list, ul.tags-list ul {
+ul.tags-list,
+ul.tags-list ul {
     list-style-type: none;
     margin: 0px;
     padding: 0px;
@@ -240,7 +244,7 @@ ul.tags-list ul {
 
 }
 
-.tags-list > li {
+.tags-list>li {
     padding-bottom: 12px;
 }
 

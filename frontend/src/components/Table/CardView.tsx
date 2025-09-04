@@ -17,11 +17,11 @@ import { StoreContext } from "@/store/storeContext"
 import { TagBadge } from "./TagBadge"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"
 
-export const CardView: React.FC<{ setIsShowEditModal: (val: boolean) => void; el: any }> = observer(({ setIsShowEditModal, el }) => {
+export const CardView: React.FC<{ setIsShowEditModal: (val: boolean) => void; el: any; key: number }> = observer(({ setIsShowEditModal, el, key }) => {
     const store = React.useContext(StoreContext);
     return (
 
-        <Card key={el.id} className="@container/card relative">
+        <Card key={key} className="@container/card relative">
             <CardAction>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -78,7 +78,7 @@ export const CardView: React.FC<{ setIsShowEditModal: (val: boolean) => void; el
             <CardHeader>
                 <div className="flex flex-column flex-wrap sm:flex-row md:flex-row kg:flex-row items-start w-full">
                     {el.image && (
-                        <div className="flex w-[175px] pb-4 md:pr-4 lg:pr-4">
+                        <div className="flex w-[175px] pb-4 md:pr-4 lg:pr-4  w-full">
                             <img className="w-auto h-auto max-w-[200px] w-[200px] pr-4" src={el.image} />
                         </div>
                     )}
@@ -115,12 +115,12 @@ export const CardView: React.FC<{ setIsShowEditModal: (val: boolean) => void; el
                             <div className="flex flex-col items-start w-full flex-wrap break-words break-all">
                                 <div className="flex flex-col items-start text-start">
                                     <div>
-                                        <p className="leading-7 [&:not(:first-child)]:mt-6">
+                                        <p className="leading-7 [&:not(:first-child)]:mt-6 whitespace-pre-line">
                                             {el.description}
                                         </p>
                                     </div>
                                     <div>
-                                        <blockquote className="mt-6 border-l-2 pl-6 italic">{el.comments}</blockquote>
+                                        <blockquote className="mt-6 border-l-2 pl-6 italic whitespace-pre-line">{el.comments}</blockquote>
                                     </div>
                                 </div>
                             </div>
@@ -130,7 +130,7 @@ export const CardView: React.FC<{ setIsShowEditModal: (val: boolean) => void; el
             </CardHeader>
             <CardFooter className="flex-col items-start gap-1.5 text-sm">
                 <div>
-                    <p className="text-muted-foreground text-sm">{el.updated_at ?? el.created_at}</p>
+                    <p className="text-muted-foreground text-sm"><small className="text-sm leading-none font-medium">Created at :</small> {el.updated_at ?? el.created_at}</p>
                 </div>
             </CardFooter>
         </Card>

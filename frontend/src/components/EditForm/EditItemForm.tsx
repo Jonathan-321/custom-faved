@@ -88,7 +88,6 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
   const onSubmit = (val: ItemType) => {
     store.onCreateItem(val, false, false, window)
     setIsShowEditModal(false)
-
     form.reset()
   };
   const onSubmitSaveCopy = (val: ItemType) => {
@@ -109,7 +108,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <DialogPortal>
-          <DialogOverlay className="DialogOverlay">
+          <DialogOverlay className="ы">
             <DialogContent className="sm:max-w-[1000px] max-h-[870px] overflow-y-auto" showCloseButton={!isFullScreen}>
               <DialogHeader>
                 <div className="flex flex-row justify-between items-center">
@@ -313,8 +312,43 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
 
               </div>
               <DialogFooter className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 gap-2">
-                {/* Основные кнопки */}
-                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                {/* Основные кнопки - мобильная версия (порядок изменен) */}
+                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto order-2 sm:order-1">
+                  {/* Save & Close - первая кнопка на мобильных */}
+                  <Button
+                    onClick={form.handleSubmit(onSubmit)}
+                    type="submit"
+                    variant="default"
+                    className="w-full sm:w-auto order-1"
+                  >
+                    Save & Close
+                  </Button>
+
+                  {/* Save as Copy - вторая кнопка на мобильных */}
+                  {store.type === ActionType.EDIT && (
+                    <Button
+                      onClick={form.handleSubmit(onSubmitSaveCopy)}
+                      type="button"
+                      variant="secondary"
+                      className="w-full sm:w-auto order-2"
+                    >
+                      Save as Copy
+                    </Button>
+                  )}
+
+                  {/* Save - третья кнопка на мобильных */}
+                  {store.type === ActionType.EDIT && (
+                    <Button
+                      onClick={form.handleSubmit(onSave)}
+                      type="button"
+                      variant="secondary"
+                      className="w-full sm:w-auto order-3"
+                    >
+                      Save
+                    </Button>
+                  )}
+
+                  {/* Close - четвертая кнопка на мобильных */}
                   <Button
                     onClick={() => {
                       store.fetchItems()
@@ -325,68 +359,43 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
                     }}
                     type="reset"
                     variant="secondary"
-                    className="w-full sm:w-auto"
+                    className="w-full sm:w-auto order-4"
                   >
                     Close
                   </Button>
-
-                  {store.type === ActionType.EDIT && (
-                    <Button
-                      onClick={form.handleSubmit(onSave)}
-                      type="button"
-                      variant="secondary"
-                      className="w-full sm:w-auto"
-                    >
-                      Save
-                    </Button>
-                  )}
-
-                  {store.type === ActionType.EDIT && (
-                    <Button
-                      onClick={form.handleSubmit(onSubmitSaveCopy)}
-                      type="button"
-                      variant="secondary"
-                      className="w-full sm:w-auto"
-                    >
-                      Save as Copy
-                    </Button>
-                  )}
-
-                  <Button
-                    onClick={form.handleSubmit(onSubmit)}
-                    type="submit"
-                    variant="default"
-                    className="w-full sm:w-auto"
-                  >
-                    Save & Close
-                  </Button>
                 </div>
 
-
+                {/* Кнопка Delete - пятая кнопка на мобильных */}
                 {store.type === ActionType.EDIT && (
-                  <AlertDialog>
-                    <AlertDialogTrigger>
-                      <Button
-                        variant="destructive"
-                        className="w-full sm:w-auto order-first sm:order-last mt-2 sm:mt-0">
-                        Delete
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          This action cannot be undone. This will permanently delete your item.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={onDeleteItem} className="w-full sm:w-auto order-first sm:order-last mt-2 sm:mt-0 bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60">
+                  <div className="order-1 sm:order-2 w-full sm:w-auto">
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          variant="destructive"
+                          className="w-full sm:w-auto"
+                        >
                           Delete
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This action cannot be undone. This will permanently delete your item.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={onDeleteItem}
+                            className="bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"
+                          >
+                            Delete
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
                 )}
               </DialogFooter>
             </DialogContent >

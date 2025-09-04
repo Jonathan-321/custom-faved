@@ -145,10 +145,8 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
                 })}
               </div>}
               <div>
-
-                <p className="text-muted-foreground text-sm"><small className="text-sm leading-none font-medium">{updatedAt ? "Updated at :" : "Created at :"}</small> {updatedAt ?? createdAt}</p>
+                <p className="text-muted-foreground text-sm"><small className="text-sm leading-none font-medium">Created at :</small> {updatedAt ?? createdAt}</p>
               </div>
-
             </div >
           </div>
 
@@ -371,7 +369,7 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
   }, [])
   return (
     <div className="w-full">
-      <div className="flex items-center py-4 m-[10px]">
+      <div className="flex items-center py-4 m-[14px]">
         <DataTableToolbar table={table} globalFilter={globalFilter} />
         <Popover open={showSort} onOpenChange={setShowSort}>
           <PopoverSort
@@ -416,12 +414,12 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
             )}
           </TableBody>
         </Table> :
-          <div className="grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 px-1 lg:px-2 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
             {currentRows.length > 0 ? (
-              currentRows.map((row) => {
+              currentRows.map((row, index) => {
                 const el = row.original;
                 return (
-                  <CardView setIsShowEditModal={setIsShowEditModal} el={el} />)
+                  <CardView key={index} setIsShowEditModal={setIsShowEditModal} el={el} />)
               })
             ) : (
               <div className="col-span-full text-center py-8 text-muted-foreground">
@@ -429,11 +427,7 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
               </div>
             )}
           </div >
-
-
-
         }
-
       </div>
       <DataTablePagination table={table} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} />
     </div>

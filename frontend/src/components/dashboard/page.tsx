@@ -41,7 +41,6 @@ export const Page = observer(() => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  console.log('store.isTableView', store.isTableView)
   return (
     <SidebarProvider
       style={
