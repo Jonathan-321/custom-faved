@@ -16,7 +16,6 @@ class TagsCreateController
 			throw new ValidationException('Invalid input data for tag create.');
 		}
 
-
 		$tag_segments = extractTagSegments($input['title']);
 		$tag_id = createTagsFromSegments($tag_segments);
 
