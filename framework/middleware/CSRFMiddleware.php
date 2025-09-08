@@ -10,7 +10,7 @@ class CSRFMiddleware extends MiddlewareAbstract
 	public function handle()
 	{
 		// Skip CSRF check for GET requests
-		if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+		if ($this->method === 'GET') {
 			return $this->next && $this->next->handle();
 		}
 

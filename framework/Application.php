@@ -17,7 +17,7 @@ class Application
 
 		try {
 			foreach (array_reverse($this->middleware_classes) as $middleware_class) {
-				$middleware = new $middleware_class($middleware ?? null);
+				$middleware = new $middleware_class($middleware ?? null, $route, $method);
 			}
 			isset($middleware) && $middleware->handle();
 

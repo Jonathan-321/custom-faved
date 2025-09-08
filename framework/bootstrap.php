@@ -47,9 +47,7 @@ date_default_timezone_set('UTC');
 
 // Bind services
 ServiceContainer::bind(UrlBuilder::class, function () {
-	return new UrlBuilder(
-		'index.php'
-	);
+	return new UrlBuilder('');
 });
 
 $middleware_classes = [
@@ -69,7 +67,7 @@ $error_redirects = [
 // Load project-specific files and services
 require_once ROOT_DIR . '/init.php';
 
-$route = $_GET["route"] ?? '/';
+$route = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_POST['force-method'] ?? $_SERVER["REQUEST_METHOD"];
 $app = new Application($routes, $middleware_classes, $error_redirects);
 $app->run($route, $method);

@@ -12,10 +12,10 @@ class UrlBuilder
 
 	public function build($route, array $params = [])
 	{
-		$url = $this->base_url . '?route=' . $route;
+		$url = $this->base_url . $route;
 
-		foreach ($params as $key => $value) {
-			$url .= '&' . urlencode($key) . '=' . urlencode($value);
+		if (!empty($params)) {
+			$url .= '?' . http_build_query($params);
 		}
 
 		return $url;

@@ -12,7 +12,7 @@ class AuthenticationMiddleware extends MiddlewareAbstract
 {
 	public function handle()
 	{
-		$route = $_GET['route'] ?? '/';
+		$route = $this->route;
 
 		// Skip authentication for login route
 		if ($route === '/login' || $route === '/auth') {
