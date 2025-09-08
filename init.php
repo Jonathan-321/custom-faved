@@ -1,9 +1,5 @@
 <?php
 require_once ROOT_DIR . '/utils/util-functions.php';
-require_once ROOT_DIR . '/utils/ItemForm.php';
-require_once ROOT_DIR . '/utils/TagData.php';
-require_once ROOT_DIR . '/utils/TagList.php';
-require_once ROOT_DIR . '/utils/TagRenderer.php';
 require_once ROOT_DIR . '/utils/PocketImporter.php';
 require_once ROOT_DIR . '/models/TagCreator.php';
 require_once ROOT_DIR . '/models/Repository.php';
