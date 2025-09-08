@@ -7,7 +7,7 @@ use Controllers\ItemsCreateController;
 use Controllers\ItemsDeleteController;
 use Controllers\ItemsGetController;
 use Controllers\ItemsUpdateController;
-use Controllers\SettingsUsernameUpdateController;
+use Controllers\UserUsernameUpdateController;
 use Controllers\TagsController;
 use Controllers\TagsCreateController;
 use Controllers\TagsDeleteController;
