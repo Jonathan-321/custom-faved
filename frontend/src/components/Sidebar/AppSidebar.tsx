@@ -173,16 +173,11 @@ export const AppSidebar = observer(({ allTags, ...props }: React.ComponentProps<
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem className="flex">
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
-            >
-              <a>
-                <img src="/public/logo.png" alt="Faved logo" className="img-fluid" width="36"></img>
-                <span className="text-base font-semibold">Faved.</span>
-              </a>
-            </SidebarMenuButton>
+          <SidebarMenuItem className="flex w-full justify-between">
+            <div className="flex flex-row items-start justify-center text-center">
+              <img src="/public/logo.png" alt="Faved logo" className="img-fluid pr-2 mb-2" width="36"></img>
+              <h2 className="pt-[3px] scroll-m-20 pb-2 text-xl font-semibold tracking-tight m-0">Faved.</h2>
+            </div>
             <PresetActions />
           </SidebarMenuItem>
         </SidebarMenu>
