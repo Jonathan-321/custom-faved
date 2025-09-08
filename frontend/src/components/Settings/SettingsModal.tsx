@@ -54,15 +54,12 @@ const components = [
 ];
 export const SettingsDialog = observer(() => {
   const store = React.useContext(StoreContext);
-  const [isLoading, setIsLoading] = React.useState(true);
-  console.log('isAuthSuccess', store.isAuthSuccess)
   React.useEffect(() => {
     store.getUser()
   }, [store.isAuthSuccess])
-  if (!store.isOpenSettingsModal && isLoading) {
+  if (!store.isOpenSettingsModal) {
     return <div>{'Loading...'}</div>
   }
-  console.log('store.selectedItemSettingsModal', store.selectedItemSettingsModal)
   return (
     <Dialog open={store.isOpenSettingsModal} onOpenChange={store.setIsOpenSettingsModal}>
       <DialogContent className="overflow-hidden p-0 sm:h-[100%] md:max-h-[800px] sm:max-w-[750px] md:max-w-[900px] lg:max-w-[900px]">

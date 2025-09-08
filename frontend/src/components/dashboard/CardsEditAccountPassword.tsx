@@ -11,13 +11,17 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 
 const formSchema = z.object({
+  username: z.string().optional(),
   password: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+    message: "Password must be at least 2 characters.",
   }),
   passwordConfirm: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+    message: "Password must be at least 2 characters.",
   }),
-})
+}).refine((data) => data.password === data.passwordConfirm, {
+  message: "Passwords don't match",
+  path: ["passwordConfirm"],
+});
 
 export function CardsEditAccountPassword() {
   const store = useContext(StoreContext);
@@ -25,13 +29,16 @@ export function CardsEditAccountPassword() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      username: store.userName ?? "",
       password: '',
       passwordConfirm: "",
     },
   })
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     store.createPassword(values, form.reset)
   }
+
   return (
     <Card>
       <Form {...form}>
@@ -40,6 +47,25 @@ export function CardsEditAccountPassword() {
             <CardTitle className="text-2xl">Change Password</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
+            {/* Скрытое поле для имени пользователя - обязательно для accessibility */}
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem className="hidden">
+                  <FormLabel className="sr-only">Username</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      autoComplete="username"
+                      {...field}
+                      className="hidden"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
             <div className="flex flex-col gap-3">
               <FormField
                 control={form.control}
@@ -48,7 +74,12 @@ export function CardsEditAccountPassword() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="Password" {...field} />
+                      <Input
+                        type="password"
+                        placeholder="Password"
+                        autoComplete="new-password"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -61,9 +92,14 @@ export function CardsEditAccountPassword() {
                 name="passwordConfirm"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="Confirm Password" {...field} />
+                      <Input
+                        type="password"
+                        placeholder="Confirm Password"
+                        autoComplete="new-password"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -72,10 +108,10 @@ export function CardsEditAccountPassword() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button onClick={form.handleSubmit(onSubmit)} className="w-full">Change Password</Button>
+            <Button type="submit" className="w-full">Change Password</Button>
           </CardFooter>
         </form>
       </Form>
-    </Card >
+    </Card>
   )
 }

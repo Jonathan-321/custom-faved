@@ -12,24 +12,24 @@ const stylesTost = {
 
 const handleResponse = (promise, defaultErrorMessage) => {
     return promise
-      .then(response => {
-          if (!response.ok) {
-              if (response.status === 403 || response.status === 401) {
-                  this.showLoginPage = true
-              }
-              return response.json().then(data => {
-                  throw new Error(data.message || `HTTP error! status: ${response.status}`);
-              });
-          }
-          return response.json();
-      })
-      .then((data) => {
-          toast(data.message, { position: 'top-center', style: stylesTost });
-          return data
-      })
-      .catch((err, data) => {
-          toast.error((err instanceof Error ? err.message : defaultErrorMessage), { position: 'top-center', style: stylesTost })
-      })
+        .then(response => {
+            if (!response.ok) {
+                if (response.status === 403 || response.status === 401) {
+                    this.showLoginPage = true
+                }
+                return response.json().then(data => {
+                    throw new Error(data.message || `HTTP error! status: ${response.status}`);
+                });
+            }
+            return response.json();
+        })
+        .then((data) => {
+            toast(data.message, { position: 'top-center', style: stylesTost });
+            return data
+        })
+        .catch((err, data) => {
+            toast.error((err instanceof Error ? err.message : defaultErrorMessage), { position: 'top-center', style: stylesTost })
+        })
 };
 
 class mainStore {
@@ -135,13 +135,13 @@ class mainStore {
         };
 
         await handleResponse(fetch(API_ENDPOINTS.tags.create, options), 'Error creating tag')
-          .then((data) => {
-              tagID = data?.data?.tag_id || null;
-          })
-          .finally(() => {
-              this.fetchTags()
-              this.fetchItems()
-          })
+            .then((data) => {
+                tagID = data?.data?.tag_id || null;
+            })
+            .finally(() => {
+                this.fetchTags()
+                this.fetchItems()
+            })
 
         return tagID;
     }
@@ -156,10 +156,10 @@ class mainStore {
         };
 
         handleResponse(fetch(API_ENDPOINTS.tags.deleteTag(tagID), options), 'Error deleting tag')
-          .finally(() => {
-              this.fetchTags()
-              this.fetchItems()
-          })
+            .finally(() => {
+                this.fetchTags()
+                this.fetchItems()
+            })
 
     }
     onChangeTagTitle = async (tagID: string, title: string) => {
@@ -174,9 +174,9 @@ class mainStore {
         };
 
         handleResponse(fetch(API_ENDPOINTS.tags.updateTitle(tagID), options), 'Error updating tag title')
-        .finally(() => {
-            this.fetchTags()
-        })
+            .finally(() => {
+                this.fetchTags()
+            })
 
     }
     onChangeTagColor = async (tagID: string, color: string) => {
@@ -191,13 +191,13 @@ class mainStore {
         };
 
         handleResponse(
-          fetch(API_ENDPOINTS.tags.updateColor(tagID), options),
-          'Error updating tag color'
+            fetch(API_ENDPOINTS.tags.updateColor(tagID), options),
+            'Error updating tag color'
         )
-        .finally(() => {
-            const tag = { ...this.tags[tagID as unknown as number], color }
-            this.tags = { ...this.tags, [tagID]: tag };
-        })
+            .finally(() => {
+                const tag = { ...this.tags[tagID as unknown as number], color }
+                this.tags = { ...this.tags, [tagID]: tag };
+            })
     }
     onChangeTagPinned = async (tagID: string, pinned: boolean) => {
         const options = {
@@ -228,7 +228,6 @@ class mainStore {
     }
 
     setItems = (val: ItemType[]) => {
-        console.log('setItems', val)
         this.items = val;
     };
     createItem = (val: ItemType) => {
@@ -404,7 +403,7 @@ class mainStore {
             })
             .then((response) => {
                 if (response.message === "User created successfully." || response.message === "User retrieved successfully.") {
-                    this.isAuthSuccess = true;
+                    this.setIsAuthSuccess(true)
                 }
                 if (response.data.user !== null) {
                     this.setUserName(response.data.user.username);
@@ -414,7 +413,7 @@ class mainStore {
             })
             .catch(err => {
                 toast(err.message, { position: 'top-center', style: stylesTost })
-                this.isAuthSuccess = false
+                this.setIsAuthSuccess(false)
             })
 
     }
@@ -447,7 +446,7 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                this.isAuthSuccess = true;
+                this.setIsAuthSuccess(true)
                 this.setUserName(val.username);
 
                 toast(response.message, { position: 'top-center', style: stylesTost })
@@ -554,7 +553,7 @@ class mainStore {
             })
             .then((response) => {
                 toast(response.message, { position: 'top-center', style: stylesTost })
-                this.isAuthSuccess = false
+                this.setIsAuthSuccess(false)
             })
             .catch((err) => {
                 toast(err.message, { position: 'top-center', style: stylesTost })

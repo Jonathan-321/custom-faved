@@ -10,7 +10,6 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 
-
 const formSchema = z.object({
   username: z
     .string()
@@ -45,7 +44,11 @@ export const CardsEditAccountUserName = () => {
                   <FormItem>
                     <FormLabel>Username</FormLabel>
                     <FormControl>
-                      <Input placeholder="Username" {...field} />
+                      <Input
+                        placeholder="Username"
+                        autoComplete="username"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -54,10 +57,10 @@ export const CardsEditAccountUserName = () => {
             </div>
           </CardContent>
           <CardFooter>
-            <Button onClick={form.handleSubmit(onSubmit)} className="w-full">Update Username</Button>
+            <Button type="submit" className="w-full">Update Username</Button>
           </CardFooter>
         </form>
       </Form>
-    </Card >
+    </Card>
   )
 }

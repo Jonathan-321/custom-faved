@@ -42,6 +42,7 @@ import { ActionType } from "../dashboard/types"
 import { DataTablePagination } from "./data-table-pagination"
 import { CardView } from "./CardView"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"
+import { Card } from "../ui/card"
 
 
 export type Payment = {
@@ -264,7 +265,6 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
-  console.log('sorting', sorting);
   const [selectedSortColumn, setSelectedSortColumn] = React.useState<string | null>(null);
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
@@ -416,10 +416,13 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
         </Table> :
           <div className="grid grid-cols-1 gap-4 px-1 lg:px-2 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
             {currentRows.length > 0 ? (
-              currentRows.map((row, index) => {
+              currentRows.map((row) => {
                 const el = row.original;
                 return (
-                  <CardView key={index} setIsShowEditModal={setIsShowEditModal} el={el} />)
+                  <Card key={el.id} className="@container/card relative">
+                    <CardView setIsShowEditModal={setIsShowEditModal} el={el} />
+                  </Card>)
+
               })
             ) : (
               <div className="col-span-full text-center py-8 text-muted-foreground">

@@ -17,11 +17,11 @@ import { StoreContext } from "@/store/storeContext"
 import { TagBadge } from "./TagBadge"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"
 
-export const CardView: React.FC<{ setIsShowEditModal: (val: boolean) => void; el: any; key: number }> = observer(({ setIsShowEditModal, el, key }) => {
+export const CardView: React.FC<{ setIsShowEditModal: (val: boolean) => void; el: any }> = observer(({ setIsShowEditModal, el }) => {
     const store = React.useContext(StoreContext);
     return (
 
-        <Card key={key} className="@container/card relative">
+        <div>
             <CardAction>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -133,7 +133,9 @@ export const CardView: React.FC<{ setIsShowEditModal: (val: boolean) => void; el
                     <p className="text-muted-foreground text-sm"><small className="text-sm leading-none font-medium">Created at :</small> {el.updated_at ?? el.created_at}</p>
                 </div>
             </CardFooter>
-        </Card>
+        </div>
+
+
     );
 
 });

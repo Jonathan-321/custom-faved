@@ -67,7 +67,7 @@ export const LoginForm = observer(({ className, ...props }: React.ComponentProps
                         <FormItem>
                           <FormLabel>Username</FormLabel>
                           <FormControl>
-                            <Input placeholder="Username" {...field} disabled={isLoading} />
+                            <Input placeholder="Username" autoComplete="username" {...field} disabled={isLoading} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -84,7 +84,7 @@ export const LoginForm = observer(({ className, ...props }: React.ComponentProps
                             <FormLabel>Password</FormLabel>
                           </div>
                           <FormControl>
-                            <Input type="password" placeholder="Password" {...field} disabled={isLoading} />
+                            <Input type="password" autoComplete="new-password" placeholder="Password" {...field} disabled={isLoading} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

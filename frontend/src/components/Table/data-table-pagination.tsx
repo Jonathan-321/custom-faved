@@ -19,7 +19,6 @@ export function DataTablePagination<TData>({
   rowsPerPage,
   setRowsPerPage,
 }: DataTablePaginationProps<TData>) {
-  console.log('rowsPerPage', rowsPerPage)
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between px-2 gap-2 sm:gap-0">
       <div className="flex-1 text-sm text-muted-foreground w-full sm:w-auto text-center sm:text-right pr-10">
