@@ -43,9 +43,13 @@ export const LoginForm = observer(({ className, ...props }: React.ComponentProps
   return (
 
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <div className="flex flex-row items-start justify-center text-center"> {/* <-- items-start */}
-        <img src="/public/logo.png" alt="Faved logo" className="img-fluid pr-3 mb-1" width="46"></img> {/* <-- mb-1 */}
-        <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight m-0">Faved.</h2>
+      <div className="flex items-center justify-center">
+        <img
+          src="/public/logo.png"
+          alt="Faved logo"
+          className="w-[40px] h-auto mr-3"
+        />
+        <h2 className="text-2xl font-semibold tracking-tight m-0">Faved.</h2>
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
