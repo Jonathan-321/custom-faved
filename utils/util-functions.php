@@ -16,24 +16,16 @@ function groupTagsByParent($tags)
 }
 
 
-function getPinnedTags($tags)
-{
-	$tags = array_filter($tags, function ($tag) {
-		return !empty($tag['pinned']);
-	});
-	return array_column($tags, 'id');
-}
-
 function getTagColors()
 {
 	return [
-		'gray' => 'secondary',
-		'green' => 'success',
-		'red' => 'danger',
-		'yellow' => 'warning',
-		'aqua' => 'info',
-		'white ' => 'light',
-		'black' => 'dark',
+		'gray',
+		'green',
+		'red',
+		'yellow',
+		'aqua',
+		'white ',
+		'black',
 	];
 }
 
@@ -72,6 +64,9 @@ function createTagsFromSegments(array $tag_segments): int
 	return (int)$parent_tag_id;
 }
 
+/**
+ * TODO: Add URL match checks on item create
+ */
 function findURLMatches($checked_url, $items, &$host_matches)
 {
 	$domain = parse_url($checked_url)['host'];

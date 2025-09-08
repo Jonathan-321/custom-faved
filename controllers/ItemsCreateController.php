@@ -7,7 +7,6 @@ use Framework\Exceptions\ValidationException;
 use Framework\Responses\ResponseInterface;
 use Framework\ServiceContainer;
 use Models\Repository;
-use function Framework\buildItemTagsFromInput;
 use function Framework\data;
 
 class ItemsCreateController implements ControllerInterface

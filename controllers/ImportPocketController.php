@@ -4,23 +4,18 @@ namespace Controllers;
 
 use Exception;
 use Framework\ControllerInterface;
-use Framework\FlashMessages;
 use Framework\Responses\ResponseInterface;
 use Framework\ServiceContainer;
-use Framework\UrlBuilder;
 use Models\Repository;
 use Models\TagCreator;
 use Utils\PocketImporter;
 use ZipArchive;
 use function Framework\data;
-use function Framework\redirect;
 
 class ImportPocketController implements ControllerInterface
 {
 	public function __invoke(array $input): ResponseInterface
 	{
-		$url_builder = ServiceContainer::get(UrlBuilder::class);
-
 		// Check if file was uploaded
 		if (!isset($input['pocket-zip']) || $input['pocket-zip']['error'] !== UPLOAD_ERR_OK) {
 			return data([

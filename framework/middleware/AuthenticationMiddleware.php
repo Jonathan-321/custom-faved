@@ -5,7 +5,6 @@ namespace Framework\Middleware;
 use Framework\Exceptions\DatabaseNotFound;
 use Framework\Exceptions\UnauthorizedException;
 use Framework\ServiceContainer;
-use Framework\UrlBuilder;
 use Models\Repository;
 use function Framework\getLoggedInUser;
 
@@ -38,7 +37,6 @@ class AuthenticationMiddleware extends MiddlewareAbstract
 			return $this->next && $this->next->handle();
 		}
 
-		$url_builder = ServiceContainer::get(UrlBuilder::class);
 		$user = getLoggedInUser();
 
 		if ($user) {

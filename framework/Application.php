@@ -3,12 +3,6 @@
 namespace Framework;
 
 
-use Exception;
-use Framework\Exceptions\DatabaseNotFound;
-use Framework\Exceptions\DataWriteException;
-use Framework\Exceptions\UnauthorizedException;
-use Framework\Exceptions\ForbiddenException;
-use Framework\Exceptions\NotFoundException;
 use Framework\Exceptions\ValidationException;
 
 class Application

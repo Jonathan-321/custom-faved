@@ -4,14 +4,11 @@ namespace Controllers;
 
 use Exception;
 use Framework\ControllerInterface;
-use Framework\FlashMessages;
 use Framework\Responses\ResponseInterface;
 use Framework\ServiceContainer;
-use Framework\UrlBuilder;
 use Models\Repository;
 use function Framework\data;
 use function Framework\getLoggedInUser;
-use function Framework\redirect;
 use function Framework\validateUsername;
 
 class UserUsernameUpdateController implements ControllerInterface

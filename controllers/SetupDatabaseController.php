@@ -4,14 +4,11 @@ namespace Controllers;
 
 use Config;
 use Framework\Exceptions\DatabaseNotFound;
-use Framework\FlashMessages;
 use Framework\Responses\ResponseInterface;
 use Framework\ServiceContainer;
-use Framework\UrlBuilder;
 use Models\Repository;
 use PDO;
 use function Framework\data;
-use function Framework\redirect;
 use function Utils\createWelcomeContent;
 
 class SetupDatabaseController
