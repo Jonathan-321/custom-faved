@@ -6,8 +6,8 @@ import {
   SidebarMenuItem,
   SidebarMenuSub, useSidebar
 } from "@/components/ui/sidebar.tsx";
-import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/collapsible.tsx";
-import {IconChevronRight, IconDotsVertical, IconPinned} from "@tabler/icons-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible.tsx";
+import { IconChevronRight, IconDotsVertical, IconPinned } from "@tabler/icons-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,11 +19,11 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
-import {StoreContext} from "@/store/storeContext.ts";
-import { colorMap} from "@/lib/utils.ts";
+import { StoreContext } from "@/store/storeContext.ts";
+import { colorMap } from "@/lib/utils.ts";
 
 
-export function SidebarTag({tag, innerItems = [], level, isTagSelected, isChildTagSelected}) {
+export function SidebarTag({ tag, innerItems = [], level, isTagSelected, isChildTagSelected }) {
   const [isRenaming, setIsRenaming] = React.useState(false);
   const [isCollapsibleOpen, setIsCollapsibleOpen] = React.useState(false);
 
@@ -75,22 +75,22 @@ export function SidebarTag({tag, innerItems = [], level, isTagSelected, isChildT
         <span className={`w-2.5 h-2.5 rounded-full ${colorMap[tag.color]}`}></span>
         <input
           ref={inputRef}
-          className={ ['border-none rounded-sm w-[85%]', (isRenaming ? '' : 'hidden')].join(' ')}
+          className={['border-none rounded-sm w-[85%]', (isRenaming ? '' : 'hidden')].join(' ')}
           value={newTagTitle as string}
           onChange={(e) => setNewTagTitle(e.target.value)}
           onKeyDown={(e) => {
-              if (e.key === 'Escape') {
-                revert();
-              } else if (e.key === 'Enter') {
-                submit();
-              }
+            if (e.key === 'Escape') {
+              revert();
+            } else if (e.key === 'Enter') {
+              submit();
             }
+          }
           }
           onBlur={revert}
         />
         {!isRenaming && <span>{tag.title}</span>}
       </button>
-      {!!tag.pinned && (<IconPinned className={'ms-auto'}/>)}
+      {!!tag.pinned && (<IconPinned className={'ms-auto'} />)}
       {actionButtons}
     </>)
   }
@@ -111,8 +111,8 @@ export function SidebarTag({tag, innerItems = [], level, isTagSelected, isChildT
         align={isMobile ? "end" : "start"}
       >
         {level === 1 && (<DropdownMenuItem onClick={() => store.onChangeTagPinned(tag.id, !tag.pinned)}>
-            <span>{tag.pinned ? 'Unpin' : 'Pin' } tag</span>
-          </DropdownMenuItem>)}
+          <span>{tag.pinned ? 'Unpin' : 'Pin'} tag</span>
+        </DropdownMenuItem>)}
         <DropdownMenuItem onClick={enableRenaming}>
           <span>Rename</span>
         </DropdownMenuItem>
@@ -141,28 +141,28 @@ export function SidebarTag({tag, innerItems = [], level, isTagSelected, isChildT
     </DropdownMenu>
   )
 
-  const code = innerItems.length > 0 ? (<Collapsible className='group/collapsible'  open={isCollapsibleOpen || isChildTagSelected}
-    onOpenChange={(open: boolean)=> setIsCollapsibleOpen(open) }
+  const code = innerItems.length > 0 ? (<Collapsible className='group/collapsible' open={isCollapsibleOpen || isChildTagSelected}
+    onOpenChange={(open: boolean) => setIsCollapsibleOpen(open)}
 
->
-      <SidebarMenuItem>
-        <SidebarMenuButton className={'py-0 active:bg-primary/90 active:text-primary-foreground' + (isTagSelected ? ' !bg-primary !text-primary-foreground' : '') }>
-          <CollapsibleTrigger asChild>
-            <IconChevronRight className={`transition-transform hover:cursor-pointer`} />
-          </CollapsibleTrigger>
-          {tagContent()}
-        </SidebarMenuButton>
+  >
+    <SidebarMenuItem>
+      <SidebarMenuButton className={'py-0 active:bg-primary/90 active:text-primary-foreground' + (isTagSelected ? ' !bg-primary !text-primary-foreground' : '')}>
+        <CollapsibleTrigger asChild>
+          <IconChevronRight className={`transition-transform hover:cursor-pointer`} />
+        </CollapsibleTrigger>
+        {tagContent()}
+      </SidebarMenuButton>
 
-        <CollapsibleContent>
-          <SidebarMenuSub>
-            {innerItems}
-          </SidebarMenuSub>
-        </CollapsibleContent>
-      </SidebarMenuItem>
-    </Collapsible>)
+      <CollapsibleContent>
+        <SidebarMenuSub>
+          {innerItems}
+        </SidebarMenuSub>
+      </CollapsibleContent>
+    </SidebarMenuItem>
+  </Collapsible>)
     :
     (<SidebarMenuItem >
-      <SidebarMenuButton className={'py-0 active:bg-primary/90 active:text-primary-foreground' + (isTagSelected ? ' !bg-primary !text-primary-foreground' : '') }>
+      <SidebarMenuButton className={'py-0 active:bg-primary/90 active:text-primary-foreground' + (isTagSelected ? ' !bg-primary !text-primary-foreground' : '')}>
         {tagContent('pl-6')}
       </SidebarMenuButton>
     </SidebarMenuItem>)
