@@ -47,7 +47,7 @@ return [
 		'DELETE' => UserDeleteController::class,
 	],
 	'/settings/username' => [
-		'POST' => SettingsUsernameUpdateController::class,
+		'PATCH' => UserUsernameUpdateController::class,
 	],
 	'/settings/password' => [
 		'PATCH' => UserPasswordUpdateController::class,
