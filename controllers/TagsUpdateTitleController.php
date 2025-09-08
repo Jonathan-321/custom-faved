@@ -30,6 +30,7 @@ class TagsUpdateTitleController
 			throw new RuntimeException('Tag cannot be its own parent.');
 		}
 
+
 		$repository = ServiceContainer::get(Repository::class);
 		$repository->updateTagTitle(
 			$tag_id,

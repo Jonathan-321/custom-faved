@@ -57,7 +57,7 @@ function createTagsFromSegments(array $tag_segments): int
 	$check_existing_parent = true;
 	foreach ($tag_segments as $tag_title) {
 		$existing_parent = array_find($tags, function ($tag) use ($tag_title, $parent_tag_id) {
-			return $tag['title'] === $tag_title && $tag['parent'] === $parent_tag_id;
+			return strtolower($tag['title']) === strtolower($tag_title) && $tag['parent'] === $parent_tag_id;
 		});
 
 		if ($check_existing_parent && $existing_parent) {

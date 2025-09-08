@@ -9,6 +9,29 @@ const stylesTost = {
     left: '50%',
     transform: 'translateX(-50%)'
 }
+
+const handleResponse = (promise, defaultErrorMessage) => {
+    return promise
+      .then(response => {
+          if (!response.ok) {
+              if (response.status === 403 || response.status === 401) {
+                  this.showLoginPage = true
+              }
+              return response.json().then(data => {
+                  throw new Error(data.message || `HTTP error! status: ${response.status}`);
+              });
+          }
+          return response.json();
+      })
+      .then((data) => {
+          toast(data.message, { position: 'top-center', style: stylesTost });
+          return data
+      })
+      .catch((err, data) => {
+          toast.error((err instanceof Error ? err.message : defaultErrorMessage), { position: 'top-center', style: stylesTost })
+      })
+};
+
 class mainStore {
     items: ItemType[] = [];
     tags: TagsObjectType[] = [];
@@ -25,6 +48,9 @@ class mainStore {
     itemsOriginal: ItemType[] = [];
     isTableView: boolean = false;
     isAuthSuccess: boolean = false;
+
+
+
     constructor() {
         makeAutoObservable(this); // Makes state observable and actions transactional
     }
@@ -107,25 +133,15 @@ class mainStore {
                 title
             })
         };
-        await fetch(API_ENDPOINTS.tags.create, options)
-            .then(response => {
-                if (!response.ok) {
-                    if (response.status === 403 || response.status === 401) {
-                        this.showLoginPage = true
-                    }
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then((data) => {
-                toast(data.message, { position: 'top-center', style: stylesTost });
-                tagID = data.data.tag_id;
-            })
-            .catch((err, data) => toast('Tag not created: ' + (err instanceof Error ? err.message : 'Unknown error')), { position: 'top-center', style: stylesTost })
-            .finally(() => {
-                this.fetchTags()
-                this.fetchItems()
-            })
+
+        await handleResponse(fetch(API_ENDPOINTS.tags.create, options), 'Error creating tag')
+          .then((data) => {
+              tagID = data?.data?.tag_id || null;
+          })
+          .finally(() => {
+              this.fetchTags()
+              this.fetchItems()
+          })
 
         return tagID;
     }
@@ -138,27 +154,13 @@ class mainStore {
                 'Content-Type': 'application/json',
             },
         };
-        fetch(API_ENDPOINTS.tags.deleteTag(tagID), options)
-            .then(response => {
-                if (!response.ok) {
-                    if (response.status === 403 || response.status === 401) {
-                        this.showLoginPage = true
-                    }
 
-                    return response.json().then(data => {
-                        throw new Error(data.message || `HTTP error! status: ${response.status}`);
-                    });
-                }
-                return response.json();
-            })
-            .then((data) => toast(data.message, { position: 'top-center', style: stylesTost }))
-            .catch((err) => {
-                toast.error((err instanceof Error ? err.message : 'Tag not deleted'), { position: 'top-center', style: stylesTost })
-            })
-            .finally(() => {
-                this.fetchTags()
-                this.fetchItems()
-            })
+        handleResponse(fetch(API_ENDPOINTS.tags.deleteTag(tagID), options), 'Error deleting tag')
+          .finally(() => {
+              this.fetchTags()
+              this.fetchItems()
+          })
+
     }
     onChangeTagTitle = async (tagID: string, title: string) => {
         const options = {
@@ -170,22 +172,11 @@ class mainStore {
                 title
             })
         };
-        fetch(API_ENDPOINTS.tags.updateTitle(tagID), options)
-            .then(response => {
-                if (!response.ok) {
-                    if (response.status === 403 || response.status === 401) {
-                        this.showLoginPage = true
-                    }
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then((data) => toast(data.message, { position: 'top-center', style: stylesTost }))
-            .catch(err => console.error(err))
-            .finally(() => {
-                this.fetchTags()
-            })
 
+        handleResponse(fetch(API_ENDPOINTS.tags.updateTitle(tagID), options), 'Error updating tag title')
+        .finally(() => {
+            this.fetchTags()
+        })
 
     }
     onChangeTagColor = async (tagID: string, color: string) => {
@@ -198,22 +189,15 @@ class mainStore {
                 color
             })
         };
-        fetch(API_ENDPOINTS.tags.updateColor(tagID), options)
-            .then(response => {
-                if (!response.ok) {
-                    if (response.status === 403 || response.status === 401) {
-                        this.showLoginPage = true
-                    }
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then((data) => toast(data.message, { position: 'top-center', style: stylesTost }))
-            .catch(err => console.error(err))
-            .finally(() => {
-                const tag = { ...this.tags[tagID as unknown as number], color }
-                this.tags = { ...this.tags, [tagID]: tag };
-            })
+
+        handleResponse(
+          fetch(API_ENDPOINTS.tags.updateColor(tagID), options),
+          'Error updating tag color'
+        )
+        .finally(() => {
+            const tag = { ...this.tags[tagID as unknown as number], color }
+            this.tags = { ...this.tags, [tagID]: tag };
+        })
     }
     onChangeTagPinned = async (tagID: string, pinned: boolean) => {
         const options = {

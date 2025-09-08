@@ -81,7 +81,7 @@ const TagEdit = observer(({ className, values, onChange }: { className?: string,
               {/*<CommandEmpty>No tags found.</CommandEmpty>*/}
               <CommandGroup >
                 {tags
-                  .filter(tag => tag.fullPath.toLowerCase().includes(query.toLowerCase())).map((tag) => (
+                  .filter(tag => tag.fullPath.toLowerCase().includes(query.toLowerCase().trim())).map((tag) => (
                     <CommandItem
                       key={tag.id}
                       value={tag.id}
@@ -105,7 +105,7 @@ const TagEdit = observer(({ className, values, onChange }: { className?: string,
                     </CommandItem>
                   ))}
 
-                {query.length > 1 && typeof tags.find(t => t.fullPath.toLowerCase() === query.toLowerCase()) === 'undefined' && (<CommandItem
+                {query.length > 1 && typeof tags.find(t => t.fullPath.toLowerCase() === query.trim().toLowerCase()) === 'undefined' && (<CommandItem
                   forceMount={true}
                   key="new_item"
                   value={query}
@@ -123,7 +123,7 @@ const TagEdit = observer(({ className, values, onChange }: { className?: string,
                     // setOpen(false)
                   }}
                 >
-                  + Create new tag: "{query}"
+                  + Create new tag: "{query.trim()}"
                 </CommandItem>)}
               </CommandGroup>
             </CommandList>

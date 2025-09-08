@@ -351,6 +351,26 @@ class Repository
 		if (!$this->checkUsersTableExists() && !$this->setupUsersTable()) {
 			throw new Exception('Failed to set up users table');
 		}
+
+		if (!$this->checkTagIndexExists() && !$this->createTagIndex()) {
+			throw new Exception('Failed to create index on tags');
+		}
+	}
+
+	public function checkTagIndexExists()
+	{
+		$stmt = $this->pdo->query("SELECT 1 FROM sqlite_master WHERE type = 'index' AND name = 'idx_tags_title_parent' AND tbl_name = 'tags';");
+		return (bool)$stmt->fetchColumn();
+
+	}
+	public function createTagIndex()
+	{
+		try {
+			$this->pdo->exec('CREATE UNIQUE INDEX "idx_tags_title_parent" ON tags(title COLLATE NOCASE ASC, parent COLLATE BINARY ASC);');
+			return true;
+		} catch (Exception $e) {
+			return false;
+		}
 	}
 
 	/**

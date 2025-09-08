@@ -8,18 +8,60 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const BookmarkletPage = () => {
     const [copied, setCopied] = useState(false);
-    const generateBookmarklet = () => {
-        return `javascript:(function(){var meta_description=document.querySelector("meta[name='description']");if(meta_description){meta_description=meta_description.getAttribute("content");}var rspW=700,rspH=700,rspL=parseInt((screen.width/2)-(rspW/2)),rspT=parseInt((screen.height/2)-(rspH/2));window.open("http://localhost:5173/edit?url="+encodeURIComponent(window.location.href)+"&title="+encodeURIComponent(document.title)+"&description="+((meta_description)?encodeURIComponent(meta_description):""),"add-to-faved","width="+rspW+",height="+rspH+",resizable=yes,scrollbars=yes,status=false,location=false,toolbar=false,left="+rspL+",top="+rspT)})();`;
+    const bookmarkletRef = React.useRef(null);
+
+    React.useEffect(() => {
+        const bookmarkletElement = bookmarkletRef.current;
+        if (bookmarkletElement) {
+            bookmarkletElement.setAttribute('href', generateBookmarkletCode());
+        }
+    });
+
+    const bookmarkletFunction = () => {
+        const urlParams = new URLSearchParams();
+        urlParams.append('url', window.location.href);
+        urlParams.append('title', document.title);
+
+        const meta_description = document.querySelector('meta[name="description"]');
+        if (meta_description) {
+            urlParams.append('description', meta_description.getAttribute('content') || '');
+        }
+
+        const windowWidth = 700;
+        const windowHeight = 700;
+
+        const windowProps= {
+            width: 700,
+            height: 700,
+            left: parseInt((screen.width/2)-(windowWidth/2)),
+            top: parseInt((screen.height/2)-(windowHeight/2)),
+            resizable: 'yes',
+            scrollbars: 'yes',
+            status: 'false',
+            location: 'false',
+            toolbar: 'false',
+        };
+
+        window.open(
+          `<<BASE_PATH>>?${urlParams.toString()}`,
+          "add-to-faved",
+          Object.entries(windowProps).map(([key, value]) => key + "=" + value).join(",")
+        );
+    }
+
+    const generateBookmarkletCode = () => {
+        const basePath = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '') + '/create-item';
+        return `javascript:(${bookmarkletFunction})();`.replace("<<BASE_PATH>>", basePath);
     };
 
     const copyBookmarkletCode = async () => {
         try {
-            await navigator.clipboard.writeText(generateBookmarklet());
+            await navigator.clipboard.writeText(generateBookmarkletCode());
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
         } catch (err) {
             const textArea = document.createElement('textarea');
-            textArea.value = generateBookmarklet();
+            textArea.value = generateBookmarkletCode();
             document.body.appendChild(textArea);
             textArea.select();
             document.execCommand('copy');
@@ -27,11 +69,6 @@ const BookmarkletPage = () => {
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
         }
-    };
-
-    const handleDragStart = (e) => {
-        e.dataTransfer.setData('text/uri-list', generateBookmarklet());
-        e.dataTransfer.setData('text/plain', 'Add to Faved');
     };
 
     return (
@@ -55,22 +92,16 @@ const BookmarkletPage = () => {
                     </CardHeader>
                     <CardContent className="space-y-6">
                         <div className="flex flex-col sm:flex-row gap-4 items-center">
-                            <Button
-                                variant="secondary"
-                                className="gap-2 bg-background/20 border-2 border-dashed border-background text-background hover:bg-background/30 cursor-move w-full sm:w-auto"
-                                draggable="true"
-                                onDragStart={handleDragStart}
-                                onClick={(e) => e.preventDefault()}
-                            >
-                                <Bookmark className="w-4 h-4" />
+                            <a className="gap-2 bg-background/20 border-2 border-dashed border-background text-background hover:bg-background/30 cursor-move w-full sm:w-auto py-1 px-3 flex justify-center items-center rounded-md"
+                               href='#' ref={bookmarkletRef} draggable="true">
+                                <Bookmark className="w-4 h-4"/>
                                 Add to Faved
-                            </Button>
-
+                            </a>
                             <Button
-                                onClick={copyBookmarkletCode}
-                                className="gap-2 bg-green-600 hover:bg-green-700 w-full sm:w-auto"
+                              onClick={copyBookmarkletCode}
+                              className="gap-2 bg-green-600 hover:bg-green-700 w-full sm:w-auto"
                             >
-                                <Copy className="w-4 h-4" />
+                                <Copy className="w-4 h-4"/>
                                 {copied ? 'Copied!' : 'Copy Code'}
                             </Button>
                         </div>

@@ -20,7 +20,7 @@ const App = observer(() => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/setup" element={<Setup />} />
         <Route path="/main" element={<Page />} />
-        <Route path="/edit"
+        <Route path="/create-item"
           element={<Dialog open={true}><EditItemForm setIsShowEditModal={() => { }} isFullScreen={true} /></Dialog>}
         />
         <Route
