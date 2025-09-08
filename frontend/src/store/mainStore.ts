@@ -4,7 +4,7 @@ import { API_ENDPOINTS } from './api';
 import { ActionType } from '@/components/dashboard/types';
 import type { LoginType, PasswordType, UsernameType, UsetType, ItemType, TagsObjectType, TagType } from '@/types/types';
 
-const stylesTost = {
+export const stylesTost = {
     width: "200px",
     left: '50%',
     transform: 'translateX(-50%)'

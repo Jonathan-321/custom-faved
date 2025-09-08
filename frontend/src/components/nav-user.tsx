@@ -29,6 +29,7 @@ import { useContext } from "react"
 import { API_ENDPOINTS } from "@/store/api"
 import { toast } from "sonner"
 import { useNavigate } from "react-router-dom"
+import { stylesTost } from "@/store/mainStore"
 
 export const NavUser = observer(() => {
   const store = useContext(StoreContext);
@@ -92,12 +93,12 @@ export const NavUser = observer(() => {
                   return response.json();
                 })
                 .then((response) => {
-                  toast(response.message, { position: 'top-center', style: { width: "200px" } })
+                  toast(response.message, { position: 'top-center', style: stylesTost });
                   store.setShowLoginPage(true)
                   navigate('/login', { replace: true })
                 })
                 .catch((err) => {
-                  toast(err.message, { position: 'top-center', style: { width: "200px" } })
+                  toast(err.message, { position: 'top-center', style: stylesTost });
                 })
 
             }}>
