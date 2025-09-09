@@ -14,7 +14,7 @@ const handleResponse = (promise, defaultErrorMessage) => {
     return promise
         .then(response => {
             if (!response.ok) {
-                if (response.status === 403 || response.status === 401) {
+                if (response.status === 401) {
                     this.showLoginPage = true
                 }
                 return response.json().then(data => {
@@ -234,7 +234,7 @@ class mainStore {
         fetch(API_ENDPOINTS.tags.updatePinned(tagID), options)
             .then(response => {
                 if (!response.ok) {
-                    if (response.status === 403 || response.status === 401) {
+                    if (response.status === 401) {
                         this.showLoginPage = true
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -272,7 +272,7 @@ class mainStore {
             try {
                 const response = await fetch(API_ENDPOINTS.items.list);
                 if (!response.ok) {
-                    if (response.status === 403 || response.status === 401) {
+                    if (response.status === 401) {
                         this.showLoginPage = true
                     }
                     if (response.status === 424) {
@@ -299,7 +299,7 @@ class mainStore {
         fetch(API_ENDPOINTS.settings.getUser, options)
             .then(response => {
                 if (!response.ok) {
-                    if (response.status === 403 || response.status === 401) {
+                    if (response.status === 401) {
                         this.showLoginPage = true;
                     }
                     if (response.status === 424) {
@@ -335,7 +335,7 @@ class mainStore {
         fetch(API_ENDPOINTS.items.deleteItem(id), options)
             .then(response => {
                 if (!response.ok) {
-                    if (response.status === 403 || response.status === 401) {
+                    if (response.status === 401) {
                         this.showLoginPage = true;
                     }
                     if (response.status === 424) {
@@ -374,7 +374,7 @@ class mainStore {
         fetch((isCreateCopy || this.type !== ActionType.EDIT ? API_ENDPOINTS.items.createItem : API_ENDPOINTS.items.updateItem(val.id)), options)
             .then(response => {
                 if (!response.ok) {
-                    if (response.status === 403 || response.status === 401) {
+                    if (response.status === 401) {
                         this.showLoginPage = true;
                     }
                     if (response.status === 424) {
@@ -413,7 +413,7 @@ class mainStore {
         fetch(API_ENDPOINTS.settings.getUser, options)
             .then(response => {
                 if (!response.ok) {
-                    if (response.status === 403 || response.status === 401) {
+                    if (response.status === 401) {
                         this.showLoginPage = true;
                     }
                     if (response.status === 424) {
@@ -458,7 +458,7 @@ class mainStore {
         fetch(API_ENDPOINTS.settings.create, options)
             .then(response => {
                 if (!response.ok) {
-                    if (response.status === 403 || response.status === 401) {
+                    if (response.status === 401) {
                         this.showLoginPage = true;
                     }
                     if (response.status === 424) {
@@ -498,7 +498,7 @@ class mainStore {
         fetch(API_ENDPOINTS.settings.userName, options)
             .then(response => {
                 if (!response.ok) {
-                    if (response.status === 403 || response.status === 401) {
+                    if (response.status === 401) {
                         this.showLoginPage = true;
                     }
                     if (response.status === 424) {
@@ -535,7 +535,7 @@ class mainStore {
         fetch(API_ENDPOINTS.settings.password, options)
             .then(response => {
                 if (!response.ok) {
-                    if (response.status === 403 || response.status === 401) {
+                    if (response.status === 401) {
                         this.showLoginPage = true;
                     }
                     if (response.status === 424) {
@@ -567,7 +567,7 @@ class mainStore {
         fetch(API_ENDPOINTS.settings.delete, options)
             .then(response => {
                 if (!response.ok) {
-                    if (response.status === 403 || response.status === 401) {
+                    if (response.status === 401) {
                         this.showLoginPage = true;
                     }
                     if (response.status === 424) {
@@ -599,7 +599,7 @@ class mainStore {
         fetch(API_ENDPOINTS.auth.logout, options)
             .then(response => {
                 if (!response.ok) {
-                    if (response.status === 403 || response.status === 401) {
+                    if (response.status === 401) {
                         this.showLoginPage = true;
                     }
                     if (response.status === 424) {
@@ -635,7 +635,7 @@ class mainStore {
         fetch(API_ENDPOINTS.auth.login, options)
             .then(response => {
                 if (!response.ok) {
-                    if (response.status === 403 || response.status === 401) {
+                    if (response.status === 401) {
                         this.showLoginPage = true;
                     }
                     if (response.status === 424) {
@@ -673,7 +673,7 @@ class mainStore {
         fetch(API_ENDPOINTS.setup.setup, options)
             .then(response => {
                 if (!response.ok) {
-                    if (response.status === 403 || response.status === 401) {
+                    if (response.status === 401) {
                         this.showLoginPage = true;
                     }
                     if (response.status === 424) {
@@ -712,7 +712,7 @@ class mainStore {
         fetch(API_ENDPOINTS.importBookmarks.import, options)
             .then(response => {
                 if (!response.ok) {
-                    if (response.status === 403 || response.status === 401) {
+                    if (response.status === 401) {
                         this.showLoginPage = true;
                     }
                     if (response.status === 424) {

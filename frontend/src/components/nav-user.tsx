@@ -85,7 +85,7 @@ export const NavUser = observer(() => {
               fetch(API_ENDPOINTS.auth.logout, options)
                 .then(response => {
                   if (!response.ok) {
-                    if (response.status === 403 || response.status === 401) {
+                    if (response.status === 401) {
                       store.setShowLoginPage(true)
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
