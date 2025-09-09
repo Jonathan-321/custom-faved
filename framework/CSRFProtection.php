@@ -4,7 +4,7 @@ namespace Framework;
 
 class CSRFProtection
 {
-	public static function generateToken()
+	public static function generateToken() : string
 	{
 		if (empty($_SESSION['csrf_token'])) {
 			$_SESSION['csrf_token'] = bin2hex(random_bytes(32));
@@ -12,7 +12,7 @@ class CSRFProtection
 		return $_SESSION['csrf_token'];
 	}
 
-	public static function verifyToken($token)
+	public static function verifyToken(string $token): bool
 	{
 		if (empty($_SESSION['csrf_token']) || empty($token)) {
 			return false;

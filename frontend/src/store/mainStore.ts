@@ -32,6 +32,23 @@ const handleResponse = (promise, defaultErrorMessage) => {
         })
 };
 
+const getCookie = (name: string) => {
+
+    // Add a semicolon to the beginning of the cookie string to handle the first cookie
+  const cookieString = "; " + document.cookie;
+
+    // Split the string at the specified cookie name
+    const parts = cookieString.split("; " + name + "=");
+
+    // If the cookie was found (the array has more than one part)
+    if (parts.length === 2) {
+        // Return the value, which is everything after the '=' and before the next ';'
+        return parts.pop().split(";").shift();
+    }
+    // If the cookie was not found
+    return null;
+}
+
 class mainStore {
     items: ItemType[] = [];
     tags: TagsObjectType[] = [];
@@ -128,6 +145,7 @@ class mainStore {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')
             },
             body: JSON.stringify({
                 title
@@ -152,6 +170,7 @@ class mainStore {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')
             },
         };
 
@@ -167,6 +186,7 @@ class mainStore {
             method: "PATCH",
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')
             },
             body: JSON.stringify({
                 title
@@ -184,6 +204,7 @@ class mainStore {
             method: "PATCH",
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')
             },
             body: JSON.stringify({
                 color
@@ -204,6 +225,7 @@ class mainStore {
             method: "PATCH",
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')
             },
             body: JSON.stringify({
                 pinned
@@ -307,6 +329,7 @@ class mainStore {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')
             },
         };
         fetch(API_ENDPOINTS.items.deleteItem(id), options)
@@ -336,6 +359,7 @@ class mainStore {
             method: onSave ? 'PATCH' : !isCreateCopy ? this.type === ActionType.EDIT ? 'PATCH' : 'POST' : 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')
             },
             body: JSON.stringify({
                 title: val.title || '',
@@ -422,6 +446,7 @@ class mainStore {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')
             },
             body: JSON.stringify({
                 username: val.username || '',
@@ -462,6 +487,7 @@ class mainStore {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')
             },
             body: JSON.stringify({
                 username: val.username || '',
@@ -498,6 +524,7 @@ class mainStore {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')
             },
             body: JSON.stringify({
                 password: val.password || '',
@@ -533,6 +560,7 @@ class mainStore {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')
             },
         };
 
@@ -564,6 +592,7 @@ class mainStore {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')
             },
         };
 
@@ -595,6 +624,7 @@ class mainStore {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')
             },
             body: JSON.stringify({
                 username: values.username || '',
@@ -633,9 +663,10 @@ class mainStore {
     initialDatabase = () => {
         const options = {
             method: 'POST',
-            // headers: {
-            //     'Content-Type': 'multipart/form-data; boundary=geckoformboundary262df991ff6535437a260f8dd5e61d8b',
-            // },
+            headers: {
+                'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')
+                //     'Content-Type': 'multipart/form-data; boundary=geckoformboundary262df991ff6535437a260f8dd5e61d8b',
+            },
 
         };
 
@@ -672,7 +703,10 @@ class mainStore {
         formData.append('pocket-zip', selectedFile);
         const options = {
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')
+            }
         };
         setIsLoading(true)
         fetch(API_ENDPOINTS.importBookmarks.import, options)

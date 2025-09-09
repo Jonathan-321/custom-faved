@@ -105,3 +105,4 @@ function getLoggedInUser()
 	$repository = ServiceContainer::get(Repository::class);
 	return $repository->getUser($_SESSION['user_id']);
 }
+

@@ -48,7 +48,7 @@ date_default_timezone_set('UTC');
  */
 
 $middleware_classes = [
-	// CSRFMiddleware::class,
+	CSRFMiddleware::class,
 	DatabaseMigrations::class,
 	AuthenticationMiddleware::class,
 ];
