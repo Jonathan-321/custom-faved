@@ -36,7 +36,7 @@ class Application
 					'success' => false,
 					'message' => $e->getMessage(),
 					'error' => $e->getMessage(),
-				], is_int($e->getCode()) ? $e->getCode() : 500);
+				], isValidHttpCode($e->getCode()) ? $e->getCode() : 500);
 			} elseif(isset($this->error_redirects[get_class($e)])) {
 				FlashMessages::set('error', $e->getMessage());
 				$redirect_url = $this->error_redirects[get_class($e)];
@@ -65,7 +65,6 @@ class Application
 		$input = json_decode($raw_data, true);
 
 		if (json_last_error() !== JSON_ERROR_NONE) {
-			// @TODO: Make proper exception
 			throw new ValidationException('Invalid JSON input',400);
 		}
 		return array_merge($input, $_GET);
