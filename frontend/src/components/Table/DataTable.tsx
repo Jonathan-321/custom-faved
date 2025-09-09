@@ -56,7 +56,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
   setIdItem: (val: number) => void,
   onDeleteHandler: (val: number) => void,
   onCreateItem: any,
-  tagList: Object,
+  tagList: object,
 ): ColumnDef<z.infer<typeof schema>>[] => [
     {
       accessorKey: "url",
@@ -348,7 +348,7 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
     const currentSort = sorting[0];
     const isCurrentColumn = currentSort?.id === columnAccessorKey;
 
-    let newSortDesc = sortDirection === 'desc' || (!isCurrentColumn ? false : !currentSort?.desc)
+    const newSortDesc = sortDirection === 'desc' || (!isCurrentColumn ? false : !currentSort?.desc)
 
     setSorting([{
       id: columnAccessorKey,

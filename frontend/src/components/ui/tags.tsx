@@ -32,7 +32,7 @@ const TagEdit = observer(({ className, values, onChange }: { className?: string,
   const [query, setQuery] = React.useState("")
 
   const getSortedTags = () => {
-    let t = Object.values(toJS(store.tags))
+    const t = Object.values(toJS(store.tags))
     t.sort((a, b) => {
       return Number(selected.includes(b.id)) - Number(selected.includes(a.id))
     })

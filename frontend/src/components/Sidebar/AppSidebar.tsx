@@ -150,7 +150,7 @@ export const AppSidebar = observer(({ allTags, ...props }: React.ComponentProps<
   const selectedTag = allTags[store.selectedTagId] || null;
 
   function renderTag(parentID: string, level = 0): JSX.Element[] {
-    let output = []
+    const output = []
     const tags = Object.values(allTags).filter((tag: any) => tag.parent === parentID);
     tags.sort((a, b) => {
       if (a.pinned && !b.pinned) return -1;
