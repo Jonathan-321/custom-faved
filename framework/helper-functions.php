@@ -23,12 +23,14 @@ function data(array $data, $code = 200) {
 	return new DataResponse($data, $code);
 }
 
-function flattenArray(array $array, string $prefix = ''): array
+function flattenRoutesArray(array $array, string $prefix = ''): array
 {
 	$result = [];
 
 	foreach ($array as $key => $value) {
-		$new_key = $prefix === '' ? $key : $prefix . $key;
+		$key = trim($key, '/');
+		$prefix = rtrim($prefix, '/');
+		$new_key = "{$prefix}/{$key}";
 
 		if (is_array($value)) {
 			$result += flattenArray($value, $new_key); // Recursive call

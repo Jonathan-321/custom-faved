@@ -21,47 +21,59 @@ use Controllers\UserPasswordUpdateController;
 use Controllers\SetupDatabaseController;
 
 return [
-	'/items' => [
-		'GET' => ItemsGetController::class,
-		'POST' => ItemsCreateController::class,
-		'PATCH' => ItemsUpdateController::class,
-		'DELETE' => ItemsDeleteController::class,
-	],
-	'/tags' => [
-		'GET' => TagsController::class,
-		'POST' => TagsCreateController::class,
-		'DELETE' => TagsDeleteController::class,
-	],
-	'/tags/update-pinned' => [
-		'PATCH' => TagsUpdatePinnedController::class,
-	],
-	'/tags/update-title' => [
-		'PATCH' => TagsUpdateTitleController::class,
-	],
-	'/tags/update-color' => [
-		'PATCH' => TagsUpdateColorController::class,
-	],
-	'/settings/user' => [
-		'GET' => UserGetController::class,
-		'POST' => UserCreateController::class,
-		'DELETE' => UserDeleteController::class,
-	],
-	'/settings/username' => [
-		'PATCH' => UserUsernameUpdateController::class,
-	],
-	'/settings/password' => [
-		'PATCH' => UserPasswordUpdateController::class,
-	],
-	'/auth' => [
-		'POST' => AuthController::class,
-	],
-	'/auth/logout' => [
-		'POST' => AuthLogoutController::class
-	],
-	'/setup/database' => [
-		'POST' => SetupDatabaseController::class
-	],
-	'/import/pocket' => [
-		'POST' => ImportPocketController::class,
-	],
+	'api' => [
+		'items' => [
+			'GET' => ItemsGetController::class,
+			'POST' => ItemsCreateController::class,
+			'PATCH' => ItemsUpdateController::class,
+			'DELETE' => ItemsDeleteController::class,
+		],
+		'tags' => [
+			'/' => [
+				'GET' => TagsController::class,
+				'POST' => TagsCreateController::class,
+				'DELETE' => TagsDeleteController::class,
+			],
+			'update-pinned' => [
+				'PATCH' => TagsUpdatePinnedController::class,
+			],
+			'update-title' => [
+				'PATCH' => TagsUpdateTitleController::class,
+			],
+			'update-color' => [
+				'PATCH' => TagsUpdateColorController::class,
+			],
+		],
+		'settings' => [
+			'user' => [
+				'GET' => UserGetController::class,
+				'POST' => UserCreateController::class,
+				'DELETE' => UserDeleteController::class,
+			],
+			'username' => [
+				'PATCH' => UserUsernameUpdateController::class,
+			],
+			'password' => [
+				'PATCH' => UserPasswordUpdateController::class,
+			],
+		],
+		'auth' => [
+			'/' => [
+				'POST' => AuthController::class,
+			],
+			'logout' => [
+				'POST' => AuthLogoutController::class
+			],
+		],
+		'setup' => [
+			'database' => [
+				'POST' => SetupDatabaseController::class
+			],
+		],
+		'import' => [
+			'pocket' => [
+				'POST' => ImportPocketController::class,
+			],
+		],
+	]
 ];

@@ -11,18 +11,19 @@ class Application
 	{
 	}
 
-	public function run($route, $method)
+	public function run($path, $method)
 	{
+		$path = rtrim($path, '/');
 		$expects_json = str_contains(($_SERVER['HTTP_ACCEPT'] ?? '') . ($_SERVER['CONTENT_TYPE'] ?? ''), 'application/json');
 
 		try {
+			$router = new Router($this->routes);
+			$controller_class = $router->match_controller($path, $method);
+
 			foreach (array_reverse($this->middleware_classes) as $middleware_class) {
-				$middleware = new $middleware_class($middleware ?? null, $route, $method);
+				$middleware = new $middleware_class($middleware ?? null, $path, $method, $controller_class);
 			}
 			isset($middleware) && $middleware->handle();
-
-			$router = new Router($this->routes);
-			$controller_class = $router->match_controller($route, $method);
 
 			$input = $this->getInput($expects_json);
 

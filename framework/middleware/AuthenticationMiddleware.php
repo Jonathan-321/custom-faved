@@ -2,6 +2,7 @@
 
 namespace Framework\Middleware;
 
+use Controllers\AuthController;
 use Framework\Exceptions\DatabaseNotFound;
 use Framework\Exceptions\UnauthorizedException;
 use Framework\ServiceContainer;
@@ -12,10 +13,10 @@ class AuthenticationMiddleware extends MiddlewareAbstract
 {
 	public function handle()
 	{
-		$route = $this->route;
+		$controller_class = $this->controller_class;
 
 		// Skip authentication for login route
-		if ($route === '/login' || $route === '/auth') {
+		if ($controller_class === AuthController::class) {
 			return $this->next && $this->next->handle();
 		}
 

@@ -14,12 +14,12 @@ class Router
 
 	}
 
-	public function match_controller(string $url, string $method): string
+	public function match_controller(string $path, string $method): string
 	{
-		$routes = flattenArray($this->routes);
-		$route_id = $url . $method;
+		$routes = flattenRoutesArray($this->routes);
+		$route_id = $path . '/' . $method;
 		if (!isset($routes[$route_id])) {
-			throw new NotFoundException("Route $method $url not found");
+			throw new NotFoundException("Route $method $path not found");
 		}
 
 		return $routes[$route_id];

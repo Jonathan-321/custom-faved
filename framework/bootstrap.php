@@ -67,7 +67,7 @@ $error_redirects = [
 // Load project-specific files and services
 require_once ROOT_DIR . '/init.php';
 
-$route = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$path = $_SERVER['SCRIPT_URL'];
 $method = $_POST['force-method'] ?? $_SERVER["REQUEST_METHOD"];
 $app = new Application($routes, $middleware_classes, $error_redirects);
-$app->run($route, $method);
+$app->run($path, $method);
