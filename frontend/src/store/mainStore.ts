@@ -347,7 +347,7 @@ class mainStore {
             })
         };
 
-        fetch(API_ENDPOINTS.items.createItem + (!isCreateCopy ? this.type === ActionType.EDIT ? `&item-id=${val.id}` : '' : ''), options)
+        fetch((isCreateCopy || this.type !== ActionType.EDIT ? API_ENDPOINTS.items.createItem : API_ENDPOINTS.items.updateItem(val.id)), options)
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {

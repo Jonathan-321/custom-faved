@@ -5,6 +5,7 @@ export const API_ENDPOINTS = {
         list: `${API_BASE}/items`,
         deleteItem: (id: any) => `${API_BASE}/items?item-id=${id}`,
         createItem: `${API_BASE}/items`,
+        updateItem: (id: any) => `${API_BASE}/items?item-id=${id}`,
     },
     settings: {
         getUser: `${API_BASE}/settings/user`,
