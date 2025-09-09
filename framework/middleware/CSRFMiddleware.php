@@ -13,7 +13,9 @@ class CSRFMiddleware extends MiddlewareAbstract
 		$token = CSRFProtection::generateToken();
 		if ($stored_token !== $token) {
 			setcookie('CSRF-TOKEN', $token, [
-				'expires' => time() + 60 * 60,
+				'expires' => time() + 60 * 60 * 24, // 24 hours
+				'httponly' => false, // Accessible via JavaScript
+				'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on',
 				'path' => '/',
 				'samesite' => 'Lax',
 			]);
