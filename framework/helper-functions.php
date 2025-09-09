@@ -33,7 +33,7 @@ function flattenRoutesArray(array $array, string $prefix = ''): array
 		$new_key = "{$prefix}/{$key}";
 
 		if (is_array($value)) {
-			$result += flattenArray($value, $new_key); // Recursive call
+			$result += flattenRoutesArray($value, $new_key); // Recursive call
 		} else {
 			$result[$new_key] = $value;
 		}

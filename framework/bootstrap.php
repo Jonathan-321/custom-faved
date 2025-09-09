@@ -5,7 +5,6 @@ require_once ROOT_DIR . '/framework/Router.php';
 require_once ROOT_DIR . '/framework/ControllerInterface.php';
 require_once ROOT_DIR . '/framework/Application.php';
 require_once ROOT_DIR . '/framework/ServiceContainer.php';
-require_once ROOT_DIR . '/framework/UrlBuilder.php';
 require_once ROOT_DIR . '/framework/FlashMessages.php';
 require_once ROOT_DIR . '/framework/CSRFProtection.php';
 require_once ROOT_DIR . '/framework/responses/ResponseInterface.php';
@@ -39,16 +38,14 @@ use Framework\Middleware\AuthenticationMiddleware;
 use Framework\Middleware\CSRFMiddleware;
 use Framework\Middleware\DatabaseMigrations;
 use Framework\ServiceContainer;
-use Framework\UrlBuilder;
 
 session_start();
 
 date_default_timezone_set('UTC');
 
-// Bind services
-ServiceContainer::bind(UrlBuilder::class, function () {
-	return new UrlBuilder('');
-});
+/*
+ * Bind services
+ */
 
 $middleware_classes = [
 	// CSRFMiddleware::class,
@@ -56,12 +53,7 @@ $middleware_classes = [
 	AuthenticationMiddleware::class,
 ];
 
-$url_builder = ServiceContainer::get(UrlBuilder::class);
 $error_redirects = [
-	Framework\Exceptions\DatabaseNotFound::class => $url_builder->build('/setup'),
-	Framework\Exceptions\UnauthorizedException::class => $url_builder->build('/login'),
-	Framework\Exceptions\ValidationException::class => ($_SERVER['HTTP_REFERER'] ?? $url_builder->build('/')),
-	Framework\Exceptions\DataWriteException::class => ($_SERVER['HTTP_REFERER'] ?? $url_builder->build('/')),
 ];
 
 // Load project-specific files and services
