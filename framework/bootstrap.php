@@ -37,7 +37,6 @@ use Framework\Application;
 use Framework\Middleware\AuthenticationMiddleware;
 use Framework\Middleware\CSRFMiddleware;
 use Framework\Middleware\DatabaseMigrations;
-use Framework\ServiceContainer;
 
 session_start();
 

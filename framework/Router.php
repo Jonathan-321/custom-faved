@@ -17,7 +17,7 @@ class Router
 	{
 		$route_id = $path . '/' . $method;
 		if (!isset($this->routes[$route_id])) {
-			throw new NotFoundException("Route $method $path not found");
+			throw new NotFoundException("Route $method $path not found.");
 		}
 
 		return $this->routes[$route_id];
@@ -27,7 +27,7 @@ class Router
 	{
 		$route_id = array_search($controller_class, $this->routes);
 		if ($route_id === false) {
-			throw new NotFoundException("No route found for controller $controller_class");
+			throw new NotFoundException("No route found for controller $controller_class.");
 		}
 
 		$url = preg_replace('#\/([^/]+)$#', '', $route_id);

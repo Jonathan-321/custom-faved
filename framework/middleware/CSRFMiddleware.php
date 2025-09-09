@@ -29,7 +29,7 @@ class CSRFMiddleware extends MiddlewareAbstract
 		$input_token = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
 
 		if (!CSRFProtection::verifyToken($input_token)) {
-			throw new ForbiddenException('CSRF token validation failed', 403);
+			throw new ForbiddenException('CSRF token validation failed');
 		}
 
 		return $this->next && $this->next->handle();
