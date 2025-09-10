@@ -8,9 +8,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import {StoreContext} from "@/store/storeContext.ts";
+import { StoreContext } from "@/store/storeContext.ts";
 import * as React from "react";
-import {observer} from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 export const NavMain = observer(({
   items,

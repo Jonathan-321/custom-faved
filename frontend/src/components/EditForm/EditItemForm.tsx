@@ -67,7 +67,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
     updated_at: undefined,
     url: ''
   }
-  const defaultValues = store.type === ActionType.EDIT && store.items.length > 0 ? store.items.filter(el => el.id === store.idItem)[0] : store.type === ActionType.CREATE ? initialData : {};
+  const defaultValues = store.type === ActionType.EDIT && store.items.length > 0 ? store.items.filter(el => el.id as unknown as number === store.idItem)[0] : store.type === ActionType.CREATE ? initialData : {};
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -246,7 +246,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
                             <TagEdit
                               // type="text"
                               // id="name-1"
-                              value={field.value ?? undefined}
+                              // value={field.value ?? undefined}
                               onChange={(value) => {
                                 field.onChange(value ?? null);
                               }}

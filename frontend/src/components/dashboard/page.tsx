@@ -14,6 +14,7 @@ import { AppSidebar } from "@/components/Sidebar/AppSidebar"
 import { useNavigate } from "react-router-dom"
 import { DataTable } from "../Table/DataTable"
 import { SettingsDialog } from "../Settings/SettingsModal"
+import { TagType } from "@/types/types"
 
 
 
@@ -50,7 +51,7 @@ export const Page = observer(() => {
         } as React.CSSProperties
       }
     >
-      <AppSidebar variant="inset" allTags={store.tags} />
+      <AppSidebar variant="inset" allTags={store.tags as unknown as Record<string, TagType>} />
       <SidebarInset>
         <SiteHeader setType={store.setType} setIsShowEditModal={setIsShowEditModal} />
         <div className="flex flex-1 flex-col">

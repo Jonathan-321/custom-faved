@@ -10,12 +10,12 @@ export const stylesTost = {
     transform: 'translateX(-50%)'
 }
 
-const handleResponse = (promise, defaultErrorMessage) => {
+const handleResponse = (promise, defaultErrorMessage, setShowLoginPage) => {
     return promise
         .then(response => {
             if (!response.ok) {
                 if (response.status === 401) {
-                    this.showLoginPage = true
+                    setShowLoginPage(true)
                 }
                 return response.json().then(data => {
                     throw new Error(data.message || `HTTP error! status: ${response.status}`);
@@ -35,7 +35,7 @@ const handleResponse = (promise, defaultErrorMessage) => {
 const getCookie = (name: string) => {
 
     // Add a semicolon to the beginning of the cookie string to handle the first cookie
-  const cookieString = "; " + document.cookie;
+    const cookieString = "; " + document.cookie;
 
     // Split the string at the specified cookie name
     const parts = cookieString.split("; " + name + "=");
@@ -71,7 +71,7 @@ class mainStore {
     constructor() {
         makeAutoObservable(this); // Makes state observable and actions transactional
     }
-    setCurrentTagId = (val: string | null) => {
+    setCurrentTagId = (val: string | null | number) => {
         this.selectedTagId = val === null ? null : val.toString();
     }
     setUserName = (val: string) => {
@@ -152,7 +152,7 @@ class mainStore {
             })
         };
 
-        await handleResponse(fetch(API_ENDPOINTS.tags.create, options), 'Error creating tag')
+        await handleResponse(fetch(API_ENDPOINTS.tags.create, options), 'Error creating tag', this.setShowLoginPage)
             .then((data) => {
                 tagID = data?.data?.tag_id || null;
             })
@@ -174,7 +174,7 @@ class mainStore {
             },
         };
 
-        handleResponse(fetch(API_ENDPOINTS.tags.deleteTag(tagID), options), 'Error deleting tag')
+        handleResponse(fetch(API_ENDPOINTS.tags.deleteTag(tagID), options), 'Error deleting tag', this.setShowLoginPage)
             .finally(() => {
                 this.fetchTags()
                 this.fetchItems()
@@ -193,7 +193,7 @@ class mainStore {
             })
         };
 
-        handleResponse(fetch(API_ENDPOINTS.tags.updateTitle(tagID), options), 'Error updating tag title')
+        handleResponse(fetch(API_ENDPOINTS.tags.updateTitle(tagID), options), 'Error updating tag title', this.setShowLoginPage)
             .finally(() => {
                 this.fetchTags()
             })
@@ -213,7 +213,8 @@ class mainStore {
 
         handleResponse(
             fetch(API_ENDPOINTS.tags.updateColor(tagID), options),
-            'Error updating tag color'
+            'Error updating tag color',
+            this.setShowLoginPage
         )
             .finally(() => {
                 const tag = { ...this.tags[tagID as unknown as number], color }

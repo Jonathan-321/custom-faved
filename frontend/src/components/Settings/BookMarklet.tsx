@@ -29,12 +29,13 @@ const BookmarkletPage = () => {
 
         const windowWidth = 700;
         const windowHeight = 700;
-
+        const leftPos = Math.floor((screen.width - windowWidth) / 2);
+        const topPos = Math.floor((screen.height - windowHeight) / 2);
         const windowProps = {
             width: 700,
             height: 700,
-            left: parseInt((screen.width / 2) - (windowWidth / 2)),
-            top: parseInt((screen.height / 2) - (windowHeight / 2)),
+            left: leftPos.toString(),
+            top: topPos.toString(),
             resizable: 'yes',
             scrollbars: 'yes',
             status: 'false',

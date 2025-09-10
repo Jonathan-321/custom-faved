@@ -24,7 +24,7 @@ export const PopoverSort: React.FC<{
     handleSortChange: any;
     sortableColumns: any;
 }> = observer(({ selectedSortColumn, handleSortChange, sortableColumns }) => {
-    const [sortDirection, setSortDirection] = useState()
+    const [sortDirection, setSortDirection] = useState<string>()
     return (
         <div>
             <PopoverTrigger asChild>

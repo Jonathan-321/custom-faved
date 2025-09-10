@@ -29,6 +29,12 @@ import { StoreContext } from "@/store/storeContext.ts";
 import { observer } from "mobx-react-lite"
 import { SidebarTag } from "@/components/Sidebar/SidebarTag.tsx";
 import { PresetActions } from "../dashboard/PresetActions"
+import { TagType } from "@/types/types"
+
+
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  allTags: Record<string, TagType>;
+}
 
 const data = {
   navMain: [
@@ -36,26 +42,6 @@ const data = {
     //   title: "Untagged",
     //   url: "#",
     //   icon: IconDashboard,
-    // },
-    // {
-    //   title: "Lifecycle",
-    //   url: "#",
-    //   icon: IconListDetails,
-    // },
-    // {
-    //   title: "Analytics",
-    //   url: "#",
-    //   icon: IconChartBar,
-    // },
-    // {
-    //   title: "Projects",
-    //   url: "#",
-    //   icon: IconFolder,
-    // },
-    // {
-    //   title: "Team",
-    //   url: "#",
-    //   icon: IconUsers,
     // },
   ],
   navClouds: [
@@ -142,31 +128,41 @@ const data = {
   ],
 }
 
-
-
-export const AppSidebar = observer(({ allTags, ...props }: React.ComponentProps<typeof Sidebar>) => {
-
+export const AppSidebar = observer(({ allTags, ...props }: AppSidebarProps) => {
   const store = React.useContext(StoreContext);
-  const selectedTag = allTags[store.selectedTagId] || null;
+  const selectedTag = store.selectedTagId ? allTags[store.selectedTagId] : null;
 
-  function renderTag(parentID: string, level = 0): JSX.Element[] {
-    const output = []
-    const tags = Object.values(allTags).filter((tag: any) => tag.parent === parentID);
+  function renderTag(parentID: string | number, level = 0): React.JSX.Element[] {
+    const output: React.JSX.Element[] = [];
+    const tags = Object.values(allTags).filter((tag: TagType) => tag.parent === parentID);
+
     tags.sort((a, b) => {
       if (a.pinned && !b.pinned) return -1;
       if (!a.pinned && b.pinned) return 1;
       return a.title.localeCompare(b.title);
-    })
-    level++
+    });
+
+    level++;
+
     for (const tag of tags) {
-      const innerItems = renderTag(tag.id, level)
+      const innerItems = renderTag(tag.id, level);
       const isTagSelected = store.selectedTagId === tag.id;
-      const isChildTagSelected = !isTagSelected && selectedTag && selectedTag.fullPath.indexOf(tag.fullPath) === 0
-      const code = (<SidebarTag key={tag.id} tag={tag} innerItems={innerItems} level={level} isTagSelected={isTagSelected} isChildTagSelected={isChildTagSelected} />)
-      output.push(code)
+      const isChildTagSelected = !isTagSelected && selectedTag && selectedTag.fullPath.indexOf(tag.fullPath) === 0;
+
+      const code = (
+        <SidebarTag
+          key={tag.id}
+          tag={tag}
+          innerItems={innerItems}
+          level={level}
+          isTagSelected={isTagSelected}
+          isChildTagSelected={isChildTagSelected}
+        />
+      );
+      output.push(code);
     }
 
-    return output
+    return output;
   }
 
   return (
@@ -188,9 +184,9 @@ export const AppSidebar = observer(({ allTags, ...props }: React.ComponentProps<
           {renderTag('0')}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter>{store.userName && <NavUser />}
-
+      <SidebarFooter>
+        {store.userName && <NavUser />}
       </SidebarFooter>
     </Sidebar>
   )
-})
+});

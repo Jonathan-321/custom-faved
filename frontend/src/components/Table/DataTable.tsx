@@ -43,6 +43,7 @@ import { DataTablePagination } from "./data-table-pagination"
 import { CardView } from "./CardView"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"
 import { Card } from "../ui/card"
+import { ItemType } from "@/types/types"
 
 
 export type Payment = {
@@ -64,13 +65,14 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
       enableSorting: true,
       enableHiding: false,
       cell: observer(({ row }) => {
-        const url = row.original.url;
-        const imageURL = row.original.image;
-        const title = row.original.title;
-        const tags = row.original.tags;
-        const updatedAt = row.original.updated_at;
-        const createdAt = row.original.created_at;
-        const getTagName = (fullPath: string | undefined): string => { // Handle undefined fullPath
+        const item = row.original;
+        const url = item.url;
+        const imageURL = item.image;
+        const title = item.title;
+        const tags = item.tags;
+        const updatedAt = item.updated_at;
+        const createdAt = item.created_at;
+        const getTagName = (fullPath: string | undefined): string => {
           if (!fullPath) {
             return "";
           }
@@ -99,17 +101,6 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
                     {url}
                   </a>
                 </span>}
-              {/* {
-              tags && <div className="flex items-start text-left w-full flex-wrap pb-2">
-                {tags.map((tagID) => {
-                  console.log(' {tagList[tagID]?.fullPath}', tagList[tagID]?.fullPath)
-                  return <Badge className="mr-2 bg-white text-gray border-1 border-gray dark:bg-blue-600 ">
-                    <span className={`w-3  h-3 rounded-full inline-block mr-1 ${colorMap[tagList[tagID]?.color || 'gray']}`}></span>
-                    {tagList[tagID]?.fullPath}
-                  </Badge>
-                })}
-              </div>
-            } */}
               {tags && <div className="flex flex-start text-left w-full flex-wrap pb-2">
                 {tags.map((tagID) => {
                   const fullPath = tagList[tagID]?.fullPath;
@@ -256,6 +247,9 @@ export const schema = z.object({
   created_at: z.string(),
   updated_at: z.string(),
   title: z.string(),
+  image: z.string(),
+  tags: z.array(z.number()),
+  comments: z.string(),
 })
 
 export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }> = observer(({ setIsShowEditModal }) => {
@@ -269,9 +263,9 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
-  const columns = createColumns(setIsShowEditModal, store.setType, store.setIdItem, store.onDeleteItem, store.onCreateItem, store.tags);
+  const columns: ColumnDef<ItemType>[] = createColumns(setIsShowEditModal, store.setType, store.setIdItem, store.onDeleteItem, store.onCreateItem, store.tags) as unknown as ColumnDef<ItemType>[];
   const data = store.selectedTagId === '0' ? store.items : store.items.filter((item => {
-    return (store.selectedTagId === null && item.tags.length === 0) || item.tags.includes(Number(store.selectedTagId));
+    return (store.selectedTagId === null && item.tags.length === 0) || item.tags.includes(Number(store.selectedTagId) as unknown as string);
   }))
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const table = useReactTable({

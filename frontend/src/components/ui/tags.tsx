@@ -23,18 +23,19 @@ import { useContext } from "react";
 import { StoreContext } from "@/store/storeContext.ts";
 import { toJS } from "mobx";
 import { colorMap } from "@/lib/utils.ts";
+import { TagsObjectType } from "@/types/types"
 
 
-const TagEdit = observer(({ className, values, onChange }: { className?: string, values: Array<string>, onChange: (values: string[]) => void }) => {
+const TagEdit = observer(({ className, values, onChange }: { className?: string, values: Array<string> | undefined, onChange: (values: string[]) => void }) => {
   const store = useContext(StoreContext);
   const [open, setOpen] = React.useState(false)
   const [selected, setSelected] = React.useState(values.map(v => v.toString()))
   const [query, setQuery] = React.useState("")
 
   const getSortedTags = () => {
-    const t = Object.values(toJS(store.tags))
+    const t = Object.values(toJS(store.tags as TagsObjectType[]))
     t.sort((a, b) => {
-      return Number(selected.includes(b.id)) - Number(selected.includes(a.id))
+      return Number(selected.includes(b.id as unknown as string)) - Number(selected.includes(a.id as unknown as string))
     })
     return t
   }

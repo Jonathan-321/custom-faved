@@ -11,22 +11,24 @@ import { StoreContext } from "@/store/storeContext"
 import type { ItemType } from "@/types/types"
 
 
-const capitalizeFirstLetter = ([first, ...rest]) => {
-    if (!first) { return ""; }
-    return first.toUpperCase() + rest.join('').toLowerCase();
+const capitalizeFirstLetter = (str: string): string => {
+    if (!str) { return ""; }
+    const first = str[0];
+    const rest = str.slice(1);
+    return first.toUpperCase() + rest.toLowerCase();
 }
 
 
 export const PopoverSortSections: React.FC = observer(() => {
     const store = React.useContext(StoreContext);
-    const [sortBy, setSortBy] = useState<keyof ItemType>('');
+    const [sortBy, setSortBy] = useState<keyof ItemType | "">('');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-    const handleSortByChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleSortByChange = (e: string) => {
         setSortBy(e as unknown as keyof ItemType);
     };
 
-    const handleSortOrderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleSortOrderChange = (e: string) => {
         setSortOrder(e as unknown as 'asc' | 'desc');
     };
 
