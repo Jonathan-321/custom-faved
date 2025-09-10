@@ -25,12 +25,11 @@ import { User } from "lucide-react"
 import { observer } from "mobx-react-lite"
 import { StoreContext } from "@/store/storeContext"
 import { useContext } from "react"
-import { useNavigate } from "react-router-dom"
 
 export const NavUser = observer(() => {
   const store = useContext(StoreContext);
   const { isMobile } = useSidebar()
-  const navigate = useNavigate();
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -71,7 +70,7 @@ export const NavUser = observer(() => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => {
-              store.logOut(navigate)
+              store.logOut()
             }}>
               <IconLogout />
               Log out

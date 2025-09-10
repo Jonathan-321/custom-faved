@@ -590,7 +590,7 @@ class mainStore {
                 toast(err.message, { position: 'top-center', style: stylesTost })
             })
     }
-    logOut = (navigate: NavigateFunction) => {
+    logOut = () => {
         const options = {
             method: 'POST',
             headers: {
@@ -617,7 +617,6 @@ class mainStore {
             .then((response) => {
                 toast(response.message, { position: 'top-center', style: stylesTost })
                 this.setShowLoginPage(true);
-                navigate('/login', { replace: true })
             })
             .catch((err) => {
                 toast(err.message, { position: 'top-center', style: stylesTost })
