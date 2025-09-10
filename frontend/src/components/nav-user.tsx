@@ -2,7 +2,6 @@ import {
   IconDotsVertical,
   IconLogout,
 } from "@tabler/icons-react"
-
 import {
   Avatar,
   AvatarFallback,
@@ -26,10 +25,7 @@ import { User } from "lucide-react"
 import { observer } from "mobx-react-lite"
 import { StoreContext } from "@/store/storeContext"
 import { useContext } from "react"
-import { API_ENDPOINTS } from "@/store/api"
-import { toast } from "sonner"
 import { useNavigate } from "react-router-dom"
-import { stylesTost } from "@/store/mainStore"
 
 export const NavUser = observer(() => {
   const store = useContext(StoreContext);
@@ -75,32 +71,7 @@ export const NavUser = observer(() => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => {
-              const options = {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              };
-
-              fetch(API_ENDPOINTS.auth.logout, options)
-                .then(response => {
-                  if (!response.ok) {
-                    if (response.status === 401) {
-                      store.setShowLoginPage(true)
-                    }
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                  }
-                  return response.json();
-                })
-                .then((response) => {
-                  toast(response.message, { position: 'top-center', style: stylesTost });
-                  store.setShowLoginPage(true)
-                  navigate('/login', { replace: true })
-                })
-                .catch((err) => {
-                  toast(err.message, { position: 'top-center', style: stylesTost });
-                })
-
+              store.logOut(navigate)
             }}>
               <IconLogout />
               Log out

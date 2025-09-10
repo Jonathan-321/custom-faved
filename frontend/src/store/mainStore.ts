@@ -3,6 +3,7 @@ import { toast } from 'sonner';
 import { API_ENDPOINTS } from './api';
 import { ActionType } from '@/components/dashboard/types';
 import type { LoginType, PasswordType, UsernameType, UsetType, ItemType, TagsObjectType, TagType } from '@/types/types';
+import { NavigateFunction } from 'react-router-dom';
 
 export const stylesTost = {
     width: "200px",
@@ -589,7 +590,7 @@ class mainStore {
                 toast(err.message, { position: 'top-center', style: stylesTost })
             })
     }
-    logOut = () => {
+    logOut = (navigate: NavigateFunction) => {
         const options = {
             method: 'POST',
             headers: {
@@ -615,7 +616,8 @@ class mainStore {
             })
             .then((response) => {
                 toast(response.message, { position: 'top-center', style: stylesTost })
-                this.showLoginPage = true;
+                this.setShowLoginPage(true);
+                navigate('/login', { replace: true })
             })
             .catch((err) => {
                 toast(err.message, { position: 'top-center', style: stylesTost })
