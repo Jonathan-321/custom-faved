@@ -171,7 +171,7 @@ export const AppSidebar = observer(({ allTags, ...props }: AppSidebarProps) => {
         <SidebarMenu>
           <SidebarMenuItem className="flex w-full justify-between">
             <div className="flex flex-row items-start justify-center text-center">
-              <img src="/public/logo.png" alt="Faved logo" className="img-fluid pr-2 w-[36px] h-auto"></img>
+              <img src="logo.png" alt="Faved logo" className="img-fluid pr-2 w-[36px] h-auto"></img>
               <h2 className="scroll-m-20 text-xl font-semibold tracking-tight">Faved.</h2>
             </div>
             <PresetActions />

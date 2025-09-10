@@ -45,7 +45,7 @@ export const LoginForm = observer(({ className, ...props }: React.ComponentProps
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <div className="flex items-center justify-center">
         <img
-          src="/public/logo.png"
+          src="logo.png"
           alt="Faved logo"
           className="w-[40px] h-auto mr-3"
         />
