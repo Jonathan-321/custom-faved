@@ -2,12 +2,11 @@ name: faved
 services:
   apache-php:
     container_name: faved-web-app
-    build: .
-    restart: always
+    image: denho/faved
+    restart: unless-stopped
     working_dir: /var/www/html
     volumes:
-      - .:/var/www/html
-      - ./apache-conf:/etc/apache2/sites-enabled
+      - ./storage/:/var/www/html/storage/
     ports:
       - "${PORT:-8000}:80"
 
