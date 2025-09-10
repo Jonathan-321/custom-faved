@@ -106,3 +106,7 @@ function getLoggedInUser()
 	return $repository->getUser($_SESSION['user_id']);
 }
 
+function isValidHttpCode($http_code)
+{
+	return is_int($http_code) && $http_code >= 100 && $http_code <= 599;
+}

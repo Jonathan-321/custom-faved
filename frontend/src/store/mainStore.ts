@@ -269,9 +269,16 @@ class mainStore {
         this.selectedItemSettingsModal = val;
     };
     fetchItems = async () => {
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+
+        };
         const fetchItems = async () => {
             try {
-                const response = await fetch(API_ENDPOINTS.items.list);
+                const response = await fetch(API_ENDPOINTS.items.list, options);
                 if (!response.ok) {
                     if (response.status === 401) {
                         this.showLoginPage = true
@@ -289,13 +296,7 @@ class mainStore {
                 toast(err.message, { position: 'top-center', style: stylesTost })
             }
         };
-        const options = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
 
-        };
 
         fetch(API_ENDPOINTS.settings.getUser, options)
             .then(response => {
