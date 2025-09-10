@@ -88,7 +88,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
               </div>
             }
             <div className="flex flex-col items-start flex-wrap  table-layout-fixed break-words">
-              {title && <span className="flex items-start text-left w-full flex-wrap pb-2 break-words break-all">
+              {title && <span className="flex items-start text-left w-full flex-wrap break-words break-all">
                 <h4 className="scroll-m-20 text-xl font-semibold tracking-tight ">
                   {title
                   }
@@ -96,12 +96,12 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
               </span>
               }
               {url &&
-                <span className="flex items-start text-left w-full flex-wrap pb-2 break-all">
+                <span className="flex items-start text-left w-full flex-wrap py-2 break-all">
                   <a className="text-custom-blue underline" href={url} target="_blank" rel="noopener noreferrer">
                     {url}
                   </a>
                 </span>}
-              {tags && <div className="flex flex-start text-left w-full flex-wrap pb-2">
+              {tags && <div className="flex flex-start text-left w-full flex-wrap py-2">
                 {tags.map((tagID) => {
                   const fullPath = tagList[tagID]?.fullPath;
                   const tagName = getTagName(fullPath);
@@ -137,7 +137,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
                 })}
               </div>}
               <div>
-                <p className="text-muted-foreground text-sm"><small className="text-sm leading-none font-medium">Created at :</small> {updatedAt ?? createdAt}</p>
+                <p className="text-muted-foreground text-sm mt-auto text-left"><small className="text-sm leading-none font-medium">Created at:</small> {updatedAt ?? createdAt}</p>
               </div>
             </div >
           </div>
