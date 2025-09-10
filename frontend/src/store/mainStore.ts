@@ -165,7 +165,9 @@ class mainStore {
         return tagID;
     }
     onDeleteTag = async (tagID: number) => {
-        confirm('Are you sure you want to delete this tag?');
+        if (!confirm('Are you sure you want to delete this tag?')) {
+            return;
+        }
 
         const options = {
             method: "DELETE",

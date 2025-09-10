@@ -36,16 +36,18 @@ export function SidebarTag({ tag, innerItems = [], level, isTagSelected, isChild
 
 
   const store = React.useContext(StoreContext);
-  const { isMobile } = useSidebar()
+  const { isMobile, toggleSidebar } = useSidebar()
 
   const deleteTag = () => {
     store.onDeleteTag(tag.id)
   }
   const enableRenaming = () => {
     setIsRenaming(true);
-    setTimeout(() => {
-      inputRef.current.focus();
-    }, 50)
+    if(!isMobile) {
+      setTimeout(() => {
+        inputRef.current.focus();
+      }, 50)
+    }
   }
 
   const submit = () => {
@@ -66,6 +68,9 @@ export function SidebarTag({ tag, innerItems = [], level, isTagSelected, isChild
 
     store.setCurrentTagId(tag.id);
     store.setCurrentPage(1);
+    if (isMobile) {
+      toggleSidebar();
+    }
   }
 
 
@@ -75,7 +80,7 @@ export function SidebarTag({ tag, innerItems = [], level, isTagSelected, isChild
         <span className={`w-2.5 h-2.5 rounded-full ${colorMap[tag.color]}`}></span>
         <input
           ref={inputRef}
-          className={['border-none rounded-sm w-[85%]', (isRenaming ? '' : 'hidden')].join(' ')}
+          className={['tag-title-edit-input rounded-sm w-[85%]', (isRenaming ? '' : 'hidden'), (isMobile ? 'border-1' : 'border-none')].join(' ')}
           value={newTagTitle as string}
           onChange={(e) => setNewTagTitle(e.target.value)}
           onKeyDown={(e) => {
@@ -86,7 +91,7 @@ export function SidebarTag({ tag, innerItems = [], level, isTagSelected, isChild
             }
           }
           }
-          onBlur={revert}
+          onBlur={!isMobile && revert}
         />
         {!isRenaming && <span>{tag.title}</span>}
       </button>
