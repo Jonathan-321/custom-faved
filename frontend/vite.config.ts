@@ -20,7 +20,7 @@ export default defineConfig({
     // port: 8001,
     proxy: {
       '/api': {
-        target: 'http://host.docker.internal:8000',
+        target: 'http://host.docker.internal:' + (process.env.BACKEND_PORT || '8000'),
         changeOrigin: true,
       },
     }
