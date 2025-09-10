@@ -44,6 +44,8 @@ import { CardView } from "./CardView"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"
 import { Card } from "../ui/card"
 import { ItemType } from "@/types/types"
+import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip.tsx";
+import { Blocks as BlocksIcon, Table as TableIcon } from "lucide-react"
 
 
 export type Payment = {
@@ -363,7 +365,7 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
   }, [])
   return (
     <div className="w-full">
-      <div className="flex items-center py-4 m-[14px]">
+      <div className="flex items-center justify-between gap-2 py-4 m-[14px]">
         <DataTableToolbar table={table} globalFilter={globalFilter} />
         <Popover open={showSort} onOpenChange={setShowSort}>
           <PopoverSort
@@ -372,6 +374,21 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
             sortableColumns={sortableColumns}
           />
         </Popover>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button onClick={() => {
+              store.setIsTableView(!store.isTableView);
+              store.setItems(store.itemsOriginal)
+
+            }} variant="outline">
+              {!store.isTableView ? <TableIcon /> : <BlocksIcon />}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p> {!store.isTableView ? "Table view" : "Card view"}</p>
+          </TooltipContent>
+        </Tooltip>
 
       </div>
 

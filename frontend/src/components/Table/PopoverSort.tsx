@@ -28,7 +28,7 @@ export const PopoverSort: React.FC<{
     return (
         <div>
             <PopoverTrigger asChild>
-                <Button className="ml-[10px]" variant="outline"><ArrowDownUp /></Button>
+                <Button className="" variant="outline"><ArrowDownUp /></Button>
             </PopoverTrigger>
             <PopoverContent className=" flex flex-row flex-nowrap w-[320px] justify-between items-center" >
                 <Select
