@@ -131,7 +131,7 @@ export const CardView: React.FC<{ setIsShowEditModal: (val: boolean) => void; el
             </CardHeader>
             <CardFooter className="flex-col items-start gap-1.5 text-sm">
                 <div>
-                    <p className="text-muted-foreground text-sm"><small className="text-sm leading-none font-medium">Created at :</small> {el.updated_at ?? el.created_at}</p>
+                    <p className="text-muted-foreground text-sm"><small className="text-sm leading-none font-medium">Created at:</small> {el.updated_at ?? el.created_at}</p>
                 </div>
             </CardFooter>
         </div>
