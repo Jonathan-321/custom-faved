@@ -11,8 +11,7 @@ Faved is a simple self-hosted web application to store and organise web links. A
 
 </div>
 
-![image](https://github.com/user-attachments/assets/32568a95-06f6-4755-8bca-5c43fc2251b3)
-
+<img width="1000" height="791" alt="screenshot-list-desktop-mobile-ff-small" src="https://github.com/user-attachments/assets/27a0f3bb-09fe-49bf-9ca6-94c8ebfd2fd2" />
 
 
 ## Features
@@ -48,7 +47,7 @@ This command will:
 
 ### Using the Bookmarklet
 
-<img src="https://github.com/user-attachments/assets/c4a4c95f-5cd4-49c1-88ce-1b88837e8c12" width="60%" />
+<img width="731" height="914" alt="screenshot-add-ff-slack" src="https://github.com/user-attachments/assets/f50d32f9-2596-423b-8b8b-d8b9f86057a2" />
 
 1. Navigate to Bookmarklet section in the application Settings. 
 2. Look for the bookmarklet link "Add to Faved".
