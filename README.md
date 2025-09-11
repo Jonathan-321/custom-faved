@@ -34,11 +34,7 @@ docker pull denho/faved
 
 2. Start the Docker container:
 ```bash
-docker run -d \
-  --name faved \
-  -p 8080:80 \
-  -v faved-data:/var/www/html/storage \
-  denho/faved
+docker run -d --name faved -p 8080:80 -v faved-data:/var/www/html/storage denho/faved
 ```
 This command will:
 * Run the container in the background (-d).
