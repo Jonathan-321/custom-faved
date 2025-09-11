@@ -5,10 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useIsMobile } from "@/hooks/use-mobile.ts";
 
 const BookmarkletPage = () => {
     const [copied, setCopied] = useState(false);
     const bookmarkletRef = React.useRef(null);
+    const isMobile = useIsMobile();
 
     React.useEffect(() => {
         const bookmarkletElement = bookmarkletRef.current;
@@ -56,10 +58,15 @@ const BookmarkletPage = () => {
     };
 
     const copyBookmarkletCode = async () => {
+        const code = generateBookmarkletCode();
+
+        if(isMobile) {
+            window.prompt('Copy the bookmarklet code:', code);
+            return;
+        }
+
         try {
-            await navigator.clipboard.writeText(generateBookmarkletCode());
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
+            await navigator.clipboard.writeText(code);
         } catch (err) {
             const textArea = document.createElement('textarea');
             textArea.value = generateBookmarkletCode();
@@ -67,24 +74,57 @@ const BookmarkletPage = () => {
             textArea.select();
             document.execCommand('copy');
             document.body.removeChild(textArea);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
         }
+
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
     };
 
     return (
-        <div className="min-h-screen w-full max-w-4xl mx-auto font-sans">
+        <div className="w-full max-w-4xl mx-auto font-sans">
             <div className="flex flex-col gap-6 h-full">
+                <Alert variant="default" className="bg-muted">
+                    <AlertTitle>What is a Bookmarklet?</AlertTitle>
+                    <AlertDescription className="text-muted-foreground">
+                        A bookmarklet is a bookmark stored in a web browser that contains JavaScript commands.
+                        Unlike browser extensions, they are lightweight and only access the page when you click them.
+                    </AlertDescription>
+                </Alert>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Card className="text-center">
+                        <CardContent className="pt-2">
+                            <Zap className="w-8 h-8 text-primary mx-auto mb-3" />
+                            <h4 className="font-semibold text-primary mb-2">Fast</h4>
+                            <p className="text-sm text-muted-foreground">Instant saving without opening separate apps</p>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="text-center">
+                        <CardContent className="pt-2">
+                            <Shield className="w-8 h-8 text-primary mx-auto mb-3" />
+                            <h4 className="font-semibold text-primary mb-2">Secure</h4>
+                            <p className="text-sm text-muted-foreground">No access to your data until activated</p>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="text-center">
+                        <CardContent className="pt-2">
+                            <GitCompare className="w-8 h-8 text-primary mx-auto mb-3" />
+                            <h4 className="font-semibold text-primary mb-2">Compatible</h4>
+                            <p className="text-sm text-muted-foreground">Works in all modern browsers</p>
+                        </CardContent>
+                    </Card>
+
+                </div>
                 <Card className="from-primary to-primary/80 border-1 shadow-lg">
                     <CardHeader>
                         <CardTitle className="text-xl md:text-2xl">
-                            Faved Bookmarklet
+                            Installation
                         </CardTitle>
-                        <CardDescription>
-                            Quickly save any page to your Faved bookmarks catalog
-                        </CardDescription>
+
                     </CardHeader>
                     <CardContent className="space-y-6">
+
                         <div className="flex flex-col sm:flex-row gap-4 items-center">
                             <a className="gap-2 bg-background/20 border-2 border-dashed border-1 hover:bg-background/30 cursor-move w-full sm:w-auto py-1 px-3 flex justify-center items-center rounded-md"
                                 href='#' ref={bookmarkletRef} draggable="true">
@@ -105,84 +145,80 @@ const BookmarkletPage = () => {
                                 <TabsTrigger value="manual">Manual</TabsTrigger>
                             </TabsList>
                             <TabsContent value="drag" className="space-y-4 pt-4">
-                                <div className="flex items-start gap-4">
-                                    <Badge variant="secondary" className="text-lg px-3 py-2">1</Badge>
-                                    <div>
-                                        <p className="font-semibold">Drag to bookmarks bar</p>
-                                        <p className="text-sm opacity-90">Simply drag this button to your browser's bookmarks bar</p>
+                                <div className="space-y-3">
+                                    <div className="flex items-center gap-3">
+                                        <Badge variant="outline" className="bg-background text-primary">1</Badge>
+                                        <span>Drag "Add to Faved" button to your browser's bookmarks bar.</span>
                                     </div>
                                 </div>
                             </TabsContent>
                             <TabsContent value="manual" className="space-y-4 pt-4">
-                                <div className="flex items-start gap-4">
-                                    <Badge variant="secondary" className="text-lg px-3 py-2">1</Badge>
-                                    <div>
-                                        <p className="font-semibold">Manual installation</p>
-                                        <p className="text-sm opacity-90">Click "Copy Code" and paste manually when creating a bookmark</p>
+                                <div className="space-y-3">
+                                    <div className="flex items-center gap-3">
+                                        <Badge variant="outline" className="bg-background text-primary">1</Badge>
+                                        <span>Click "Copy Code" button above.</span>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-3">
+                                    <div className="flex items-center gap-3">
+                                        <Badge variant="outline" className="bg-background text-primary">2</Badge>
+                                        <span>Add a new bookmark in your browser.</span>
+                                    </div>
+                                </div>
+                                <div className="space-y-3">
+                                    <div className="flex items-center gap-3">
+                                        <Badge variant="outline" className="bg-background text-primary">3</Badge>
+                                        <span>Paste the copied code in the "URL" field.</span>
+                                    </div>
+                                </div>
+                                <div className="space-y-3">
+                                    <div className="flex items-center gap-3">
+                                        <Badge variant="outline" className="bg-background text-primary">4</Badge>
+                                        <span>Specify a name for the bookmark, for example "Add to Faved".</span>
+                                    </div>
+                                </div>
+                                <div className="space-y-3">
+                                    <div className="flex items-center gap-3">
+                                        <Badge variant="outline" className="bg-background text-primary">5</Badge>
+                                        <span>Save the bookmark.</span>
                                     </div>
                                 </div>
                             </TabsContent>
                         </Tabs>
+
+                    </CardContent>
+                </Card>
+
+                <Card className="from-primary to-primary/80 border-1 shadow-lg">
+                    <CardHeader>
+                        <CardTitle className="text-xl md:text-2xl">
+                            Usage
+                        </CardTitle>
+
+                    </CardHeader>
+                    <CardContent className="space-y-6">
                         <div className="space-y-3">
                             <div className="flex items-center gap-3">
+                                <Badge variant="outline" className="bg-background text-primary">1</Badge>
+                                <span>Click the "Add to Faved" bookmarklet on any page you’d like to save.</span>
+                            </div>
+                            <div className="flex items-center gap-3">
                                 <Badge variant="outline" className="bg-background text-primary">2</Badge>
-                                <span>Click the bookmarklet on any page you want to save</span>
+                                <span>A window will appear, allowing you to add the page to your bookmarks.</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Badge variant="outline" className="bg-background text-primary">3</Badge>
-                                <span>A window will open to add the page to your bookmarks</span>
+                                <span>Optionally, add notes and tags, then click Save.</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <Badge variant="outline" className="bg-background text-primary">4</Badge>
+                                <span>The page will be stored and available in Faved.</span>
                             </div>
                         </div>
                     </CardContent>
                 </Card>
-                <Alert variant="default" className="bg-muted">
-                    <AlertTitle>What is a Bookmarklet?</AlertTitle>
-                    <AlertDescription className="text-muted-foreground">
-                        A bookmarklet is a bookmark stored in a web browser that contains JavaScript commands.
-                        Unlike browser extensions, they are lightweight and only access the page when you click them.
-                    </AlertDescription>
-                </Alert>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <Card className="text-center">
-                        <CardContent className="pt-6">
-                            <Zap className="w-8 h-8 text-primary mx-auto mb-3" />
-                            <h4 className="font-semibold text-primary mb-2">Fast</h4>
-                            <p className="text-sm text-muted-foreground">Instant saving without opening separate apps</p>
-                        </CardContent>
-                    </Card>
 
-                    <Card className="text-center">
-                        <CardContent className="pt-6">
-                            <Shield className="w-8 h-8 text-primary mx-auto mb-3" />
-                            <h4 className="font-semibold text-primary mb-2">Secure</h4>
-                            <p className="text-sm text-muted-foreground">No access to your data until activated</p>
-                        </CardContent>
-                    </Card>
-
-                    <Card className="text-center">
-                        <CardContent className="pt-6">
-                            <GitCompare className="w-8 h-8 text-primary mx-auto mb-3" />
-                            <h4 className="font-semibold text-primary mb-2">Compatible</h4>
-                            <p className="text-sm text-muted-foreground">Works in all modern browsers</p>
-                        </CardContent>
-                    </Card>
-
-                </div>
-                <Card className="bg-gray-50 border-1">
-                    <CardHeader>
-                        <CardTitle className="text-black-800 text-lg">Manual Installation Guide</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <ol className="text-black-700 space-y-2 text-sm list-decimal list-inside pl-4">
-                            <li>Click "Copy Code" button above</li>
-                            <li>Open your browser's bookmark manager (Ctrl+Shift+O)</li>
-                            <li>Add a new bookmark</li>
-                            <li>Paste the copied code in the "URL" field</li>
-                            <li>Name it "Add to Faved"</li>
-                            <li>Save the bookmark</li>
-                        </ol>
-                    </CardContent>
-                </Card>
             </div>
         </div>
     );
