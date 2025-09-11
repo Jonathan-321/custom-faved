@@ -28,7 +28,7 @@ export const LoginForm = observer(({ className, ...props }: React.ComponentProps
   const store = useContext(StoreContext);
   const navigate = useNavigate();
   useEffect(() => {
-    if (!store.showLoginPage) navigate('/main', { replace: true });
+    if (!store.showLoginPage) navigate('/', { replace: true });
   }, [store.showLoginPage])
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

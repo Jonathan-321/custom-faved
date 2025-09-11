@@ -14,7 +14,7 @@ export const ImportModal: React.FC = observer(() => {
     const store = useContext(StoreContext);
     // const navigate = useNavigate();
     // useEffect(() => {
-    //     if (!store.showLoginPage) navigate('/main', { replace: true });
+    //     if (!store.showLoginPage) navigate('/', { replace: true });
     // }, [store.showLoginPage])
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [isUploading, setIsUploading] = useState(false);

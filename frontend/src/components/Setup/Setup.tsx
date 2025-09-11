@@ -22,7 +22,7 @@ export const Setup = observer(({ className, ...props }: React.ComponentProps<"di
     const store = useContext(StoreContext);
     const navigate = useNavigate();
     useEffect(() => {
-        if (!store.showInitializeDatabasePage) navigate('/main', { replace: true });
+        if (!store.showInitializeDatabasePage) navigate('/', { replace: true });
     }, [store.showInitializeDatabasePage])
     return (
         // <div className="flex text-left min-h-svh w-full items-center justify-center ">

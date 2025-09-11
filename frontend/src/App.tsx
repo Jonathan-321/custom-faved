@@ -9,6 +9,7 @@ import { Toaster } from './components/ui/sonner';
 import { Page } from './components/dashboard/page';
 import EditItemForm from './components/EditForm/EditItemForm';
 import { Dialog } from './components/ui/dialog';
+import { NotFound } from './components/NotFound';
 
 
 
@@ -17,16 +18,13 @@ const App = observer(() => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Page />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/setup" element={<Setup />} />
-        <Route path="/main" element={<Page />} />
         <Route path="/create-item"
           element={<Dialog open={true}><EditItemForm setIsShowEditModal={() => { }} isFullScreen={true} /></Dialog>}
         />
-        <Route
-          path="/"
-          element={store.showLoginPage ? <Navigate to="/login" replace={true} /> : <Navigate to="/main" />}
-        />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster />
     </BrowserRouter>

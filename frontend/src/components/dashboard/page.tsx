@@ -34,7 +34,7 @@ export const Page = observer(() => {
     }
     if (store.showInitializeDatabasePage) { navigate('/setup', { replace: true }); }
     if (!store.showInitializeDatabasePage && !store.showLoginPage) {
-      navigate('/main', { replace: true });
+      navigate('/', { replace: true });
     }
 
   }, [store.showLoginPage, store.showInitializeDatabasePage, navigate]);
