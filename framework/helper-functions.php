@@ -6,6 +6,7 @@ namespace Framework;
 use Exception;
 use Framework\Responses\PageResponse;
 use Framework\Responses\RedirectResponse;
+use Framework\Responses\DataResponse;
 use Models\Repository;
 
 function page($page_name, $data)
@@ -18,16 +19,21 @@ function redirect($location, $code = 303)
 	return new RedirectResponse($location, $code);
 }
 
+function data(array $data, $code = 200) {
+	return new DataResponse($data, $code);
+}
 
-function flattenArray(array $array, string $prefix = ''): array
+function flattenRoutesArray(array $array, string $prefix = ''): array
 {
 	$result = [];
 
 	foreach ($array as $key => $value) {
-		$new_key = $prefix === '' ? $key : $prefix . $key;
+		$key = trim($key, '/');
+		$prefix = rtrim($prefix, '/');
+		$new_key = "{$prefix}/{$key}";
 
 		if (is_array($value)) {
-			$result += flattenArray($value, $new_key); // Recursive call
+			$result += flattenRoutesArray($value, $new_key); // Recursive call
 		} else {
 			$result[$new_key] = $value;
 		}
@@ -100,11 +106,7 @@ function getLoggedInUser()
 	return $repository->getUser($_SESSION['user_id']);
 }
 
-function getHTTPProtocol()
+function isValidHttpCode($http_code)
 {
-	if ((isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] === 1))
-		|| (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')) {
-		return 'https://';
-	}
-	return 'http://';
+	return is_int($http_code) && $http_code >= 100 && $http_code <= 599;
 }

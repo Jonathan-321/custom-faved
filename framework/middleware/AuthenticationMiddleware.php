@@ -2,9 +2,10 @@
 
 namespace Framework\Middleware;
 
+use Controllers\AuthController;
 use Framework\Exceptions\DatabaseNotFound;
+use Framework\Exceptions\UnauthorizedException;
 use Framework\ServiceContainer;
-use Framework\UrlBuilder;
 use Models\Repository;
 use function Framework\getLoggedInUser;
 
@@ -12,11 +13,10 @@ class AuthenticationMiddleware extends MiddlewareAbstract
 {
 	public function handle()
 	{
-
-		$route = $_GET['route'] ?? '/';
+		$controller_class = $this->controller_class;
 
 		// Skip authentication for login route
-		if ($route === '/login') {
+		if ($controller_class === AuthController::class) {
 			return $this->next && $this->next->handle();
 		}
 
@@ -38,15 +38,12 @@ class AuthenticationMiddleware extends MiddlewareAbstract
 			return $this->next && $this->next->handle();
 		}
 
-		$url_builder = ServiceContainer::get(UrlBuilder::class);
 		$user = getLoggedInUser();
 
-		// Redirect to login page if user is not authenticated
-		if (!$user) {
-			header('Location: ' . $url_builder->build('/login'));
-			exit;
+		if ($user) {
+			return $this->next && $this->next->handle();
 		}
 
-		return $this->next && $this->next->handle();
+		throw new UnauthorizedException();
 	}
 }

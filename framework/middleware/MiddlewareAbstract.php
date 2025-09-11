@@ -4,7 +4,7 @@ namespace Framework\Middleware;
 
 abstract class MiddlewareAbstract
 {
-	public function __construct(protected $next = null)
+	public function __construct(protected ?MiddlewareAbstract $next, protected string $path, protected string $method, protected string $controller_class)
 	{
 	}
 

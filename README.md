@@ -27,30 +27,36 @@ Faved is a simple self-hosted web application to store and organise web links. A
 - Docker
 
 ## Installation
-
-Clone this repository:
-
-```bash
-git clone https://github.com/denho/faved.git
-cd faved
+1. Pull the latest stable image from Docker Hub.
+```
+docker pull denho/faved
 ```
 
-Start the Docker container (change the port if needed):
-
+2. Start the Docker container:
 ```bash
-PORT=8000 docker-compose up -d
+docker run -d \
+  --name faved \
+  -p 8080:80 \
+  -v faved-data:/var/www/html/storage \
+  denho/faved
 ```
+This command will:
+* Run the container in the background (-d).
+* Name the container faved (--name faved).
+* Map port 8080 on your host to port 80 inside the container (-p 8080:80). You can change 8080 to any port you prefer.
+* Create and mount a named volume called faved-data to application storage directory inside the container (-v faved-data:/var/www/html/storage).
 
-Visit `http://localhost:8000` in your browser to access Faved.
+3. Once the container is running, you can access the Faved application in your web browser at http://localhost:8080. 
 
-- The first time you visit, you'll be prompted to set up the database. Just click "Initialize Database" to proceed and finish installation.
+\* The first time you visit, you'll be prompted to set up the database. Just click "Initialize Database" to proceed and finish installation.
 
 ### Using the Bookmarklet
 
 <img src="https://github.com/user-attachments/assets/c4a4c95f-5cd4-49c1-88ce-1b88837e8c12" width="60%" />
 
-1. Look for the bookmarklet link "Add to Faved" at the top right corner of the Faved interface.
-2. Drag the link to your browser's bookmarks bar.
+1. Navigate to Bookmarklet section in the application Settings. 
+2. Look for the bookmarklet link "Add to Faved".
+2. Drag the bookmarklet link to your browser's bookmarks bar.
 3. When browsing the web, click the bookmarklet on any page you want to save.
 4. The form to add the web page to Faved will open.
 5. Add tags and notes as desired, then save.
@@ -59,6 +65,7 @@ Visit `http://localhost:8000` in your browser to access Faved.
 ## Project Structure
 
 - `/controllers`: Application controllers
+- `/frontend`: React frontend source files
 - `/framework`: Core framework components
 - `/models`: Data models
 - `/public`: Web-accessible files
@@ -74,6 +81,5 @@ This project is licensed under the [MIT License](LICENSE).
 
 Faved uses only open source packages:
 
-- Bootstrap for UI components
-- Select2 for enhanced tag select inputs
+- React, Tailwind, Shadcn UI, Vite for the frontend
 - Apache + PHP 8 + SQLite stack for the backend

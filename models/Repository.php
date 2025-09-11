@@ -187,7 +187,11 @@ class Repository
 	{
 		$stmt = $this->pdo->prepare(
 			'UPDATE tags 
-			SET title = :title, description = :description, parent = :parent, color = :color, pinned = :pinned, 
+			SET title = :title, 
+			description = :description, 
+			parent = :parent, 
+			color = :color, 
+			pinned = :pinned, 
 			updated_at = :updated_at
 			WHERE id = :id'
 		);
@@ -198,6 +202,56 @@ class Repository
 			':parent' => $parent_tag_id,
 			':color' => $color,
 			':pinned' => (int)$pinned,
+			':updated_at' => date('Y-m-d H:i:s'),
+			':id' => $tag_id
+		]);
+	}
+
+	public function updateTagTitle($tag_id, $title, $parent_tag_id)
+	{
+		$stmt = $this->pdo->prepare(
+			'UPDATE tags 
+			SET title = :title, 
+			parent = :parent, 
+			updated_at = :updated_at
+			WHERE id = :id'
+		);
+
+		return $stmt->execute([
+			':title' => $title,
+			':parent' => $parent_tag_id,
+			':updated_at' => date('Y-m-d H:i:s'),
+			':id' => $tag_id
+		]);
+	}
+
+	public function updateTagColor($tag_id, $color)
+	{
+		$stmt = $this->pdo->prepare(
+			'UPDATE tags 
+			SET color = :color,
+			updated_at = :updated_at
+			WHERE id = :id'
+		);
+
+		return $stmt->execute([
+			':color' => $color,
+			':updated_at' => date('Y-m-d H:i:s'),
+			':id' => $tag_id
+		]);
+	}
+
+	public function updateTagPinned($tag_id, bool $pinned)
+	{
+		$stmt = $this->pdo->prepare(
+			'UPDATE tags 
+			SET pinned = :pinned,
+			updated_at = :updated_at
+			WHERE id = :id'
+		);
+
+		return $stmt->execute([
+			':pinned' => $pinned,
 			':updated_at' => date('Y-m-d H:i:s'),
 			':id' => $tag_id
 		]);
@@ -296,6 +350,26 @@ class Repository
 	{
 		if (!$this->checkUsersTableExists() && !$this->setupUsersTable()) {
 			throw new Exception('Failed to set up users table');
+		}
+
+		if (!$this->checkTagIndexExists() && !$this->createTagIndex()) {
+			throw new Exception('Failed to create index on tags');
+		}
+	}
+
+	public function checkTagIndexExists()
+	{
+		$stmt = $this->pdo->query("SELECT 1 FROM sqlite_master WHERE type = 'index' AND name = 'idx_tags_title_parent' AND tbl_name = 'tags';");
+		return (bool)$stmt->fetchColumn();
+
+	}
+	public function createTagIndex()
+	{
+		try {
+			$this->pdo->exec('CREATE UNIQUE INDEX "idx_tags_title_parent" ON tags(title COLLATE NOCASE ASC, parent COLLATE BINARY ASC);');
+			return true;
+		} catch (Exception $e) {
+			return false;
 		}
 	}
 

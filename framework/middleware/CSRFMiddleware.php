@@ -9,16 +9,29 @@ class CSRFMiddleware extends MiddlewareAbstract
 {
 	public function handle()
 	{
+		$stored_token = $_COOKIE['CSRF-TOKEN'] ?? null;
+		$token = CSRFProtection::generateToken();
+		if ($stored_token !== $token) {
+			setcookie('CSRF-TOKEN', $token, [
+				'expires' => time() + 60 * 60 * 24, // 24 hours
+				'httponly' => false, // Accessible via JavaScript
+				'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on',
+				'path' => '/',
+				'samesite' => 'Lax',
+			]);
+		}
+
+
 		// Skip CSRF check for GET requests
-		if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+		if ($this->method === 'GET') {
 			return $this->next && $this->next->handle();
 		}
 
 		// Verify CSRF token
-		$token = $_POST['csrf_token'] ?? '';
+		$input_token = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
 
-		if (!CSRFProtection::verifyToken($token)) {
-			throw new ForbiddenException('CSRF token validation failed', 403);
+		if (!CSRFProtection::verifyToken($input_token)) {
+			throw new ForbiddenException('CSRF token validation failed');
 		}
 
 		return $this->next && $this->next->handle();

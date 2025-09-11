@@ -6,4 +6,5 @@ use RuntimeException;
 
 class DataWriteException extends RuntimeException
 {
+	protected $code = 500;
 }

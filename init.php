@@ -1,9 +1,5 @@
 <?php
 require_once ROOT_DIR . '/utils/util-functions.php';
-require_once ROOT_DIR . '/utils/ItemForm.php';
-require_once ROOT_DIR . '/utils/TagData.php';
-require_once ROOT_DIR . '/utils/TagList.php';
-require_once ROOT_DIR . '/utils/TagRenderer.php';
 require_once ROOT_DIR . '/utils/PocketImporter.php';
 require_once ROOT_DIR . '/models/TagCreator.php';
 require_once ROOT_DIR . '/models/Repository.php';
@@ -16,7 +12,7 @@ use Models\TagCreator;
 ServiceContainer::bind(PDO::class, function () {
 	$db_path = Config::getDBPath();
 	if (!file_exists($db_path)) {
-		throw new DatabaseNotFound("Database file not found: {$db_path}");
+		throw new DatabaseNotFound();
 	}
 
 	if (!is_writable($db_path)) {
@@ -30,12 +26,10 @@ ServiceContainer::bind(PDO::class, function () {
 
 ServiceContainer::bind(Models\Repository::class, function () {
 	$pdo = ServiceContainer::get(PDO::class);
-	$repository = new Models\Repository($pdo);
-	return $repository;
+	return new Models\Repository($pdo);
 });
 
 ServiceContainer::bind(TagCreator::class, function () {
 	$pdo = ServiceContainer::get(PDO::class);
-	$url_builder = new TagCreator($pdo);
-	return $url_builder;
+	return new TagCreator($pdo);
 });
