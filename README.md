@@ -1,7 +1,7 @@
   
 #  <img height="27px" src="https://github.com/user-attachments/assets/f96ecc14-bc29-4769-828e-c94cb3c87b9e" /> Faved
 
-Faved is a simple self-hosted web application to store and organise web links. All data is stored locally on your computer.
+Faved is a simple self-hosted web application to store and organise web links. All data is stored locally.
 
 100% free and open source. No ads, tracking, or data collection.
 
@@ -11,43 +11,47 @@ Faved is a simple self-hosted web application to store and organise web links. A
 
 </div>
 
-<img width="1000" height="791" alt="screenshot-list-desktop-mobile-ff-small" src="https://github.com/user-attachments/assets/27a0f3bb-09fe-49bf-9ca6-94c8ebfd2fd2" />
+<img width="1000" height="791" alt="screenshot-list-desktop-mobile-ff-small-compressorio" src="https://github.com/user-attachments/assets/58987e97-5ed3-4628-aed6-0756d6404c81" />
 
 
 ## Features
 
-- Save bookmarks with titles, descriptions, URLs and custom notes from any desktop browser using a bookmarklet.
-- Organize bookmarks with color-styled nested tags. Pin important tags at the top for quick access.
-- Super fast performance: loads full page with 2,000+ bookmarks in under 100ms.
-- Import bookmarks from Pocket: easily migrate your saved links, tags, collections and notes from Pocket by uploading the exported ZIP file.
+- **Clean Interface**: A distraction-free UI to help you quickly find and manage your bookmarks.
+- **Advanced tagging system**: Organize bookmarks with colored nested tags. Pin important tags at the top for quick access.
+- **Browser bookmarklet**: Save bookmarks from any desktop or mobile browser without installing any extensions.
+- **Lightweight and swift**: Built with efficiency in mind, Faved loads fast and runs with minimal resource usage.
+- **One-click migration from Pocket**: easily move your saved links, tags, collections and notes from Pocket by uploading the exported ZIP file.
+- **Open Source**: The code is open for you to inspect, modify, and contribute to.
 
 ## Requirements
 
 - Docker
 
 ## Installation
-1. Pull the latest stable image from Docker Hub.
-```
+#### 1. Pull the latest stable image from Docker Hub
+
+```bash
 docker pull denho/faved
 ```
 
-2. Start the Docker container:
+#### 2. Start the Docker container
 ```bash
 docker run -d --name faved -p 8080:80 -v faved-data:/var/www/html/storage denho/faved
 ```
 This command will:
-* Run the container in the background (-d).
-* Name the container faved (--name faved).
-* Map port 8080 on your host to port 80 inside the container (-p 8080:80). You can change 8080 to any port you prefer.
-* Create and mount a named volume called faved-data to application storage directory inside the container (-v faved-data:/var/www/html/storage).
+* Run the container in the background (`-d`).
+* Name the container `faved` (`--name faved`).
+* Map port `8080` on your host to port `80` inside the container (`-p 8080:80`). You can change `8080` to any port you prefer.
+* Create and mount a named volume called faved-data to application storage directory inside the container (`-v faved-data:/var/www/html/storage`).
 
-3. Once the container is running, you can access the Faved application in your web browser at http://localhost:8080. 
+#### 3. Set up database
+Once the container is running, you can access the Faved application in your web browser at http://localhost:8080. 
 
-\* The first time you visit, you'll be prompted to set up the database. Just click "Initialize Database" to proceed and finish installation.
+The first time you visit, you'll be prompted to set up the database. Just click "Initialize Database" to proceed and finish the installation.
 
-### Using the Bookmarklet
+## Using the Bookmarklet
 
-<img width="731" height="914" alt="screenshot-add-ff-slack" src="https://github.com/user-attachments/assets/f50d32f9-2596-423b-8b8b-d8b9f86057a2" />
+<img width="731" height="914" alt="screenshot-add-ff-slack-compressorio" src="https://github.com/user-attachments/assets/c7002582-d6f4-4716-a3d5-0c6cc1a4e5bb" />
 
 1. Navigate to Bookmarklet section in the application Settings. 
 2. Look for the bookmarklet link "Add to Faved".
@@ -76,5 +80,5 @@ This project is licensed under the [MIT License](LICENSE).
 
 Faved uses only open source packages:
 
-- React, Tailwind, Shadcn UI, Vite for the frontend
-- Apache + PHP 8 + SQLite stack for the backend
+- React, Tailwind, Shadcn UI and Vite for the frontend.
+- PHP 8, SQLite and Apache for the backend.
