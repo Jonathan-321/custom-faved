@@ -77,59 +77,46 @@ export const CardView: React.FC<{ setIsShowEditModal: (val: boolean) => void; el
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </CardAction>
-                <div className="flex flex-column flex-wrap sm:flex-row md:flex-row kg:flex-row items-start w-full">
+                <div className="flex flex-col items-start w-full text-left wrap-anywhere gap-2">
                     {el.image && (
                         <div className="flex w-[175px] pb-4 md:pr-4 lg:pr-4  w-full">
                             <img className="w-auto h-auto max-w-[200px] w-[200px] pr-4" src={el.image} />
                         </div>
                     )}
-                    <div className="flex flex-col items-start flex-wrap table-layout-fixed break-words">
-                        <CardTitle>
-                            {el.title && (
-                                <span className="flex items-start text-left w-full flex-wrap break-words break-all">
-                                    <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
-                                        {el.title}
-                                    </h4>
-                                </span>
-                            )}
-                        </CardTitle>
-                        {el.url && (
-                            <span className="flex items-start text-left w-full flex-wrap py-2 break-all">
-                                <a
-                                    className="text-custom-blue underline"
-                                    href={el.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    {el.url.slice(0, 60) + (el.url.length > 60 ? "..." : "")}
-                                </a>
-                            </span>
-                        )}
-                        {el.tags && (
-                            <div className="flex flex-start text-left w-full flex-wrap py-2">
-                                {el.tags.map((tagID, index) => (
-                                    <TagBadge key={index} tagID={tagID} />
-                                ))}
-                            </div>
-                        )}
-                        { (el.description || el.comments) && (<CardDescription>
-                            <div className="flex flex-col items-start w-full flex-wrap break-words break-all">
-                                <div className="flex flex-col items-start text-start">
-                                    <div>
-                                        <p className="leading-7 [&:not(:first-child)]:mt-6 whitespace-pre-line">
-                                            {el.description}
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <blockquote className="mt-6 border-l-2 pl-6 italic whitespace-pre-line">{el.comments}</blockquote>
-                                    </div>
-                                </div>
-                            </div>
-                        </CardDescription>)}
-                    </div>
+
+                    {el.title && (<CardTitle>
+                        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight line-clamp-3" title={el.title}>
+                            {el.title}
+                        </h4> </CardTitle>
+                    )}
+
+                    {el.url && (<a
+                        className="text-custom-blue underline break-all line-clamp-3"
+                        href={el.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={el.url}
+                    >
+                        {el.url}
+                    </a>)}
+                    {el.tags && (<div className="flex flex-start text-left w-full flex-wrap py-2">
+                        {el.tags.map((tagID, index) => (
+                            <TagBadge key={index} tagID={tagID} />
+                        ))}
+                    </div>)}
+                    { (el.description || el.comments) && (<CardDescription>
+                        {el.description && (<div>
+                            <p className="leading-7 [&:not(:first-child)]:mt-6 whitespace-pre-line">
+                                {el.description}
+                            </p>
+                        </div>)}
+                        {el.comments && (<div>
+                            <blockquote className="mt-6 border-l-2 pl-6 italic whitespace-pre-line">{el.comments}</blockquote>
+                        </div>)}
+                    </CardDescription>)}
                 </div>
             </CardHeader>
-            <CardFooter className="flex-col items-start gap-1.5 text-sm">
+            <CardFooter className="pt-3">
                 <div>
                     <p className="text-muted-foreground text-sm"><small className="text-sm leading-none font-medium">Created at:</small> {el.updated_at ?? el.created_at}</p>
                 </div>

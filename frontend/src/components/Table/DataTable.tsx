@@ -150,7 +150,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
     cell: ({ row }) => {
       const comments = row.original.comments;
       return (
-        <div className="flex flex-col items-start w-full flex-wrap break-words break-all ">
+        <div className="flex flex-col items-start w-full flex-wrap">
           <div className="flex flex-col items-start text-start">
             <div>
               <p className="leading-7 [&:not(:first-child)]:mt-6 whitespace-pre-line">
