@@ -359,7 +359,7 @@ class mainStore {
                 this.fetchTags()
             })
     }
-    onCreateItem = (val: ItemType, isCreateCopy = false as boolean, onSave = false, window = null) => {
+    onCreateItem = (val: ItemType, isCreateCopy = false as boolean, onSave = false, closeWindow = false) => {
         const options = {
             method: onSave ? 'PATCH' : !isCreateCopy ? this.type === ActionType.EDIT ? 'PATCH' : 'POST' : 'POST',
             headers: {
@@ -392,8 +392,16 @@ class mainStore {
                 return response.json();
             })
             .then(response => {
-                toast(response.message, { position: 'top-center', style: stylesTost })
-                if (window !== null) window.close()
+
+                let message = response.message;
+                if (closeWindow) {
+                    message += "\n" + 'The window will close in 1 second.';
+                    setTimeout(() => {
+                        window.close()
+                    }, 1000);
+                }
+
+                toast(message, { position: 'top-center', style: stylesTost })
 
             })
             .catch(err => toast(err.message, { position: 'top-center', style: stylesTost }))

@@ -43,18 +43,14 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
     const directTitle = searchParams.get('title');
     const directDescription = searchParams.get('description');
 
-    // Для доступа через /edit/index.php?route=/item&url=...
-    const route = searchParams.get('route');
-    if (route === '/item') {
-      setUrl(decodeURIComponent(searchParams.get('url') || ''));
-      setTitle(decodeURIComponent(searchParams.get('title') || ''));
-      setDescription(decodeURIComponent(searchParams.get('description') || ''));
-    } else if (directUrl) {
-      setUrl(decodeURIComponent(directUrl));
-      setTitle(decodeURIComponent(directTitle || ''));
-      setDescription(decodeURIComponent(directDescription || ''));
-    }
+    setUrl(decodeURIComponent(directUrl));
+    setTitle(decodeURIComponent(directTitle || ''));
+    setDescription(decodeURIComponent(directDescription || ''));
   }, [location.search]);
+
+  useEffect(() => {
+    store.fetchTags()
+  })
 
   const initialData = {
     id: "",
@@ -86,7 +82,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
   }, [isFullScreen, title, description, url])
 
   const onSubmit = (val: ItemType) => {
-    store.onCreateItem(val, false, false, window)
+    store.onCreateItem(val, false, false, isFullScreen)
     setIsShowEditModal(false)
     form.reset()
   };
@@ -343,11 +339,14 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
                   )}
                   <Button
                     onClick={() => {
-                      store.fetchItems()
-                      store.fetchTags()
-                      setIsShowEditModal(false)
-                      if (isFullScreen) window.close()
-                      form.reset()
+                      if (isFullScreen) {
+                        window.close()
+                      } else {
+                        store.fetchItems()
+                        store.fetchTags()
+                        setIsShowEditModal(false)
+                        form.reset()
+                      }
                     }}
                     type="reset"
                     variant="secondary"
