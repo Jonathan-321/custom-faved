@@ -28,9 +28,9 @@ export const CardView: React.FC<{ setIsShowEditModal: (val: boolean) => void; el
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button
-                              variant="link"
-                              className="data-[state=open]:bg-muted text-muted-foreground flex size-8 absolute top-2 right-2"
-                              size="icon"
+                                variant="link"
+                                className="data-[state=open]:bg-muted text-muted-foreground flex size-8 absolute top-2 right-2"
+                                size="icon"
                             >
                                 <IconDotsVertical />
                                 <span className="sr-only">Open menu</span>
@@ -38,42 +38,44 @@ export const CardView: React.FC<{ setIsShowEditModal: (val: boolean) => void; el
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-32">
                             <DropdownMenuItem
-                              onClick={() => {
-                                  store.setType(ActionType.EDIT);
-                                  setIsShowEditModal(true);
-                                  store.setIdItem(el.id);
-                              }}
+                                onClick={() => {
+                                    store.setType(ActionType.EDIT);
+                                    setIsShowEditModal(true);
+                                    store.setIdItem(el.id);
+                                }}
                             >
                                 Edit
                             </DropdownMenuItem>
                             <DropdownMenuItem onClick={() => { store.onCreateItem(el, true, false, null); }}>Make a copy</DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <AlertDialog>
-                                <AlertDialogTrigger asChild>
-                                    <div
-                                      className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 hover:bg-destructive/90 hover:text-white"
-                                    >
-                                        Delete
-                                    </div>
-                                </AlertDialogTrigger>
-                                <AlertDialogContent>
-                                    <AlertDialogHeader>
-                                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                                        <AlertDialogDescription>
-                                            This action cannot be undone. This will permanently delete your item.
-                                        </AlertDialogDescription>
-                                    </AlertDialogHeader>
-                                    <AlertDialogFooter>
-                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                        <AlertDialogAction
-                                          onClick={() => store.onDeleteItem(el.id)}
-                                          className="w-full sm:w-auto order-first sm:order-last mt-2 sm:mt-0 bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"
+                            <div className="order-1 sm:order-2 w-full sm:w-auto">
+                                <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <div
+                                            className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 hover:bg-destructive/90 hover:text-white"
                                         >
                                             Delete
-                                        </AlertDialogAction>
-                                    </AlertDialogFooter>
-                                </AlertDialogContent>
-                            </AlertDialog>
+                                        </div>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                This action cannot be undone. This will permanently delete your item.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter className="flex flex-col-reverse sm:flex-row">
+                                            <AlertDialogCancel className="mt-2 sm:mt-0">Cancel</AlertDialogCancel>
+                                            <AlertDialogAction
+                                                onClick={() => store.onDeleteItem(el.id)}
+                                                className="bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"
+                                            >
+                                                Delete
+                                            </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
+                            </div>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </CardAction>
@@ -112,7 +114,7 @@ export const CardView: React.FC<{ setIsShowEditModal: (val: boolean) => void; el
                                 ))}
                             </div>
                         )}
-                        { (el.description || el.comments) && (<CardDescription>
+                        {(el.description || el.comments) && (<CardDescription>
                             <div className="flex flex-col items-start w-full flex-wrap break-words break-all">
                                 <div className="flex flex-col items-start text-start">
                                     <div>

@@ -60,7 +60,7 @@ const BookmarkletPage = () => {
     const copyBookmarkletCode = async () => {
         const code = generateBookmarkletCode();
 
-        if(isMobile) {
+        if (isMobile) {
             window.prompt('Copy the bookmarklet code:', code);
             return;
         }
@@ -81,8 +81,8 @@ const BookmarkletPage = () => {
     };
 
     return (
-        <div className="w-full max-w-4xl mx-auto font-sans">
-            <div className="flex flex-col gap-6 h-full">
+        <div className="w-full max-w-4xl mx-auto font-sans overflow-y-auto">
+            <div className="flex flex-col gap-6 pb-6">
                 <Alert variant="default" className="bg-muted">
                     <AlertTitle>What is a Bookmarklet?</AlertTitle>
                     <AlertDescription className="text-muted-foreground">
@@ -201,7 +201,7 @@ const BookmarkletPage = () => {
                         <div className="space-y-3">
                             <div className="flex items-center gap-3">
                                 <Badge variant="outline" className="bg-background text-primary">1</Badge>
-                                <span>Click the "Add to Faved" bookmarklet on any page you’d like to save.</span>
+                                <span>Click the "Add to Faved" bookmarklet on any page you'd like to save.</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Badge variant="outline" className="bg-background text-primary">2</Badge>

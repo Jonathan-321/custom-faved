@@ -86,7 +86,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
   }, [isFullScreen, title, description, url])
 
   const onSubmit = (val: ItemType) => {
-    store.onCreateItem(val, false, false, window)
+    store.onCreateItem(val, false, false, isFullScreen ? window : null)
     setIsShowEditModal(false)
     form.reset()
   };
@@ -374,8 +374,8 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
                             This action cannot be undone. This will permanently delete your item.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogFooter className="flex flex-col-reverse sm:flex-row">
+                          <AlertDialogCancel className="mt-2 sm:mt-0">Cancel</AlertDialogCancel>
                           <AlertDialogAction
                             onClick={onDeleteItem}
                             className="bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"
