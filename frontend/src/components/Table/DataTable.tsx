@@ -69,7 +69,6 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
     cell: observer(({ row }) => {
       const item = row.original;
       const url = item.url;
-      const imageURL = item.image;
       const title = item.title;
       const tags = item.tags;
       const updatedAt = item.updated_at;
@@ -84,11 +83,6 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
 
       return (
         <div className="flex flex-col items-start w-full text-left wrap-anywhere gap-2">
-          {imageURL &&
-              <div className="flex w-[175px] pb-4 md:pr-4 lg:pr-4 ">
-                  <img className="w-auto h-auto max-w-[175px] w-[175px] pr-4" src={imageURL} />
-              </div>
-          }
           {title &&
               <h4 className="scroll-m-20 text-xl font-semibold tracking-tight line-clamp-3" title={title}>
                 {title}
@@ -124,11 +118,11 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
                       <span
                         className={`w-3 h-3 rounded-full inline-block mr-1 ${colorMap[tagList[tagID]?.color || 'gray']}`}
                       ></span>
-                  <span>{isHovered ? fullPath : tagName}</span>
-                  {isHovered && (
-                    <div className="absolute top-full left-0 mt-1 p-2 bg-gray-800 text-white text-xs rounded z-10">
-                      {fullPath}
-                    </div>
+                      <span>{isHovered ? fullPath : tagName}</span>
+                      {isHovered && (
+                        <div className="absolute top-full left-0 mt-1 p-2 bg-gray-800 text-white text-xs rounded z-10">
+                          {fullPath}
+                        </div>
                   )}
                 </Badge>
               );
@@ -149,18 +143,20 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
     enableHiding: false,
     cell: ({ row }) => {
       const comments = row.original.comments;
+      const imageUrl = row.original.image;
+      const description = row.original.description;
+
       return (
-        <div className="flex flex-col items-start w-full flex-wrap">
-          <div className="flex flex-col items-start text-start">
-            <div>
-              <p className="leading-7 [&:not(:first-child)]:mt-6 whitespace-pre-line">
-                {row.getValue("description")}
-              </p>
-            </div>
-            <div>
-              <blockquote className="mt-6 border-l-2 pl-6 italic whitespace-pre-line">{comments}</blockquote>
-            </div>
-          </div >
+        <div className="flex flex-col items-start text-start w-full flex-wrap">
+          {imageUrl &&
+              <a href={imageUrl} target="_blank">
+                  <img className="w-auto h-auto max-h-[200px] rounded-sm" src={imageUrl} />
+              </a>
+          }
+          {description && (<p className="leading-7 [&:not(:first-child)]:mt-6 whitespace-pre-line">
+            {description}
+          </p>)}
+          {comments && (<blockquote className="mt-6 border-l-2 pl-6 italic whitespace-pre-line">{comments}</blockquote>)}
         </div >
       )
     },

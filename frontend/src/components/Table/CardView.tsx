@@ -79,9 +79,9 @@ export const CardView: React.FC<{ setIsShowEditModal: (val: boolean) => void; el
                 </CardAction>
                 <div className="flex flex-col items-start w-full text-left wrap-anywhere gap-2">
                     {el.image && (
-                        <div className="flex w-[175px] pb-4 md:pr-4 lg:pr-4  w-full">
-                            <img className="w-auto h-auto max-w-[200px] w-[200px] pr-4" src={el.image} />
-                        </div>
+                        <a href={el.image} target='_blank'>
+                            <img className="w-auto h-auto mb-3 rounded-sm" src={el.image} />
+                        </a>
                     )}
 
                     {el.title && (<CardTitle>
