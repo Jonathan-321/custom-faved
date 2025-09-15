@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Bookmark, Zap, Shield, GitCompare, Copy } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,15 +9,15 @@ import { useIsMobile } from "@/hooks/use-mobile.ts";
 
 const BookmarkletPage = () => {
     const [copied, setCopied] = useState(false);
-    const bookmarkletRef = React.useRef(null);
+    const bookmarkletRef = useRef<HTMLAnchorElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
     const isMobile = useIsMobile();
 
-    React.useEffect(() => {
-        const bookmarkletElement = bookmarkletRef.current;
-        if (bookmarkletElement) {
-            bookmarkletElement.setAttribute('href', generateBookmarkletCode());
+    useEffect(() => {
+        if (bookmarkletRef.current) {
+            bookmarkletRef.current.setAttribute('href', generateBookmarkletCode());
         }
-    });
+    }, []);
 
     const bookmarkletFunction = () => {
         const urlParams = new URLSearchParams();
@@ -81,8 +81,8 @@ const BookmarkletPage = () => {
     };
 
     return (
-        <div className="w-full max-w-4xl mx-auto font-sans overflow-y-auto">
-            <div className="flex flex-col gap-6 pb-6">
+        <div ref={containerRef} className="w-full max-w-4xl mx-auto font-sans overflow-y-auto h-full">
+            <div className="flex flex-col gap-6 pb-6 h-full">
                 <Alert variant="default" className="bg-muted">
                     <AlertTitle>What is a Bookmarklet?</AlertTitle>
                     <AlertDescription className="text-muted-foreground">
@@ -90,6 +90,7 @@ const BookmarkletPage = () => {
                         Unlike browser extensions, they are lightweight and only access the page when you click them.
                     </AlertDescription>
                 </Alert>
+
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <Card className="text-center">
                         <CardContent className="pt-2">
@@ -114,20 +115,22 @@ const BookmarkletPage = () => {
                             <p className="text-sm text-muted-foreground">Works in all modern browsers</p>
                         </CardContent>
                     </Card>
-
                 </div>
+
                 <Card className="from-primary to-primary/80 border-1 shadow-lg">
                     <CardHeader>
                         <CardTitle className="text-xl md:text-2xl">
                             Installation
                         </CardTitle>
-
                     </CardHeader>
                     <CardContent className="space-y-6">
-
                         <div className="flex flex-col sm:flex-row gap-4 items-center">
-                            <a className="gap-2 bg-background/20 border-2 border-dashed border-1 hover:bg-background/30 cursor-move w-full sm:w-auto py-1 px-3 flex justify-center items-center rounded-md"
-                                href='#' ref={bookmarkletRef} draggable="true">
+                            <a
+                                className="gap-2 bg-background/20 border-2 border-dashed border-1 hover:bg-background/30 cursor-move w-full sm:w-auto py-1 px-3 flex justify-center items-center rounded-md"
+                                href='#'
+                                ref={bookmarkletRef}
+                                draggable="true"
+                            >
                                 <Bookmark className="w-4 h-4" />
                                 Add to Faved
                             </a>
@@ -139,11 +142,13 @@ const BookmarkletPage = () => {
                                 {copied ? 'Copied!' : 'Copy Code'}
                             </Button>
                         </div>
+
                         <Tabs defaultValue="drag" className="w-full">
                             <TabsList className="grid grid-cols-2 w-full">
                                 <TabsTrigger value="drag">Drag</TabsTrigger>
                                 <TabsTrigger value="manual">Manual</TabsTrigger>
                             </TabsList>
+
                             <TabsContent value="drag" className="space-y-4 pt-4">
                                 <div className="space-y-3">
                                     <div className="flex items-center gap-3">
@@ -152,6 +157,7 @@ const BookmarkletPage = () => {
                                     </div>
                                 </div>
                             </TabsContent>
+
                             <TabsContent value="manual" className="space-y-4 pt-4">
                                 <div className="space-y-3">
                                     <div className="flex items-center gap-3">
@@ -166,18 +172,21 @@ const BookmarkletPage = () => {
                                         <span>Add a new bookmark in your browser.</span>
                                     </div>
                                 </div>
+
                                 <div className="space-y-3">
                                     <div className="flex items-center gap-3">
                                         <Badge variant="outline" className="bg-background text-primary">3</Badge>
                                         <span>Paste the copied code in the "URL" field.</span>
                                     </div>
                                 </div>
+
                                 <div className="space-y-3">
                                     <div className="flex items-center gap-3">
                                         <Badge variant="outline" className="bg-background text-primary">4</Badge>
                                         <span>Specify a name for the bookmark, for example "Add to Faved".</span>
                                     </div>
                                 </div>
+
                                 <div className="space-y-3">
                                     <div className="flex items-center gap-3">
                                         <Badge variant="outline" className="bg-background text-primary">5</Badge>
@@ -186,7 +195,6 @@ const BookmarkletPage = () => {
                                 </div>
                             </TabsContent>
                         </Tabs>
-
                     </CardContent>
                 </Card>
 
@@ -195,7 +203,6 @@ const BookmarkletPage = () => {
                         <CardTitle className="text-xl md:text-2xl">
                             Usage
                         </CardTitle>
-
                     </CardHeader>
                     <CardContent className="space-y-6">
                         <div className="space-y-3">
@@ -218,7 +225,6 @@ const BookmarkletPage = () => {
                         </div>
                     </CardContent>
                 </Card>
-
             </div>
         </div>
     );

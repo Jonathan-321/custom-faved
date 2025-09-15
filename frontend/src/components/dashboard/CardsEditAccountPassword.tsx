@@ -47,7 +47,6 @@ export function CardsEditAccountPassword() {
             <CardTitle className="text-2xl">Change Password</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            {/* Скрытое поле для имени пользователя - обязательно для accessibility */}
             <FormField
               control={form.control}
               name="username"

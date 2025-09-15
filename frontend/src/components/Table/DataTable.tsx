@@ -38,7 +38,7 @@ import { colorMap } from "@/lib/utils.ts";
 import { observer } from "mobx-react-lite"
 import { PopoverSort } from "./PopoverSort"
 import { Popover } from "../ui/popover"
-import { ActionType } from "../dashboard/types"
+import { ActionType } from "../Dashboard/types"
 import { DataTablePagination } from "./data-table-pagination"
 import { CardView } from "./CardView"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"

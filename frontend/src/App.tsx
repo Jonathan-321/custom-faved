@@ -6,7 +6,7 @@ import { StoreContext } from './store/storeContext';
 import { LoginPage } from './components/Login/LoginPage';
 import { Setup } from './components/Setup/Setup';
 import { Toaster } from './components/ui/sonner';
-import { Page } from './components/dashboard/page';
+import { Page } from './components/Dashboard/page';
 import EditItemForm from './components/EditForm/EditItemForm';
 import { Dialog } from './components/ui/dialog';
 import { NotFound } from './components/NotFound';

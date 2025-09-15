@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { toast } from 'sonner';
 import { API_ENDPOINTS } from './api';
-import { ActionType } from '@/components/dashboard/types';
+import { ActionType } from '@/components/Dashboard/types';
 import type { LoginType, PasswordType, UsernameType, UsetType, ItemType, TagsObjectType, TagType } from '@/types/types';
 import { NavigateFunction } from 'react-router-dom';
 

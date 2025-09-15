@@ -1,33 +1,20 @@
 import { Button } from "@/components/ui/button"
-
-
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card"
 import { observer } from "mobx-react-lite"
 import { useContext, useEffect, useRef, useState } from "react"
 import { StoreContext } from "@/store/storeContext"
-import { useNavigate } from "react-router-dom"
 import { Loader2Icon } from "lucide-react"
 
 export const ImportModal: React.FC = observer(() => {
     const store = useContext(StoreContext);
-    // const navigate = useNavigate();
-    // useEffect(() => {
-    //     if (!store.showLoginPage) navigate('/', { replace: true });
-    // }, [store.showLoginPage])
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [isUploading, setIsUploading] = useState(false);
-    const [uploadProgress, setUploadProgress] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
-    const [uploadError, setUploadError] = useState<string | null>(null);
     const inputRef = useRef<HTMLInputElement | null>(null);
-
-
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         setSelectedFile(file);
-        setUploadError(null);
     };
 
     return (
@@ -63,7 +50,6 @@ export const ImportModal: React.FC = observer(() => {
                                     type="file"
                                     ref={inputRef}
                                     onChange={handleFileChange}
-                                    disabled={isUploading}
                                 />
                                 <p className="text-muted-foreground text-sm"> Select the ZIP file you exported from Pocket.</p>
                             </div>

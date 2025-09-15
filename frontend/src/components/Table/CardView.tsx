@@ -12,7 +12,7 @@ import {
 } from "@tabler/icons-react"
 import { observer } from "mobx-react-lite"
 import { Button } from "../ui/button";
-import { ActionType } from "../dashboard/types"
+import { ActionType } from "../Dashboard/types"
 import { StoreContext } from "@/store/storeContext"
 import { TagBadge } from "./TagBadge"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"

@@ -28,7 +28,7 @@ import {
 import { StoreContext } from "@/store/storeContext.ts";
 import { observer } from "mobx-react-lite"
 import { SidebarTag } from "@/components/Sidebar/SidebarTag.tsx";
-import { PresetActions } from "../dashboard/PresetActions"
+import { PresetActions } from "../Dashboard/PresetActions"
 import { TagType } from "@/types/types"
 
 
