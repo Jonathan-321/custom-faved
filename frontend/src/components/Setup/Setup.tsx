@@ -71,7 +71,7 @@ export const Setup = observer(({ className, ...props }: React.ComponentProps<"di
         <div className="flex text-left min-h-svh w-full items-center justify-center ">
 
 
-            <Card className="container mx-auto w-1/2 mt-16 border border-gray-300 rounded-lg shadow-md">
+            <Card className="container mx-auto lg:w-1/2 m-3 border border-gray-300 rounded-lg shadow-md">
                 <CardHeader> <h2 className="text-2xl font-semibold mb-4"><CardTitle>Database Setup</CardTitle></h2>
 
                     <div className="bg-red-100  dark:bg-red-400 dark:text-white text-red-700 p-4 rounded-lg mb-4">

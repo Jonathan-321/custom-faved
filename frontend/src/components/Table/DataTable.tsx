@@ -69,7 +69,6 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
       cell: observer(({ row }) => {
         const item = row.original;
         const url = item.url;
-        const imageURL = item.image;
         const title = item.title;
         const tags = item.tags;
         const updatedAt = item.updated_at;
@@ -83,65 +82,55 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
         };
 
         return (
-          <div className="flex flex-column flex-wrap sm:flex-row  md:flex-nowrap lg:flex-nowrap md:flex-row kg:flex-row items-start w-full">
-            {imageURL &&
-              <div className="flex w-[175px] pb-4 md:pr-4 lg:pr-4 ">
-                <img className="w-auto h-auto max-w-[175px] w-[175px] pr-4" src={imageURL} />
-              </div>
+          <div className="flex flex-col items-start w-full text-left wrap-anywhere gap-2">
+            {title &&
+              <h4 className="scroll-m-20 text-xl font-semibold tracking-tight line-clamp-3" title={title}>
+                {title}
+              </h4>
             }
-            <div className="flex flex-col items-start flex-wrap  table-layout-fixed break-words">
-              {title && <span className="flex items-start text-left w-full flex-wrap break-words break-all">
-                <h4 className="scroll-m-20 text-xl font-semibold tracking-tight ">
-                  {title
-                  }
-                </h4>
-              </span>
-              }
-              {url &&
-                <span className="flex items-start text-left w-full flex-wrap py-2 break-all">
-                  <a className="text-custom-blue underline" href={url} target="_blank" rel="noopener noreferrer">
-                    {url}
-                  </a>
-                </span>}
-              {tags && <div className="flex flex-start text-left w-full flex-wrap py-2">
-                {tags.map((tagID) => {
-                  const fullPath = tagList[tagID]?.fullPath;
-                  const tagName = getTagName(fullPath);
-                  const [isHovered, setIsHovered] = React.useState(false);
-                  const store = React.useContext(StoreContext);
+            {url &&
+              <a className="text-custom-blue underline line-clamp-3 break-all" href={url} target="_blank" rel="noopener noreferrer">
+                {url}
+              </a>
+            }
+            {tags && <div className="flex flex-start text-left w-full flex-wrap py-2">
+              {tags.map((tagID) => {
+                const fullPath = tagList[tagID]?.fullPath;
+                const tagName = getTagName(fullPath);
+                const [isHovered, setIsHovered] = React.useState(false);
+                const store = React.useContext(StoreContext);
 
-                  const setTag = () => {
-                    store.setCurrentTagId(tagID);
-                    store.setCurrentPage(1);
-                  }
+                const setTag = () => {
+                  store.setCurrentTagId(tagID);
+                  store.setCurrentPage(1);
+                }
 
-                  return (
-                    <Badge
-                      key={tagID}
-                      variant={'secondary'}
-                      className="mr-2 mb-2 cursor-pointer"
-                      onClick={setTag}
-                      // className="mr-2 mb-2 bg-white text-gray border border-gray relative" // Добавили relative для позиционирования tooltip
-                      onMouseEnter={() => setIsHovered(true)}
-                      onMouseLeave={() => setIsHovered(false)}
-                    >
-                      <span
-                        className={`w-3 h-3 rounded-full inline-block mr-1 ${colorMap[tagList[tagID]?.color || 'gray']}`}
-                      ></span>
-                      <span>{isHovered ? fullPath : tagName}</span>
-                      {isHovered && (
-                        <div className="absolute top-full left-0 mt-1 p-2 bg-gray-800 text-white text-xs rounded z-10">
-                          {fullPath}
-                        </div>
-                      )}
-                    </Badge>
-                  );
-                })}
-              </div>}
-              <div>
-                <p className="text-muted-foreground text-sm mt-auto text-left"><small className="text-sm leading-none font-medium">Created at:</small> {updatedAt ?? createdAt}</p>
-              </div>
-            </div >
+                return (
+                  <Badge
+                    key={tagID}
+                    variant={'secondary'}
+                    className="mr-2 mb-2 cursor-pointer"
+                    onClick={setTag}
+                    // className="mr-2 mb-2 bg-white text-gray border border-gray relative" // Добавили relative для позиционирования tooltip
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                  >
+                    <span
+                      className={`w-3 h-3 rounded-full inline-block mr-1 ${colorMap[tagList[tagID]?.color || 'gray']}`}
+                    ></span>
+                    <span>{isHovered ? fullPath : tagName}</span>
+                    {isHovered && (
+                      <div className="absolute top-full left-0 mt-1 p-2 bg-gray-800 text-white text-xs rounded z-10">
+                        {fullPath}
+                      </div>
+                    )}
+                  </Badge>
+                );
+              })}
+            </div>}
+            <div className="text-muted-foreground text-sm mt-auto">
+              <small className="text-sm leading-none font-medium">Created at:</small> {updatedAt ?? createdAt}
+            </div>
           </div>
 
         );
@@ -154,18 +143,20 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
       enableHiding: false,
       cell: ({ row }) => {
         const comments = row.original.comments;
+        const imageUrl = row.original.image;
+        const description = row.original.description;
+
         return (
-          <div className="flex flex-col items-start w-full flex-wrap break-words break-all pr-2">
-            <div className="flex flex-col items-start text-start">
-              <div>
-                <p className="leading-7 [&:not(:first-child)]:mt-6 whitespace-pre-line">
-                  {row.getValue("description")}
-                </p>
-              </div>
-              <div>
-                <blockquote className="mt-6 border-l-2 pl-6 italic whitespace-pre-line">{comments}</blockquote>
-              </div>
-            </div >
+          <div className="flex flex-col items-start text-start w-full flex-wrap">
+            {imageUrl &&
+              <a href={imageUrl} target="_blank">
+                <img className="w-auto h-auto max-h-[200px] rounded-sm" src={imageUrl} />
+              </a>
+            }
+            {description && (<p className="leading-7 [&:not(:first-child)]:mt-6 whitespace-pre-line">
+              {description}
+            </p>)}
+            {comments && (<blockquote className="mt-6 border-l-2 pl-6 italic whitespace-pre-line">{comments}</blockquote>)}
           </div >
         )
       },
@@ -200,7 +191,7 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="data-[state=open]:bg-muted text-muted-foreground flex size-8 mr-2"
+              className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
               size="icon"
             >
               <IconDotsVertical />
@@ -211,34 +202,32 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
             <DropdownMenuItem onClick={() => { setType(ActionType.EDIT); setIsShowEditModal(true); setIdItem(row.getValue("id")) }}>Edit</DropdownMenuItem>
             <DropdownMenuItem onClick={() => { onCreateItem(row.original, true) }}>Make a copy</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <div className="order-1 sm:order-2 w-full sm:w-auto">
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <div
-                    className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 hover:bg-destructive/90 hover:text-white"
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <div
+                  className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 hover:bg-destructive/90 hover:text-white"
+                >
+                  Delete
+                </div>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete your item.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => onDeleteHandler(row.getValue("id"))}
+                    className="w-full sm:w-auto order-first sm:order-last mt-2 sm:mt-0 bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"
                   >
                     Delete
-                  </div>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete your item.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter className="flex flex-col-reverse sm:flex-row">
-                    <AlertDialogCancel className="mt-2 sm:mt-0">Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={() => onDeleteHandler(row.getValue("id"))}
-                      className="bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"
-                    >
-                      Delete
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </div>
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </DropdownMenuContent>
         </DropdownMenu>
       ),
@@ -405,7 +394,7 @@ export const DataTable: React.FC<{ setIsShowEditModal: (val: boolean) => void }>
                 >
                   {row.getVisibleCells().map((cell) => {
                     return (
-                      <TableCell key={cell.id} className={`${cell.id.split("_")[1] !== "id" ? 'w-[47%] pb-5 pt-5 break-words ' : 'pb-5 pt-5 flex justify-center '}`}>
+                      <TableCell key={cell.id} className={`${cell.id.split("_")[1] !== "id" ? 'w-full pb-5 pt-5 break-words ' : 'pb-5 pt-5 w-12'}`}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
