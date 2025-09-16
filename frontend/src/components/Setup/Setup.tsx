@@ -12,18 +12,19 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "../ui/badge"
 import { observer } from "mobx-react-lite"
-import { useContext, useEffect } from "react"
+import { useContext } from "react"
 import { StoreContext } from "@/store/storeContext"
-import { useNavigate } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 
 
 
 export const Setup = observer(({ className, ...props }: React.ComponentProps<"div">) => {
     const store = useContext(StoreContext);
-    const navigate = useNavigate();
-    useEffect(() => {
-        if (!store.showInitializeDatabasePage) navigate('/', { replace: true });
-    }, [store.showInitializeDatabasePage])
+
+    if (!store.showInitializeDatabasePage) {
+        return <Navigate to="/" replace />;
+    }
+
     return (
         // <div className="flex text-left min-h-svh w-full items-center justify-center ">
         //     <div className="w-[45%]">
