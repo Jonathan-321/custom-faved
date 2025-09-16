@@ -122,25 +122,21 @@ class mainStore {
         this.showLoginPage = val;
     };
     fetchTags = async () => {
-        const fetchTags = async () => {
-            try {
-                const response = await fetch(API_ENDPOINTS.tags.list, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+        try {
+            const response = await fetch(API_ENDPOINTS.tags.list, {
+                headers: {
+                    'Content-Type': 'application/json',
                 }
-                const data = await response.json();
-                this.setTags(data);
-            } catch (err) {
-                this.error = (err instanceof Error ? err.message : 'Failed to fetch tags');
-                console.error('Error fetching tags:', err);
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-        };
-        fetchTags();
+            const data = await response.json();
+            this.setTags(data);
+        } catch (err) {
+            toast.error('Error fetching tags', { position: 'top-center', style: stylesTost })
+        }
     }
     onCreateTag = async (title: string) => {
         let tagID = null;
@@ -304,7 +300,7 @@ class mainStore {
         };
 
 
-        fetch(API_ENDPOINTS.settings.getUser, options)
+        return fetch(API_ENDPOINTS.settings.getUser, options)
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
@@ -319,11 +315,11 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then(({ data }) => {
-                fetchItems();
+            .then(async({ data }) => {
                 if (data.user !== null) {
                     this.setUserName(data.user.username);
                 }
+                await fetchItems();
             })
             .catch(err => {
                 toast(err.message, { position: 'top-center', style: stylesTost })
@@ -417,7 +413,7 @@ class mainStore {
 
             })
     }
-    getUser = () => {
+    getUser = async(noErrorEmit = false) => {
         const options = {
             method: 'GET',
             headers: {
@@ -426,7 +422,7 @@ class mainStore {
 
         };
 
-        fetch(API_ENDPOINTS.settings.getUser, options)
+        return fetch(API_ENDPOINTS.settings.getUser, options)
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
@@ -449,11 +445,14 @@ class mainStore {
                     this.setUserName(response.data.user.username);
 
                 }
-
+                return true
             })
             .catch(err => {
-                toast(err.message, { position: 'top-center', style: stylesTost })
+                if (!noErrorEmit) {
+                    toast(err.message, { position: 'top-center', style: stylesTost })
+                }
                 this.setIsAuthSuccess(false)
+                return false
             })
 
     }

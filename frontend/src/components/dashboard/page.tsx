@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom"
 import { DataTable } from "../Table/DataTable"
 import { SettingsDialog } from "../Settings/SettingsModal"
 import { TagType } from "@/types/types"
-
+import Loading from "@/components/Loading"
 
 
 export const Page = observer(() => {
@@ -23,23 +23,23 @@ export const Page = observer(() => {
   const store = useContext(StoreContext);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    store.fetchItems().finally(() => { setIsLoading(false) })
-    store.fetchTags().finally(() => { setIsLoading(false) })
+    const loadData = async () => {
+      await Promise.all([store.fetchItems(), store.fetchTags()])
+      setIsLoading(false)
+    };
+
+    loadData();
   }, []);
 
   useEffect(() => {
     if (store.showLoginPage) {
       navigate('/login', { replace: true });
     }
-    if (store.showInitializeDatabasePage) { navigate('/setup', { replace: true }); }
-    if (!store.showInitializeDatabasePage && !store.showLoginPage) {
-      navigate('/', { replace: true });
-    }
 
   }, [store.showLoginPage, store.showInitializeDatabasePage, navigate]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   return (
     <SidebarProvider
