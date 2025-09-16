@@ -22,7 +22,6 @@ export const Page = observer(() => {
   const navigate = useNavigate();
   const store = useContext(StoreContext);
   const [isLoading, setIsLoading] = useState(true);
-  const [isShowEditModal, setIsShowEditModal] = useState(false);
   useEffect(() => {
     store.fetchItems().finally(() => { setIsLoading(false) })
     store.fetchTags().finally(() => { setIsLoading(false) })
@@ -53,22 +52,22 @@ export const Page = observer(() => {
     >
       <AppSidebar variant="inset" allTags={store.tags as unknown as Record<string, TagType>} />
       <SidebarInset>
-        <SiteHeader setType={store.setType} setIsShowEditModal={setIsShowEditModal} />
+        <SiteHeader setType={store.setType} />
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">
             <div className="flex flex-col gap-4 md:gap-6">
-              <DataTable setIsShowEditModal={setIsShowEditModal} />
+              <DataTable />
             </div >
           </div >
         </div >
       </SidebarInset >
       <Dialog onOpenChange={(val) => {
-        setIsShowEditModal(val)
+        store.setIsShowEditModal(val)
         if (!val) {
           store.fetchItems()
         }
-      }} open={isShowEditModal} >
-        {isShowEditModal && <EditItemForm setIsShowEditModal={setIsShowEditModal} isFullScreen={false} />}
+      }} open={store.isShowEditModal} >
+        {store.isShowEditModal && <EditItemForm isFullScreen={false} />}
         {store.isOpenSettingsModal && <SettingsDialog />}
       </Dialog>
     </SidebarProvider >

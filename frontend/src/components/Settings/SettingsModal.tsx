@@ -114,10 +114,7 @@ export const SettingsDialog = observer(() => {
                 :
                 store.selectedItemSettingsModal === "Authentication settings"
                 && components.map((component, i) => (
-                  <div
-                    key={i}
-                  // className="bg-muted/50 aspect-video max-w-3xl rounded-xl"
-                  >{component.component}</div>
+                  <div key={i}>{component.component}</div>
                 ))}
               {store.selectedItemSettingsModal === "Import" &&
                 <ImportModal />

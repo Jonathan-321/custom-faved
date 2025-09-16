@@ -22,7 +22,6 @@ import { useLocation } from 'react-router-dom';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
 
 interface EditItemFormProps {
-  setIsShowEditModal: (val: boolean) => void;
   isFullScreen: boolean;
 }
 
@@ -38,7 +37,7 @@ const INITIAL_ITEM_DATA: ItemType = {
   url: ''
 };
 
-const EditItemForm: React.FC<EditItemFormProps> = ({ setIsShowEditModal, isFullScreen }) => {
+const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
   const store = useContext(StoreContext);
   const location = useLocation();
 
@@ -82,13 +81,13 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ setIsShowEditModal, isFullS
 
   const handleSubmit = (values: ItemType) => {
     store.onCreateItem(values, false, false, isFullScreen ? window : null);
-    setIsShowEditModal(false);
+    store.setIsShowEditModal(false);
     form.reset();
   };
 
   const handleSaveCopy = (values: ItemType) => {
     store.onCreateItem(values, true);
-    setIsShowEditModal(false);
+    store.setIsShowEditModal(false);
     form.reset();
   };
 
@@ -98,7 +97,7 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ setIsShowEditModal, isFullS
 
   const handleDelete = () => {
     store.onDeleteItem(store.idItem as number);
-    setIsShowEditModal(false);
+    store.setIsShowEditModal(false);
     form.reset();
   };
 
@@ -108,7 +107,7 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ setIsShowEditModal, isFullS
     } else {
       store.fetchItems();
       store.fetchTags();
-      setIsShowEditModal(false);
+      store.setIsShowEditModal(false);
       form.reset();
     }
   };

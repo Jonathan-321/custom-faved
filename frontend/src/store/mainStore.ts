@@ -66,17 +66,20 @@ class mainStore {
     itemsOriginal: ItemType[] = [];
     isTableView: boolean = false;
     isAuthSuccess: boolean = false;
-
-
+    isShowEditModal: boolean = false;
 
     constructor() {
         makeAutoObservable(this); // Makes state observable and actions transactional
     }
+
     setCurrentTagId = (val: string | null | number) => {
         this.selectedTagId = val === null ? null : val.toString();
     }
     setUserName = (val: string) => {
         this.userName = val
+    }
+    setIsShowEditModal = (val: boolean) => {
+        this.isShowEditModal = val
     }
     setIsAuthSuccess = (val: boolean) => {
         this.isAuthSuccess = val;

@@ -17,7 +17,7 @@ import { StoreContext } from "@/store/storeContext"
 import { TagBadge } from "./TagBadge"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"
 
-export const CardView: React.FC<{ setIsShowEditModal: (val: boolean) => void; el: any }> = observer(({ setIsShowEditModal, el }) => {
+export const CardView: React.FC<{ el: any }> = observer(({ el }) => {
     const store = React.useContext(StoreContext);
     return (
 
@@ -40,7 +40,7 @@ export const CardView: React.FC<{ setIsShowEditModal: (val: boolean) => void; el
                             <DropdownMenuItem
                                 onClick={() => {
                                     store.setType(ActionType.EDIT);
-                                    setIsShowEditModal(true);
+                                    store.setIsShowEditModal(true);
                                     store.setIdItem(el.id);
                                 }}
                             >
