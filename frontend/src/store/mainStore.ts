@@ -6,7 +6,7 @@ import type { LoginType, PasswordType, UsernameType, UsetType, ItemType, TagsObj
 import { NavigateFunction } from 'react-router-dom';
 
 export const stylesTost = {
-    width: "200px",
+    width: "320px",
     left: '50%',
     transform: 'translateX(-50%)'
 }
@@ -453,7 +453,7 @@ class mainStore {
             })
 
     }
-    onCreateUser = (val: UsetType) => {
+    onCreateUser = async (val: UsetType) => {
         const options = {
             method: 'POST',
             headers: {
@@ -467,7 +467,7 @@ class mainStore {
             })
         };
 
-        fetch(API_ENDPOINTS.settings.create, options)
+        return fetch(API_ENDPOINTS.settings.create, options)
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
@@ -486,10 +486,12 @@ class mainStore {
                 this.setIsAuthSuccess(true)
                 this.setUserName(val.username);
 
-                toast(response.message, { position: 'top-center', style: stylesTost })
+                toast.success(response.message, { position: 'top-center', style: stylesTost })
+                return true
             })
             .catch((err) => {
-                toast(err.message, { position: 'top-center', style: stylesTost })
+                toast.error(err.message, { position: 'top-center', style: stylesTost })
+                return false
             })
 
     }
@@ -697,7 +699,7 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                toast(response.message, {
+                toast.success(response.message, {
                     position: 'top-center', style: stylesTost
                 })
                 this.showLoginPage = false
@@ -705,13 +707,13 @@ class mainStore {
                 return true
             })
             .catch((err) => {
-                toast(err.message, {
+                toast.error(err.message, {
                     position: 'top-center', style: stylesTost
                 })
                 return false
             })
     }
-    importBookmarks = (selectedFile: File, setIsLoading: (val: boolean) => void) => {
+    importBookmarks = async(selectedFile: File, setIsLoading: (val: boolean) => void) => {
         const formData = new FormData();
         formData.append('pocket-zip', selectedFile);
         const options = {
@@ -722,7 +724,7 @@ class mainStore {
             }
         };
         setIsLoading(true)
-        fetch(API_ENDPOINTS.importBookmarks.import, options)
+        return fetch(API_ENDPOINTS.importBookmarks.import, options)
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
@@ -738,14 +740,15 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                this.selectedItemSettingsModal = "";
                 this.isOpenSettingsModal = false;
                 this.fetchItems();
                 this.fetchTags();
-                toast(response.message, { position: 'top-center', style: stylesTost });
+                toast.success(response.message, { position: 'top-center', style: stylesTost });
+                return true;
             })
             .catch((err) => {
-                toast(err.message, { position: 'top-center', style: stylesTost });
+                toast.error(err.message, { position: 'top-center', style: stylesTost });
+                return false;
             })
             .finally(() => setIsLoading(false))
     };

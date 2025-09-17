@@ -13,7 +13,7 @@ export function CardsEditAccountDisableAuth() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl">Disable authentication</CardTitle>
+        <CardTitle className="text-lg">Disable authentication</CardTitle>
         <CardDescription>
           Disabling authentication will remove your user account and disable login functionality.
         </CardDescription>

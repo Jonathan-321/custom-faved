@@ -44,7 +44,7 @@ export function CardsEditAccountPassword() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <CardHeader>
-            <CardTitle className="text-2xl">Change Password</CardTitle>
+            <CardTitle className="text-lg">Change Password</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             {/* Скрытое поле для имени пользователя - обязательно для accessibility */}

@@ -5,6 +5,9 @@ import {useContext, useEffect, useState} from 'react';
 import { StoreContext } from './store/storeContext';
 import { LoginPage } from './components/Login/LoginPage';
 import { Setup } from './components/Setup/Setup';
+import { SetupAuth } from './components/Setup/SetupAuth';
+import { SetupImport } from './components/Setup/SetupImport';
+import { SetupBookmarklet } from './components/Setup/SetupBookmarklet';
 import { Toaster } from './components/ui/sonner';
 import { Page } from './components/dashboard/page';
 import EditItemForm from './components/EditForm/EditItemForm';
@@ -20,7 +23,6 @@ function SetupMiddleware() {
 
   useEffect(() => {
     const loadData = async () => {
-      console.log("loadData")
       // this call sets up store.showInitializeDatabasePage
       await store.getUser(true)
       setIsLoading(false)
@@ -52,6 +54,9 @@ const App = observer(() => {
           <Route path="/" element={<Page />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/setup" element={<Setup />} />
+          <Route path="/setup/auth" element={<SetupAuth />} />
+          <Route path="/setup/import" element={<SetupImport />} />
+          <Route path="/setup/bookmarklet" element={<SetupBookmarklet />} />
           <Route path="/create-item"
                  element={<Dialog open={true}><EditItemForm setIsShowEditModal={() => { }} isFullScreen={true} /></Dialog>}
           />
