@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route, useLocation, Navigate, Outlet } from 'react-router-dom';
 import './App.css'
 import { observer } from 'mobx-react-lite';
-import {useContext, useEffect, useState} from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { StoreContext } from './store/storeContext';
 import { LoginPage } from './components/Login/LoginPage';
 import { Setup } from './components/Setup/Setup';
 import { Toaster } from './components/ui/sonner';
-import { Page } from './components/Dashboard/page';
+import { Page } from './components/Dashboard/Page';
 import EditItemForm from './components/EditForm/EditItemForm';
 import { Dialog } from './components/ui/dialog';
 import { NotFound } from './components/NotFound';
@@ -39,13 +39,15 @@ function SetupMiddleware() {
     return <Navigate to="/setup" replace />;
   }
 
+
+
   // Otherwise continue
   return <Outlet />;
 }
 
 
 const App = observer(() => {
-   return (
+  return (
     <BrowserRouter>
       <Routes>
         <Route element={<SetupMiddleware />}>
@@ -53,7 +55,7 @@ const App = observer(() => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/setup" element={<Setup />} />
           <Route path="/create-item"
-                 element={<Dialog open={true}><EditItemForm setIsShowEditModal={() => { }} isFullScreen={true} /></Dialog>}
+            element={<Dialog open={true}><EditItemForm isFullScreen={true} /></Dialog>}
           />
         </Route>
         <Route path="*" element={<NotFound />} />

@@ -67,11 +67,17 @@ class mainStore {
     isTableView: boolean = false;
     isAuthSuccess: boolean = false;
     isShowEditModal: boolean = false;
+    isFullScreen = false;
 
     constructor() {
         makeAutoObservable(this); // Makes state observable and actions transactional
     }
-
+    setIsshowInitializeDatabasePage = (val: boolean) => {
+        this.showInitializeDatabasePage = val;
+    }
+    setIsFullScreen = (val: boolean) => {
+        this.isFullScreen = val;
+    }
     setCurrentTagId = (val: string | null | number) => {
         this.selectedTagId = val === null ? null : val.toString();
     }
@@ -238,7 +244,7 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true
+                        this.setShowLoginPage(true)
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -283,10 +289,10 @@ class mainStore {
                 const response = await fetch(API_ENDPOINTS.items.list, options);
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true
+                        this.setShowLoginPage(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -304,10 +310,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setShowLoginPage(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -315,7 +321,7 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then(async({ data }) => {
+            .then(async ({ data }) => {
                 if (data.user !== null) {
                     this.setUserName(data.user.username);
                 }
@@ -340,10 +346,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setShowLoginPage(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -379,10 +385,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setShowLoginPage(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -413,7 +419,7 @@ class mainStore {
 
             })
     }
-    getUser = async(noErrorEmit = false) => {
+    getUser = async (noErrorEmit = false) => {
         const options = {
             method: 'GET',
             headers: {
@@ -426,10 +432,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setShowLoginPage(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -474,10 +480,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setShowLoginPage(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -514,10 +520,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setShowLoginPage(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -551,10 +557,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setShowLoginPage(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -583,10 +589,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setShowLoginPage(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -615,10 +621,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setShowLoginPage(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -634,7 +640,7 @@ class mainStore {
                 toast(err.message, { position: 'top-center', style: stylesTost })
             })
     }
-    login = (values: LoginType, setIsLoading: (val: boolean) => void) => {
+    login = (values: LoginType, setIsLoading: (val: boolean) => void, onSuccess?: () => void) => {
         const options = {
             method: 'POST',
             headers: {
@@ -651,10 +657,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setShowLoginPage(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -663,10 +669,13 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                // toast(response.message, {
-                //     position: 'top-center', style: stylesTost
-                // })
-                this.showLoginPage = false
+                this.setShowLoginPage(false)
+                this.setIsAuthSuccess(true);
+                if (this.isFullScreen) {
+                    if (onSuccess) {
+                        onSuccess();
+                    }
+                }
             })
             .catch((err) => {
                 toast(err.message, {
@@ -689,10 +698,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setShowLoginPage(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -704,8 +713,8 @@ class mainStore {
                 toast(response.message, {
                     position: 'top-center', style: stylesTost
                 })
-                this.showLoginPage = false
-                this.showInitializeDatabasePage = false
+                this.setShowLoginPage(false)
+                this.setIsshowInitializeDatabasePage(false)
             })
             .catch((err) => {
                 toast(err.message, {
@@ -728,10 +737,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setShowLoginPage(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))

@@ -18,7 +18,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { formSchema } from './utils';
 import { ActionType } from '../Dashboard/types';
 import type { ItemType } from '@/types/types';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
 
 interface EditItemFormProps {
@@ -62,10 +62,10 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
     };
   }, [location.search]);
 
-
   useEffect(() => {
     store.fetchTags();
   }, []);
+
 
   useEffect(() => {
     form.reset(currentItem);
@@ -73,11 +73,14 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
 
   useEffect(() => {
     if (isFullScreen) {
+      store.setIsFullScreen(true);
       form.setValue('title', urlParams.title);
       form.setValue('description', urlParams.description);
       form.setValue('url', urlParams.url);
     }
   }, [isFullScreen, urlParams, form]);
+
+
 
   const handleSubmit = (values: ItemType) => {
     store.onCreateItem(values, false, false, isFullScreen ? window : null);
@@ -171,7 +174,16 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
       )}
     />
   );
-
+  if (!store.isAuthSuccess) {
+    return <Navigate
+      to={{
+        pathname: '/login',
+        search: location.search
+      }}
+      replace
+      state={{ from: location, params: location.search }}
+    />
+  }
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
