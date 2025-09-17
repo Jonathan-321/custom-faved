@@ -88,8 +88,13 @@ const BookmarkletPage = () => {
 
             <CardTitle>What is a Bookmarklet?</CardTitle>
             <CardDescription>
+              <p>
               A bookmarklet is a bookmark stored in a web browser that contains JavaScript commands.
               Unlike browser extensions, they are lightweight and only access the page when you click them.
+              </p>
+              <p className='mt-2'>
+              Faved bookmarklet allows you to quickly save any webpage to your Faved collection with a single click.
+              </p>
             </CardDescription>
           </CardHeader>
           <CardContent>
