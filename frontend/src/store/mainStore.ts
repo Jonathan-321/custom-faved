@@ -672,17 +672,16 @@ class mainStore {
             })
             .finally(() => { setIsLoading(false) })
     }
-    initialDatabase = () => {
+    initializeDatabase = async () => {
         const options = {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')
-                //     'Content-Type': 'multipart/form-data; boundary=geckoformboundary262df991ff6535437a260f8dd5e61d8b',
             },
 
         };
 
-        fetch(API_ENDPOINTS.setup.setup, options)
+        return fetch(API_ENDPOINTS.setup.setup, options)
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
@@ -703,11 +702,13 @@ class mainStore {
                 })
                 this.showLoginPage = false
                 this.showInitializeDatabasePage = false
+                return true
             })
             .catch((err) => {
                 toast(err.message, {
                     position: 'top-center', style: stylesTost
                 })
+                return false
             })
     }
     importBookmarks = (selectedFile: File, setIsLoading: (val: boolean) => void) => {
@@ -748,7 +749,6 @@ class mainStore {
             })
             .finally(() => setIsLoading(false))
     };
-
 }
 
 export default new mainStore();
