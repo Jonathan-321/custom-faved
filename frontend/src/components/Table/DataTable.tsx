@@ -180,7 +180,7 @@ export const DataTable: React.FC = observer(() => {
 
       </div>
 
-      <div className="m-2 overflow-hidden ">
+      <div className="m-4 overflow-hidden ">
         {store.isTableView ? <Table className=" table-fixed w-full">
           <TableBody>
             {currentRows.length ? (
@@ -191,7 +191,7 @@ export const DataTable: React.FC = observer(() => {
                 >
                   {row.getVisibleCells().map((cell) => {
                     return (
-                      <TableCell key={cell.id} className={`${cell.id.split("_")[1] !== "id" ? 'w-full pb-5 pt-5 break-words ' : 'pb-5 pt-5 w-12'}`}>
+                      <TableCell key={cell.id} className={`${cell.id.split("_")[1] !== "id" ? 'w-full pb-5 pt-5 break-words ' : 'pb-5 pt-5 pr-14 w-12'}`}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -213,7 +213,7 @@ export const DataTable: React.FC = observer(() => {
             )}
           </TableBody>
         </Table> :
-          <div className="grid grid-cols-1 gap-4 px-1 lg:px-2 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
             {currentRows.length > 0 ? (
               currentRows.map((row) => {
                 const el = row.original;

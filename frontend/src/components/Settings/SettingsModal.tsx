@@ -35,7 +35,7 @@ import { CardsEditAccountPassword } from "@/components/dashboard/CardsEditAccoun
 import { CardsEditAccountDisableAuth } from "@/components/dashboard/CardsEditAccountDisableAuth"
 import { CardsCreateAccount } from "@/components/dashboard/CreateAccount"
 import { StoreContext } from "@/store/storeContext"
-import { ImportModal } from "../Import/ImportModal"
+import { ImportModal } from "./ImportModal"
 import { observer } from "mobx-react-lite"
 import BookmarkletPage from "./BookMarklet"
 
