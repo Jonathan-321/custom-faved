@@ -33,7 +33,7 @@ export const CardsEditAccountUserName = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <CardHeader>
-            <CardTitle className="text-2xl">New Username</CardTitle>
+            <CardTitle className="text-lg">New Username</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <div className="flex flex-col gap-3">

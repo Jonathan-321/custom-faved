@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { useContext } from "react"
 import { StoreContext } from "@/store/storeContext"
@@ -28,7 +28,7 @@ const formSchema = z.object({
 );
 
 
-export const CardsCreateAccount: React.FC = () => {
+export const CardsCreateAccount = ({onSuccess}: {onSuccess: () => void} ) => {
   const store = useContext(StoreContext);
 
 
@@ -41,15 +41,22 @@ export const CardsCreateAccount: React.FC = () => {
     },
   })
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    store.onCreateUser(values)
+  const onSubmit = async(values: z.infer<typeof formSchema>) => {
+    const success = await store.onCreateUser(values)
+    if (success && onSuccess) {
+      onSuccess()
+    }
   }
   return (
     <Card>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <CardHeader>
-            <CardTitle className="text-2xl">Create user</CardTitle>
+            <CardTitle className="text-lg">Create user account</CardTitle>
+            <CardDescription>
+              Create a user account to enable authentication for your Faved instance.
+              Without a user account, authentication will be disabled and anyone with access to the instance can use it.
+            </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <div className="flex flex-col gap-3">
