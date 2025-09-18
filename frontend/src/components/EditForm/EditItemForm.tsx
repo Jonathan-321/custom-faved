@@ -18,7 +18,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { formSchema } from './utils';
 import { ActionType } from '../Dashboard/types';
 import type { ItemType } from '@/types/types';
-import { Navigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
 
 interface EditItemFormProps {
@@ -35,6 +35,15 @@ const INITIAL_ITEM_DATA: ItemType = {
   tags: [],
   updated_at: undefined,
   url: ''
+};
+
+const safeDecodeURIComponent = (encodedURI: string): string => {
+  try {
+    return encodedURI ? decodeURIComponent(encodedURI) : '';
+  } catch (error) {
+    console.error('Error decoding URI component:', error, encodedURI);
+    return encodedURI || '';
+  }
 };
 
 const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
@@ -56,16 +65,15 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
   const urlParams = useMemo(() => {
     const searchParams = new URLSearchParams(location.search);
     return {
-      url: decodeURIComponent(searchParams.get('url') || ''),
-      title: decodeURIComponent(searchParams.get('title') || ''),
-      description: decodeURIComponent(searchParams.get('description') || ''),
+      url: safeDecodeURIComponent(searchParams.get('url') || ''),
+      title: safeDecodeURIComponent(searchParams.get('title') || ''),
+      description: safeDecodeURIComponent(searchParams.get('description') || ''),
     };
   }, [location.search]);
 
   useEffect(() => {
     store.fetchTags();
   }, []);
-
 
   useEffect(() => {
     form.reset(currentItem);
@@ -79,8 +87,6 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
       form.setValue('url', urlParams.url);
     }
   }, [isFullScreen, urlParams, form]);
-
-
 
   const handleSubmit = (values: ItemType) => {
     store.onCreateItem(values, false, false, isFullScreen ? window : null);
