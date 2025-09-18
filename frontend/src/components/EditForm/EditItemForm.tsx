@@ -114,7 +114,6 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
       form.reset();
     }
   };
-
   const renderTextField = (name: keyof ItemType, label: string, isDisabled = false) => (
     <FormField
       control={form.control}
@@ -174,16 +173,7 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
       )}
     />
   );
-  if (!store.isAuthSuccess) {
-    return <Navigate
-      to={{
-        pathname: '/login',
-        search: location.search
-      }}
-      replace
-      state={{ from: location, params: location.search }}
-    />
-  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)}>

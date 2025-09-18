@@ -14,8 +14,8 @@ services:
     restart: always
     working_dir: /var/www/html
     volumes:
-      - ./frontend:/var/www/html
-      - ./public/dist/:/var/www/html/dist/
+      - ./frontend:/var/www/html:delegated
+      - ./public/dist/:/var/www/html/dist/:delegated
     ports:
       - "${FRONTEND_PORT:-5173}:5173"
     environment:

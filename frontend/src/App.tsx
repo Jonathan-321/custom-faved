@@ -37,10 +37,24 @@ function SetupMiddleware() {
 
   // If we are not on the setup page, and need to be, redirect to setup
   const isSetupPage = location.pathname === '/setup';
+  const isEditPage = location.pathname === '/create-item';
   if (!isSetupPage && store.showInitializeDatabasePage) {
     return <Navigate to="/setup" replace />;
   }
+  if (!store.isAuthSuccess && isEditPage) {
+    store.setIsFullScreen(true);
+    if (store.showLoginPage) {
+      return <Navigate
+        to={{
+          pathname: '/login',
+          search: location.search
+        }}
+        replace
+        state={{ from: location, params: location.search }}
+      />
+    }
 
+  }
 
 
   // Otherwise continue
