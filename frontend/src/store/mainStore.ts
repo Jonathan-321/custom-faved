@@ -605,6 +605,7 @@ class mainStore {
             .then((response) => {
                 toast(response.message, { position: 'top-center', style: stylesTost })
                 this.setIsAuthSuccess(false)
+                this.setUserName('');
             })
             .catch((err) => {
                 toast(err.message, { position: 'top-center', style: stylesTost })
