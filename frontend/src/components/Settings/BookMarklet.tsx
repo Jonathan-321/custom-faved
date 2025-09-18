@@ -6,7 +6,7 @@ import {Badge} from "@/components/ui/badge";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {useIsMobile} from "@/hooks/use-mobile.ts";
 
-const BookmarkletPage = ({onSuccess}: { onSuccess: () => void }) => {
+const BookmarkletPage = ({onSuccess}: { onSuccess?: () => void }) => {
   const [copied, setCopied] = useState(false);
   const bookmarkletRef = React.useRef(null);
   const isMobile = useIsMobile();
@@ -99,13 +99,13 @@ const BookmarkletPage = ({onSuccess}: { onSuccess: () => void }) => {
         </CardHeader>
         <CardContent>
 
-          <div className="flex flex-wrap justify-around gap-4">
+          <div className="flex flex-wrap justify-around">
 
             <Card className="text-center border-none shadow-none">
               <CardContent className="p-0">
                 <GitCompare className="w-8 h-8 text-primary mx-auto mb-3"/>
                 <h4 className="font-semibold text-primary mb-2">Compatible</h4>
-                <p className="text-sm text-muted-foreground max-w-[190px] mx-auto">Works in all modern desktop and
+                <p className="text-sm text-muted-foreground max-w-[180px] mx-auto">Works in all modern desktop and
                   mobile browsers</p>
               </CardContent>
             </Card>
@@ -114,7 +114,7 @@ const BookmarkletPage = ({onSuccess}: { onSuccess: () => void }) => {
               <CardContent className="p-0">
                 <Shield className="w-8 h-8 text-primary mx-auto mb-3"/>
                 <h4 className="font-semibold text-primary mb-2">Secure</h4>
-                <p className="text-sm text-muted-foreground max-w-[190px] mx-auto">No access to your page data until
+                <p className="text-sm text-muted-foreground max-w-[180px] mx-auto">No access to your page data until
                   activated</p>
               </CardContent>
             </Card>
@@ -123,7 +123,7 @@ const BookmarkletPage = ({onSuccess}: { onSuccess: () => void }) => {
               <CardContent className="p-0">
                 <Feather className="w-8 h-8 text-primary mx-auto mb-3"/>
                 <h4 className="font-semibold text-primary mb-2">Lightweight</h4>
-                <p className="text-sm text-muted-foreground max-w-[190px] mx-auto">No browser extension is needed</p>
+                <p className="text-sm text-muted-foreground max-w-[180px] mx-auto">No browser extension is needed</p>
               </CardContent>
             </Card>
           </div>

@@ -28,7 +28,7 @@ const formSchema = z.object({
 );
 
 
-export const CardsCreateAccount = ({onSuccess}: {onSuccess: () => void} ) => {
+export const CardsCreateAccount = ({onSuccess}: {onSuccess?: () => void} ) => {
   const store = useContext(StoreContext);
 
 

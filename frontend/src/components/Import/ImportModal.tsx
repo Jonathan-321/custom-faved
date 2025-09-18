@@ -6,7 +6,7 @@ import {useContext, useRef, useState} from "react"
 import {StoreContext} from "@/store/storeContext"
 import {Loader2Icon} from "lucide-react"
 
-export const ImportModal = ({onSuccess}: { onSuccess: () => void }) => {
+export const ImportModal = ({onSuccess}: { onSuccess?: () => void }) => {
   const store = useContext(StoreContext);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
