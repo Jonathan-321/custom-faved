@@ -239,3 +239,23 @@ export const createColumns = (): ColumnDef<z.infer<typeof schema>>[] => [
     ),
   },
 ]
+
+export const getTableViewPreference = (): boolean => {
+  if (typeof window === 'undefined') return true; // По умолчанию таблица
+
+  try {
+    const stored = sessionStorage.getItem('isTableView');
+    return stored !== null ? JSON.parse(stored) : true;
+  } catch (error) {
+    console.error('Error reading from session storage:', error);
+    return true;
+  }
+};
+
+export const setTableViewPreference = (value: boolean): void => {
+  try {
+    sessionStorage.setItem('isTableView', JSON.stringify(value));
+  } catch (error) {
+    console.error('Error writing to session storage:', error);
+  }
+};

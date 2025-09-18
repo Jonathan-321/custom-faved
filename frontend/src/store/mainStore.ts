@@ -64,7 +64,6 @@ class mainStore {
     currentPage: number = 1;
     selectedTagId: string | null = '0'; // Default to '0' for no tag selected
     itemsOriginal: ItemType[] = [];
-    isTableView: boolean = false;
     isAuthSuccess: boolean = false;
     isShowEditModal: boolean = false;
     isFullScreen = false;
@@ -89,9 +88,6 @@ class mainStore {
     }
     setIsAuthSuccess = (val: boolean) => {
         this.isAuthSuccess = val;
-    }
-    setIsTableView = (val: boolean) => {
-        this.isTableView = val;
     }
     setCurrentPage = (val: number) => {
         this.currentPage = val;

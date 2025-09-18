@@ -32,14 +32,7 @@ import { Card } from "../ui/card"
 import { ItemType } from "@/types/types"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip.tsx";
 import { Blocks as BlocksIcon, Table as TableIcon } from "lucide-react"
-import { createColumns } from "./utils"
-
-
-export type Payment = {
-  id: string
-  url: string
-  description: string
-}
+import { createColumns, getTableViewPreference, setTableViewPreference } from "./utils"
 
 
 export const DataTable: React.FC = observer(() => {
@@ -58,6 +51,9 @@ export const DataTable: React.FC = observer(() => {
     return (store.selectedTagId === null && item.tags.length === 0) || item.tags.includes(Number(store.selectedTagId) as unknown as string);
   }))
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const [isTableView, setIsTableView] = React.useState<boolean>(getTableViewPreference());
+
   const table = useReactTable({
     data,
     columns,
@@ -140,6 +136,13 @@ export const DataTable: React.FC = observer(() => {
     }]);
   };
 
+  const toggleTableView = () => {
+    const newValue = !isTableView;
+    setIsTableView(newValue);
+    setTableViewPreference(newValue);
+    store.setItems(store.itemsOriginal);
+  };
+
   React.useEffect(() => {
     table
       .getAllColumns()
@@ -151,6 +154,7 @@ export const DataTable: React.FC = observer(() => {
         column.toggleVisibility(false)
       })
   }, [])
+
   return (
     <div className="w-full">
       <div className="flex items-center justify-between gap-2 py-4 m-[14px]">
@@ -165,23 +169,19 @@ export const DataTable: React.FC = observer(() => {
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button onClick={() => {
-              store.setIsTableView(!store.isTableView);
-              store.setItems(store.itemsOriginal)
-
-            }} variant="outline">
-              {!store.isTableView ? <TableIcon /> : <BlocksIcon />}
+            <Button onClick={toggleTableView} variant="outline">
+              {!isTableView ? <TableIcon /> : <BlocksIcon />}
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p> {!store.isTableView ? "Table view" : "Card view"}</p>
+            <p> {!isTableView ? "Table view" : "Card view"}</p>
           </TooltipContent>
         </Tooltip>
 
       </div>
 
       <div className="m-4 overflow-hidden ">
-        {store.isTableView ? <Table className=" table-fixed w-full">
+        {isTableView ? <Table className=" table-fixed w-full">
           <TableBody>
             {currentRows.length ? (
               currentRows.map((row) => (
@@ -234,5 +234,4 @@ export const DataTable: React.FC = observer(() => {
       <DataTablePagination table={table} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} />
     </div>
   )
-}
-)
+})
