@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Exception;
 use Framework\ControllerInterface;
+use Framework\Exceptions\ValidationException;
 use Framework\Responses\ResponseInterface;
 use Framework\ServiceContainer;
 use Models\Repository;
@@ -21,29 +22,20 @@ class ImportPocketController implements ControllerInterface
 
 		// Check if file was uploaded
 		if (!isset($input['pocket-zip']) || $input['pocket-zip']['error'] !== UPLOAD_ERR_OK) {
-			return data([
-				'success' => false,
-				'message' => 'No file uploaded or upload error'
-			], 422);
+			throw new ValidationException('No file uploaded or upload error');
 		}
 
 		$uploaded_file = $input['pocket-zip'];
 
 		// Check if the file is a ZIP
 		if ($uploaded_file['type'] !== 'application/zip' && $uploaded_file['type'] !== 'application/x-zip-compressed') {
-			return data([
-				'success' => false,
-				'message' => 'Uploaded file is not a ZIP archive'
-			], 422);
+			throw new ValidationException('Uploaded file is not a ZIP archive');
 		}
 
 		// Create a temporary directory
 		$temp_dir = sys_get_temp_dir() . '/pocket_import_' . uniqid('', false);
 		if (!mkdir($temp_dir, 0777, true) && !is_dir($temp_dir)) {
-			return data([
-				'success' => false,
-				'message' => 'Uploaded file is not a ZIP archive'
-			], 422);
+			throw new ValidationException('Uploaded file is not a ZIP archive');
 		}
 		try {
 			// Extract the ZIP file
