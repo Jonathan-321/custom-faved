@@ -101,7 +101,7 @@ export const CardView: React.FC<{ el: any }> = observer(({ el }) => {
                     >
                         {el.url}
                     </a>)}
-                    {el.tags && (<div className="flex flex-start text-left w-full flex-wrap py-2">
+                    {el.tags && (<div className="flex-start text-left w-full flex-wrap py-2">
                         {el.tags.map((tagID, index) => (
                             <TagBadge key={index} tagID={tagID} />
                         ))}

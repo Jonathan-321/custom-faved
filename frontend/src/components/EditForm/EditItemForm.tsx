@@ -68,6 +68,7 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
       url: safeDecodeURIComponent(searchParams.get('url') || ''),
       title: safeDecodeURIComponent(searchParams.get('title') || ''),
       description: safeDecodeURIComponent(searchParams.get('description') || ''),
+      image: safeDecodeURIComponent(searchParams.get('image') || ''),
     };
   }, [location.search]);
 
@@ -85,6 +86,7 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
       form.setValue('title', urlParams.title);
       form.setValue('description', urlParams.description);
       form.setValue('url', urlParams.url);
+      form.setValue('image', urlParams.image);
     }
   }, [isFullScreen, urlParams, form]);
 
@@ -120,6 +122,7 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
       form.reset();
     }
   };
+
   const renderTextField = (name: keyof ItemType, label: string, isDisabled = false) => (
     <FormField
       control={form.control}
@@ -180,13 +183,15 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
     />
   );
 
+  const imageUrl = form.watch('image');
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
         <DialogPortal>
           <DialogOverlay>
             <DialogContent
-              className="sm:max-w-[1000px] max-h-[870px] overflow-y-auto"
+              className="sm:max-w-[1200px] max-h-[870px] overflow-y-auto"
               showCloseButton={!isFullScreen}
             >
               <DialogHeader>
@@ -196,45 +201,71 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
                   </DialogTitle>
                 </div>
               </DialogHeader>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2 space-y-4">
+                  <div className="grid gap-3">
+                    {renderTextField('title', 'Title')}
+                  </div>
 
-              <div className="grid gap-4">
-                <div className="grid gap-3">
-                  {renderTextField('title', 'Title')}
+                  <div className="grid gap-3">
+                    {renderTextField('url', 'URL')}
+                  </div>
+
+                  <div className="grid gap-3">
+                    {renderTextareaField('description', 'Description')}
+                  </div>
+
+                  <div className="grid gap-3">
+                    {renderTextareaField('comments', 'Comments')}
+                  </div>
+
+                  <div className="grid gap-3">
+                    {renderTextField('image', 'Image URL')}
+                  </div>
+
+                  <div className="grid gap-3">
+                    {renderTagsField()}
+                  </div>
+
+                  {store.type === ActionType.EDIT && (
+                    <>
+                      <div className="grid gap-3">
+                        {renderTextField('created_at', 'Created at', true)}
+                      </div>
+                      <div className="grid gap-3">
+                        {renderTextField('updated_at', 'Updated at', true)}
+                      </div>
+                    </>
+                  )}
                 </div>
-
-                <div className="grid gap-3">
-                  {renderTextField('url', 'URL')}
-                </div>
-
-                <div className="grid gap-3">
-                  {renderTextareaField('description', 'Description')}
-                </div>
-
-                <div className="grid gap-3">
-                  {renderTextareaField('comments', 'Comments')}
-                </div>
-
-                <div className="grid gap-3">
-                  {renderTextField('image', 'Image URL')}
-                </div>
-
-                <div className="grid gap-3">
-                  {renderTagsField()}
-                </div>
-
-                {store.type === ActionType.EDIT && (
-                  <>
-                    <div className="grid gap-3">
-                      {renderTextField('created_at', 'Created at', true)}
+                <div className="lg:col-span-1">
+                  <FormItem>
+                    <div className="border rounded-md p-4 bg-gray-50 dark:bg-[#202020] min-h-[200px] flex items-center justify-center">
+                      {imageUrl ? (
+                        <div className="text-center">
+                          <img
+                            src={imageUrl}
+                            alt="Preview"
+                            className="max-w-full max-h-[300px] mx-auto rounded-md shadow-sm"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="text-center text-muted-foreground">
+                          <div className="w-16 h-16 mx-auto mb-2 bg-gray-200 rounded-full flex items-center justify-center">
+                            <span className="text-2xl">🖼️</span>
+                          </div>
+                          <p className="text-sm">No image available</p>
+                          <p className="text-xs">Enter an image URL above</p>
+                        </div>
+                      )}
                     </div>
-                    <div className="grid gap-3">
-                      {renderTextField('updated_at', 'Updated at', true)}
-                    </div>
-                  </>
-                )}
+                  </FormItem>
+                </div>
               </div>
-
-              <DialogFooter className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 gap-2">
+              <DialogFooter className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 gap-2 mt-6">
                 <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto order-2 sm:order-1">
                   <Button
                     type="submit"
