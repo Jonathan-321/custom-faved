@@ -5,7 +5,6 @@ namespace Controllers;
 use Framework\Exceptions\ValidationException;
 use Framework\Responses\ResponseInterface;
 use Framework\ServiceContainer;
-use http\Exception\RuntimeException;
 use Models\Repository;
 use function Framework\data;
 use function Utils\createTagsFromSegments;
@@ -19,24 +18,21 @@ class TagsUpdateTitleController
 			throw new ValidationException('Invalid input data for tag title update.');
 		}
 
-		$tag_id = $input['tag-id'];
+		$tag_id = (int)$input['tag-id'];
 
 		$tag_segments = extractTagSegments($input['title']);
 		$tag_title = array_pop($tag_segments);
-
-		$parent_id = createTagsFromSegments($tag_segments);
-
-		if ($parent_id === $tag_id) {
-			throw new RuntimeException('Tag cannot be its own parent.');
-		}
-
 
 		$repository = ServiceContainer::get(Repository::class);
 		$repository->updateTagTitle(
 			$tag_id,
 			$tag_title,
-			$parent_id,
 		);
+
+		$parent_id = createTagsFromSegments($tag_segments);
+
+		// Update the tag parent after updating the title to prevent a circular reference
+		$repository->updateTagParent($tag_id, $parent_id);
 
 		return data([
 			'success' => true,

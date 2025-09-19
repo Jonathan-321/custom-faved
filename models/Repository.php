@@ -183,43 +183,33 @@ class Repository
 		]);
 	}
 
-	public function updateTag($tag_id, $title, $description, $parent_tag_id, $color, bool $pinned)
+	public function updateTagParent($tag_id, $parent_tag_id)
 	{
 		$stmt = $this->pdo->prepare(
 			'UPDATE tags 
-			SET title = :title, 
-			description = :description, 
-			parent = :parent, 
-			color = :color, 
-			pinned = :pinned, 
+			SET parent = :parent, 
 			updated_at = :updated_at
 			WHERE id = :id'
 		);
 
 		return $stmt->execute([
-			':title' => $title,
-			':description' => $description,
 			':parent' => $parent_tag_id,
-			':color' => $color,
-			':pinned' => (int)$pinned,
 			':updated_at' => date('Y-m-d H:i:s'),
 			':id' => $tag_id
 		]);
 	}
 
-	public function updateTagTitle($tag_id, $title, $parent_tag_id)
+	public function updateTagTitle($tag_id, $title)
 	{
 		$stmt = $this->pdo->prepare(
 			'UPDATE tags 
 			SET title = :title, 
-			parent = :parent, 
 			updated_at = :updated_at
 			WHERE id = :id'
 		);
 
 		return $stmt->execute([
 			':title' => $title,
-			':parent' => $parent_tag_id,
 			':updated_at' => date('Y-m-d H:i:s'),
 			':id' => $tag_id
 		]);
@@ -251,7 +241,7 @@ class Repository
 		);
 
 		return $stmt->execute([
-			':pinned' => $pinned,
+			':pinned' => (int)$pinned,
 			':updated_at' => date('Y-m-d H:i:s'),
 			':id' => $tag_id
 		]);
