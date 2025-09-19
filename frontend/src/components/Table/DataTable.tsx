@@ -73,13 +73,6 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
       const tags = item.tags;
       const updatedAt = item.updated_at;
       const createdAt = item.created_at;
-      const getTagName = (fullPath: string | undefined): string => {
-        if (!fullPath) {
-          return "";
-        }
-        return fullPath.substring(fullPath.lastIndexOf("/") + 1);
-
-      };
 
       return (
         <div className="flex flex-col items-start w-full text-left wrap-anywhere gap-2">
@@ -95,8 +88,8 @@ const createColumns = (setIsShowEditModal: (val: boolean) => void,
           }
           {tags && <div className="flex flex-start text-left w-full flex-wrap py-2">
             {tags.map((tagID) => {
-              const fullPath = tagList[tagID]?.fullPath;
-              const tagName = getTagName(fullPath);
+              const fullPath = tagList[tagID]?.fullPath.replaceAll('\\/', '/');
+              const tagName = tagList[tagID]?.title;
               const [isHovered, setIsHovered] = React.useState(false);
               const store = React.useContext(StoreContext);
 

@@ -99,7 +99,7 @@ class mainStore {
                     output += renderTagSegment(parentTag) + '/';
                 }
             }
-            output += tag.title;
+            output += tag.title.replaceAll('/', '\\/');
             return output;
         }
 

@@ -72,7 +72,7 @@ const TagEdit = observer(({ className, values, onChange }: { className?: string,
             className={['text-left h-auto whitespace-normal'].join(' ')}
           >
             {selected.length > 0
-              ? selected.map(v => tags.find(t => t.id === v)?.fullPath).join(', ')
+              ? selected.map(v => tags.find(t => t.id === v)?.fullPath.replaceAll('\\/', '/')).join(', ')
               : "Select tags..."}
             <ChevronsUpDown className="opacity-50" />
           </Button>

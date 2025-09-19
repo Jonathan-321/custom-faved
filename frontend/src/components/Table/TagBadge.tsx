@@ -6,6 +6,7 @@ import { colorMap } from "@/lib/utils";
 
 type TagType = {
     fullPath: string;
+    title: string;
     color: string;
 };
 interface MainStore {
@@ -14,13 +15,12 @@ interface MainStore {
     setCurrentPage: (page: number) => void;
 }
 
-const getTagName = (fullPath: string) => fullPath?.substring(fullPath.lastIndexOf("/") + 1) || "";
 
 export const TagBadge: React.FC<{ tagID: number }> = observer(({ tagID }) => {
     const store = React.useContext(StoreContext) as unknown as MainStore;
     const [isHovered, setIsHovered] = React.useState(false);
-    const fullPath = store.tags?.[tagID]?.fullPath || "";
-    const tagName = getTagName(fullPath);
+    const fullPath = store.tags?.[tagID]?.fullPath.replaceAll('\\/', '/') || "";
+    const tagName = store.tags?.[tagID]?.title;
 
     const setTag = () => {
         store.setCurrentTagId(tagID);
