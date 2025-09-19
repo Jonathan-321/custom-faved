@@ -19,7 +19,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { observer } from "mobx-react-lite"
-import { useContext } from "react";
+import {useContext, useEffect} from "react";
 import { StoreContext } from "@/store/storeContext.ts";
 import { toJS } from "mobx";
 import { colorMap } from "@/lib/utils.ts";
@@ -47,6 +47,10 @@ const TagEdit = observer(({ className, values, onChange }: { className?: string,
     );
 
   }, [store.tags]);
+
+  useEffect(() => {
+    store.fetchTags()
+  },[])
 
   React.useEffect(() => {
     onChange(selected)

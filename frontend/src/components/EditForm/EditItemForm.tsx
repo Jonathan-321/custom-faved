@@ -48,10 +48,6 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
     setDescription(decodeURIComponent(directDescription || ''));
   }, [location.search]);
 
-  useEffect(() => {
-    store.fetchTags()
-  })
-
   const initialData = {
     id: "",
     description: "",
