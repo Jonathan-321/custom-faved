@@ -3,11 +3,11 @@ import z from "zod";
 export const formSchema = z.object({
     title: z.string().min(1, { message: "Title is required" }),
     url: z.string().min(1, { message: "URL is required" }),
-    description: z.any().optional(),
-    comments: z.any().optional(),
-    image: z.any().optional(),
-    tags: z.array(z.any()).optional(),
-    updated_at: z.any().optional(),
-    id: z.any().optional(),
-    created_at: z.any().optional(),
+    description: z.string().optional(),
+    comments: z.string().optional(),
+    image: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+    updated_at: z.string().optional(),
+    id: z.string().optional(),
+    created_at: z.string().optional(),
 })

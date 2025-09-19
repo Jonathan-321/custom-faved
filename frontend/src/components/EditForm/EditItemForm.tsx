@@ -52,7 +52,7 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
 
   const currentItem = useMemo(() => {
     if (store.type === ActionType.EDIT && store.items.length > 0) {
-      return store.items.find(item => item.id === store.idItem) || INITIAL_ITEM_DATA;
+      return store.items.find(item => item.id as unknown as number === store.idItem) || INITIAL_ITEM_DATA;
     }
     return INITIAL_ITEM_DATA;
   }, [store.type, store.items, store.idItem]);
