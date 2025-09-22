@@ -20,6 +20,7 @@ import { ActionType } from '../Dashboard/types';
 import type { ItemType } from '@/types/types';
 import { useLocation } from 'react-router-dom';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
+import { Image } from 'lucide-react';
 
 interface EditItemFormProps {
   isFullScreen: boolean;
@@ -252,10 +253,10 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
                       ) : (
                         <div className="text-center text-muted-foreground">
                           <div className="w-16 h-16 mx-auto mb-2 bg-gray-200 rounded-full flex items-center justify-center">
-                            <span className="text-2xl">🖼️</span>
+                            <span className="text-2xl"><Image /></span>
                           </div>
                           <p className="text-sm">No image available</p>
-                          <p className="text-xs">Enter an image URL above</p>
+                          <p className="text-xs">Enter an image URL</p>
                         </div>
                       )}
                     </div>
