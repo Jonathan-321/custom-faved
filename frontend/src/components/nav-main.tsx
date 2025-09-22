@@ -6,7 +6,7 @@ import {
   SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem,
+  SidebarMenuItem, useSidebar,
 } from "@/components/ui/sidebar"
 import { StoreContext } from "@/store/storeContext.ts";
 import * as React from "react";
@@ -22,15 +22,22 @@ export const NavMain = observer(({
   }[]
 }) => {
   const store = React.useContext(StoreContext)
+  const { isMobile, toggleSidebar } = useSidebar()
 
   const setAllTags = () => {
     store.setCurrentTagId(0);
     store.setCurrentPage(1);
+    if (isMobile) {
+      toggleSidebar();
+    }
   }
 
   const setNoTags = () => {
     store.setCurrentTagId(null);
     store.setCurrentPage(1);
+    if (isMobile) {
+      toggleSidebar();
+    }
   }
 
   return (

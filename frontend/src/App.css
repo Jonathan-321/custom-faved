@@ -43,11 +43,6 @@
   color: #888;
 }
 
-
-.tabler-icon-chevron-right[data-state="open"] {
-    rotate: 90deg;
-}
-
 .border-sidebar-border {
   margin-right: 0 !important;
   padding-right: 0;
@@ -58,8 +53,20 @@
   visibility: hidden;
 }
 
-.peer\/menu-button:hover .sidebar-menu-action, .sidebar-menu-action[data-state="open"]  {
+[data-slot="sidebar-menu-item"] > .peer\/menu-button:hover ~ .sidebar-menu-action,
+.sidebar-menu-action:hover,
+.sidebar-menu-action[data-state="open"]  {
   visibility: visible;
+}
+
+[data-selected="true"] > .sidebar-menu-action:not([data-state="open"]):not(:hover) {
+  color: var(--color-accent);
+}
+
+@media (any-pointer: coarse) {
+  .sidebar-menu-action {
+    visibility: visible !important;
+  }
 }
 
 .no-scrollbar {

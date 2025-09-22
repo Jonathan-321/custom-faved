@@ -23,9 +23,9 @@ import { StoreContext } from "@/store/storeContext.ts";
 import { colorMap } from "@/lib/utils.ts";
 
 
-export function SidebarTag({ tag, innerItems = [], level, isTagSelected, isChildTagSelected }) {
+export function SidebarTag({ tag, innerItems = [], level, isTagSelected, isChildTagSelected }: { tag: any, innerItems?: React.ReactNode[], level: number, isTagSelected: boolean, isChildTagSelected?: boolean }) {
   const [isRenaming, setIsRenaming] = React.useState(false);
-  const [isCollapsibleOpen, setIsCollapsibleOpen] = React.useState(false);
+  const [isCollapsibleOpen, setIsCollapsibleOpen] = React.useState(isChildTagSelected);
 
   const [newTagTitle, setNewTagTitle] = React.useState(tag.fullPath);
   const inputRef = React.useRef(null);
@@ -34,6 +34,12 @@ export function SidebarTag({ tag, innerItems = [], level, isTagSelected, isChild
     setNewTagTitle(tag.fullPath);
   }, [tag.fullPath]);
 
+  React.useEffect(() => {
+    if (isChildTagSelected !== true || isChildTagSelected === isCollapsibleOpen) {
+      return;
+    }
+    setIsCollapsibleOpen(isChildTagSelected);
+  }, [isChildTagSelected])
 
   const store = React.useContext(StoreContext);
   const { isMobile, toggleSidebar } = useSidebar()
@@ -76,8 +82,8 @@ export function SidebarTag({ tag, innerItems = [], level, isTagSelected, isChild
 
   const tagContent = (className = '') => {
     return (<>
-      <button onClick={setTag} className={`${className} flex items-center gap-2 flex-grow-1 py-2`}>
-        <span className={`w-2.5 h-2.5 rounded-full ${colorMap[tag.color]}`}></span>
+      <div onClick={setTag} className={`${className} flex justify-start items-center text-left gap-2 py-2 w-full pe-6.5`}>
+        <span className={`w-2.5 h-2.5 rounded-full flex-none ${colorMap[tag.color]}`}></span>
         <input
           ref={inputRef}
           className={['tag-title-edit-input rounded-sm w-[85%]', (isRenaming ? '' : 'hidden'), (isMobile ? 'border-1' : 'border-none')].join(' ')}
@@ -91,12 +97,11 @@ export function SidebarTag({ tag, innerItems = [], level, isTagSelected, isChild
             }
           }
           }
-          onBlur={!isMobile && revert}
+          onBlur={() => { !isMobile && revert() }}
         />
-        {!isRenaming && <span>{tag.title}</span>}
-      </button>
-      {!!tag.pinned && (<IconPinned className={'ms-auto'} />)}
-      {actionButtons}
+        {!isRenaming && <span title={tag.title} className="line-clamp-1 break-all">{tag.title}</span>}
+        <IconPinned className={`ms-auto w-4 h-4 ` + (!!tag.pinned ? 'visible': 'invisible')} />
+      </div>
     </>)
   }
 
@@ -104,7 +109,7 @@ export function SidebarTag({ tag, innerItems = [], level, isTagSelected, isChild
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <SidebarMenuAction
-          className="data-[state=open]:bg-accent rounded-sm sidebar-menu-action"
+          className="data-[state=open]:bg-accent hover:bg-sidebar-accent rounded-sm sidebar-menu-action cursor-pointer"
         >
           <IconDotsVertical />
           <span className="sr-only">More</span>
@@ -146,15 +151,14 @@ export function SidebarTag({ tag, innerItems = [], level, isTagSelected, isChild
     </DropdownMenu>
   )
 
-  const code = innerItems.length > 0 ? (<Collapsible className='group/collapsible' open={isCollapsibleOpen || isChildTagSelected}
-    onOpenChange={(open: boolean) => setIsCollapsibleOpen(open)}
-
+  const code = innerItems.length > 0 ?
+    (<Collapsible className='group/collapsible' open={isCollapsibleOpen}
   >
-    <SidebarMenuItem>
-      <SidebarMenuButton className={'py-0 active:bg-primary/90 active:text-primary-foreground' + (isTagSelected ? ' !bg-primary !text-primary-foreground' : '')}>
-        <CollapsibleTrigger asChild>
-          <IconChevronRight className={`transition-transform hover:cursor-pointer`} />
-        </CollapsibleTrigger>
+    <SidebarMenuItem data-selected={isTagSelected}>
+      <SidebarMenuButton className={'p-0 gap-0 active:bg-primary/90 active:text-primary-foreground' + (isTagSelected ? ' !bg-primary !text-primary-foreground' : '')}>
+        <div className="p-2 hover:cursor-pointer" onClick={() => setIsCollapsibleOpen(!isCollapsibleOpen)}>
+          <IconChevronRight className={`transition-transform w-4 h-4 ` + (isCollapsibleOpen ? ` rotate-90` : '')} />
+        </div>
         {tagContent()}
       </SidebarMenuButton>
 
@@ -163,13 +167,15 @@ export function SidebarTag({ tag, innerItems = [], level, isTagSelected, isChild
           {innerItems}
         </SidebarMenuSub>
       </CollapsibleContent>
+      {actionButtons}
     </SidebarMenuItem>
   </Collapsible>)
     :
-    (<SidebarMenuItem >
-      <SidebarMenuButton className={'py-0 active:bg-primary/90 active:text-primary-foreground' + (isTagSelected ? ' !bg-primary !text-primary-foreground' : '')}>
-        {tagContent('pl-6')}
+    (<SidebarMenuItem data-selected={isTagSelected}>
+      <SidebarMenuButton className={`p-0` + (isTagSelected ? ' bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground' : '')}>
+        {tagContent('pl-8')}
       </SidebarMenuButton>
+      {actionButtons}
     </SidebarMenuItem>)
 
   return (code)
