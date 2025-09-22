@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
-import {Bookmark, Copy, Feather, GitCompare, Shield} from 'lucide-react';
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {Button} from "@/components/ui/button";
-import {Badge} from "@/components/ui/badge";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import {useIsMobile} from "@/hooks/use-mobile.ts";
+import React, { useState } from 'react';
+import { Bookmark, Copy, Feather, GitCompare, Shield } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useIsMobile } from "@/hooks/use-mobile.ts";
 
-const BookmarkletPage = ({onSuccess}: { onSuccess?: () => void }) => {
+const BookmarkletPage = ({ onSuccess }: { onSuccess?: () => void }) => {
   const [copied, setCopied] = useState(false);
   const bookmarkletRef = React.useRef(null);
   const isMobile = useIsMobile();
@@ -22,10 +22,41 @@ const BookmarkletPage = ({onSuccess}: { onSuccess?: () => void }) => {
     const urlParams = new URLSearchParams();
     urlParams.append('url', window.location.href);
     urlParams.append('title', document.title);
-
     const meta_description = document.querySelector('meta[name="description"]');
     if (meta_description) {
       urlParams.append('description', meta_description.getAttribute('content') || '');
+    }
+    let imageUrl = '';
+
+    const ogImage = document.querySelector('meta[property="og:image"]');
+    if (ogImage) {
+      imageUrl = ogImage.getAttribute('content') || '';
+    }
+
+    if (!imageUrl) {
+      const twitterImage = document.querySelector('meta[property="twitter:image"]');
+      if (twitterImage) {
+        imageUrl = twitterImage.getAttribute('content') || '';
+      }
+    }
+
+    if (!imageUrl) {
+      const images = document.querySelectorAll('img');
+      for (let img of images) {
+        if (img.naturalWidth >= 200 && img.naturalHeight >= 200) {
+          if (img.src.startsWith('http')) {
+            imageUrl = img.src;
+            break;
+          } else if (img.src.startsWith('/')) {
+            imageUrl = window.location.origin + img.src;
+            break;
+          }
+        }
+      }
+    }
+
+    if (imageUrl) {
+      urlParams.append('image', imageUrl);
     }
 
     const windowWidth = 700;
@@ -53,7 +84,7 @@ const BookmarkletPage = ({onSuccess}: { onSuccess?: () => void }) => {
 
   const generateBookmarkletCode = () => {
     const basePath = window.location.origin + '/create-item';
-    return `javascript:(${bookmarkletFunction})();`.replace("<<BASE_PATH>>", basePath);
+    return `javascript:(${bookmarkletFunction.toString()})();`.replace("<<BASE_PATH>>", basePath);
   };
 
   const copyBookmarkletCode = async () => {
@@ -84,7 +115,6 @@ const BookmarkletPage = ({onSuccess}: { onSuccess?: () => void }) => {
   return (
     <div className="flex flex-col gap-4">
       <Card>
-
         <CardHeader>
           <CardTitle className="text-lg">What is a Bookmarklet?</CardTitle>
           <CardDescription>
@@ -98,12 +128,10 @@ const BookmarkletPage = ({onSuccess}: { onSuccess?: () => void }) => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-
           <div className="flex flex-wrap justify-around">
-
             <Card className="text-center border-none shadow-none">
               <CardContent className="p-0">
-                <GitCompare className="w-8 h-8 text-primary mx-auto mb-3"/>
+                <GitCompare className="w-8 h-8 text-primary mx-auto mb-3" />
                 <h4 className="font-semibold text-primary mb-2">Compatible</h4>
                 <p className="text-sm text-muted-foreground max-w-[180px] mx-auto">Works in all modern desktop and
                   mobile browsers</p>
@@ -112,7 +140,7 @@ const BookmarkletPage = ({onSuccess}: { onSuccess?: () => void }) => {
 
             <Card className="text-center border-none shadow-none">
               <CardContent className="p-0">
-                <Shield className="w-8 h-8 text-primary mx-auto mb-3"/>
+                <Shield className="w-8 h-8 text-primary mx-auto mb-3" />
                 <h4 className="font-semibold text-primary mb-2">Secure</h4>
                 <p className="text-sm text-muted-foreground max-w-[180px] mx-auto">No access to your page data until
                   activated</p>
@@ -121,7 +149,7 @@ const BookmarkletPage = ({onSuccess}: { onSuccess?: () => void }) => {
 
             <Card className="text-center border-none shadow-none">
               <CardContent className="p-0">
-                <Feather className="w-8 h-8 text-primary mx-auto mb-3"/>
+                <Feather className="w-8 h-8 text-primary mx-auto mb-3" />
                 <h4 className="font-semibold text-primary mb-2">Lightweight</h4>
                 <p className="text-sm text-muted-foreground max-w-[180px] mx-auto">No browser extension is needed</p>
               </CardContent>
@@ -135,10 +163,8 @@ const BookmarkletPage = ({onSuccess}: { onSuccess?: () => void }) => {
           <CardTitle className="text-lg">
             Installation
           </CardTitle>
-
         </CardHeader>
         <CardContent className="space-y-6">
-
           <div className="flex flex-col sm:flex-row gap-4 items-center">
             <a
               className="gap-2 bg-background/20 border-2 border-dashed border-1 hover:bg-background/30 cursor-move w-full sm:w-auto py-1 px-3 flex justify-center items-center rounded-md"
@@ -147,14 +173,14 @@ const BookmarkletPage = ({onSuccess}: { onSuccess?: () => void }) => {
                 onSuccess && onSuccess();
               }}
             >
-              <Bookmark className="w-4 h-4"/>
+              <Bookmark className="w-4 h-4" />
               Add to Faved
             </a>
             <Button
               onClick={copyBookmarkletCode}
               className="gap-2 w-full sm:w-auto"
             >
-              <Copy className="w-4 h-4"/>
+              <Copy className="w-4 h-4" />
               {copied ? 'Copied!' : 'Copy Code'}
             </Button>
           </div>

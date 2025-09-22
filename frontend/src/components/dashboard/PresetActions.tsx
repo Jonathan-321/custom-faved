@@ -12,11 +12,9 @@ export const PresetActions = observer(() => {
   const store = React.useContext(StoreContext);
 
   return (
-    <div>
-        <Button variant="secondary" size="icon" onClick={() => { store.setIsOpenSettingsModal(true) }}>
-          <span className="sr-only">Actions</span>
-          <SlidersHorizontal />
-        </Button>
-    </div>
+    <Button variant="secondary" size="icon" onClick={() => { store.setIsOpenSettingsModal(true) }}>
+      <span className="sr-only">Actions</span>
+      <SlidersHorizontal />
+    </Button>
   )
 })

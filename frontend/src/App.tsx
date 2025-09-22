@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation, Navigate, Outlet } from 'react-router-dom';
 import './App.css'
 import { observer } from 'mobx-react-lite';
-import {useContext, useEffect, useState} from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { StoreContext } from './store/storeContext';
 import { LoginPage } from './components/Login/LoginPage';
 import { Setup } from './components/Setup/Setup';
@@ -9,7 +9,7 @@ import { SetupAuth } from './components/Setup/SetupAuth';
 import { SetupImport } from './components/Setup/SetupImport';
 import { SetupBookmarklet } from './components/Setup/SetupBookmarklet';
 import { Toaster } from './components/ui/sonner';
-import { Page } from './components/dashboard/page';
+import { Page } from './components/Dashboard/Page';
 import EditItemForm from './components/EditForm/EditItemForm';
 import { Dialog } from './components/ui/dialog';
 import { NotFound } from './components/NotFound';
@@ -37,9 +37,25 @@ function SetupMiddleware() {
 
   // If we are not on the setup page, and need to be, redirect to setup
   const isSetupPage = location.pathname === '/setup';
+  const isEditPage = location.pathname === '/create-item';
   if (!isSetupPage && store.showInitializeDatabasePage) {
     return <Navigate to="/setup" replace />;
   }
+  if (!store.isAuthSuccess && isEditPage) {
+    store.setIsFullScreen(true);
+    if (store.showLoginPage) {
+      return <Navigate
+        to={{
+          pathname: '/login',
+          search: location.search
+        }}
+        replace
+        state={{ from: location, params: location.search }}
+      />
+    }
+
+  }
+
 
   // Otherwise continue
   return <Outlet />;
@@ -47,7 +63,7 @@ function SetupMiddleware() {
 
 
 const App = observer(() => {
-   return (
+  return (
     <BrowserRouter>
       <Routes>
         <Route element={<SetupMiddleware />}>
@@ -58,7 +74,7 @@ const App = observer(() => {
           <Route path="/setup/import" element={<SetupImport />} />
           <Route path="/setup/bookmarklet" element={<SetupBookmarklet />} />
           <Route path="/create-item"
-                 element={<Dialog open={true}><EditItemForm setIsShowEditModal={() => { }} isFullScreen={true} /></Dialog>}
+            element={<Dialog open={true}><EditItemForm isFullScreen={true} /></Dialog>}
           />
         </Route>
         <Route path="*" element={<NotFound />} />

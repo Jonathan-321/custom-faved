@@ -47,7 +47,7 @@ export const ImportModal = ({onSuccess}: { onSuccess?: () => void }) => {
   };
 
   return (
-    <Card>
+    <Card className="touch-pan-y">
       <CardHeader>
         <CardTitle className="text-lg">Import Bookmarks</CardTitle>
         <CardDescription>
