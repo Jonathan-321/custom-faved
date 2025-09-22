@@ -3,6 +3,7 @@
 use Controllers\AuthController;
 use Controllers\AuthLogoutController;
 use Controllers\ImportPocketController;
+use Controllers\ImportBookmarksController;
 use Controllers\ItemsCreateController;
 use Controllers\ItemsDeleteController;
 use Controllers\ItemsGetController;
@@ -73,6 +74,9 @@ return [
 		'import' => [
 			'pocket' => [
 				'POST' => ImportPocketController::class,
+			],
+			'bookmarks' => [
+				'POST' => ImportBookmarksController::class,
 			],
 		],
 	]

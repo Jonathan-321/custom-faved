@@ -713,18 +713,26 @@ class mainStore {
                 return false
             })
     }
-    importBookmarks = async(selectedFile: File, setIsLoading: (val: boolean) => void) => {
+    importPocketBookmarks = async (selectedFile: File, setIsLoading: (val: boolean) => void) => {
+        return this.importBookmarks(selectedFile, setIsLoading, 'pocket-zip', API_ENDPOINTS.importBookmarks.pocket)
+    }
+
+    importBrowserBookmarks = async(selectedFile: File, setIsLoading: (val: boolean) => void) => {
+        return this.importBookmarks(selectedFile, setIsLoading, 'browser-html', API_ENDPOINTS.importBookmarks.browser)
+    }
+    importBookmarks = async(selectedFile: File, setIsLoading: (val: boolean) => void, inputName: string, endpointUrl: string) => {
         const formData = new FormData();
-        formData.append('pocket-zip', selectedFile);
+        formData.append(inputName, selectedFile);
         const options = {
             method: 'POST',
             body: formData,
             headers: {
-                'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')
+                'X-CSRF-TOKEN': getCookie('CSRF-TOKEN'),
+                'Accept': 'application/json',
             }
         };
         setIsLoading(true)
-        return fetch(API_ENDPOINTS.importBookmarks.import, options)
+        return fetch(endpointUrl, options)
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {

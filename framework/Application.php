@@ -25,7 +25,7 @@ class Application
 			}
 			isset($middleware) && $middleware->handle();
 
-			$input = $this->getInput($expects_json);
+			$input = $this->getInput();
 
 			$controller = new $controller_class();
 			$response = $controller($input);
@@ -37,7 +37,7 @@ class Application
 					'message' => $e->getMessage(),
 					'error' => $e->getMessage(),
 				], isValidHttpCode($e->getCode()) ? $e->getCode() : 500);
-			} elseif(isset($this->error_redirects[get_class($e)])) {
+			} elseif (isset($this->error_redirects[get_class($e)])) {
 				FlashMessages::set('error', $e->getMessage());
 				$redirect_url = $this->error_redirects[get_class($e)];
 				$response = redirect($redirect_url);
@@ -51,9 +51,11 @@ class Application
 		$response->yield();
 	}
 
-	public function getInput($expects_json) : array
+	public function getInput(): array
 	{
-		if (! $expects_json ) {
+		$input_json = str_contains(($_SERVER['CONTENT_TYPE'] ?? ''), 'application/json');
+
+		if (!$input_json) {
 			return array_merge($_POST, $_GET, $_FILES);
 		}
 
@@ -65,7 +67,7 @@ class Application
 		$input = json_decode($raw_data, true);
 
 		if (json_last_error() !== JSON_ERROR_NONE) {
-			throw new ValidationException('Invalid JSON input',400);
+			throw new ValidationException('Invalid JSON input', 400);
 		}
 		return array_merge($input, $_GET);
 	}

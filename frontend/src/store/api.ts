@@ -30,6 +30,7 @@ export const API_ENDPOINTS = {
         setup: `${API_BASE}/setup/database`,
     },
     importBookmarks: {
-        import: `${API_BASE}/import/pocket`,
+        pocket: `${API_BASE}/import/pocket`,
+        browser: `${API_BASE}/import/bookmarks`,
     }
 };

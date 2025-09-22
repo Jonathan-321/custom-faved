@@ -174,13 +174,10 @@ class PocketImporter
 		array_walk(
 			$tag_titles,
 			function ($tag_description, $tag_title) use ($existing_tags, $parent_tag_id, &$tag_map) {
-				if (isset($existing_tags[$tag_title])) {
-					$tag_map[$tag_title] = $existing_tags[$tag_title];
-					return;
-				}
-				$tag_id = $this->tag_creator->createTag($tag_title, $tag_description, $parent_tag_id);
-				$tag_map[$tag_title] = $tag_id;
+				$tag_map[$tag_title] = $existing_tags[$tag_title]
+					?? $this->tag_creator->createTag($tag_title, $tag_description, $parent_tag_id);
 			});
+
 		return $tag_map;
 	}
 

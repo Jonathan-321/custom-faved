@@ -40,7 +40,7 @@ function extractTagSegments(string $title): array
 	return $segments;
 }
 
-function createTagsFromSegments(array $tag_segments): int
+function createTagsFromSegments(array $tag_segments, $tag_description = ''): int
 {
 	$repository = ServiceContainer::get(Repository::class);
 	$tags = $repository->getTags();
@@ -58,7 +58,7 @@ function createTagsFromSegments(array $tag_segments): int
 			continue;
 		}
 
-		$parent_tag_id = $tag_creator->createTag($tag_title, '', $parent_tag_id);
+		$parent_tag_id = $tag_creator->createTag($tag_title, $tag_description, $parent_tag_id);
 		$check_existing_parent = false;
 	}
 
