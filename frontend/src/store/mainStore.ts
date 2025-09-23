@@ -66,16 +66,12 @@ class mainStore {
     itemsOriginal: ItemType[] = [];
     isAuthSuccess: boolean = false;
     isShowEditModal: boolean = false;
-    isFullScreen = false;
 
     constructor() {
         makeAutoObservable(this); // Makes state observable and actions transactional
     }
     setIsshowInitializeDatabasePage = (val: boolean) => {
         this.showInitializeDatabasePage = val;
-    }
-    setIsFullScreen = (val: boolean) => {
-        this.isFullScreen = val;
     }
     setCurrentTagId = (val: string | null | number) => {
         this.selectedTagId = val === null ? null : val.toString();
@@ -639,7 +635,7 @@ class mainStore {
                 toast(err.message, { position: 'top-center', style: stylesTost() })
             })
     }
-    login = (values: LoginType, setIsLoading: (val: boolean) => void, onSuccess?: () => void) => {
+    login = (values: LoginType, setIsLoading: (val: boolean) => void, onSuccess?: () => void | null) => {
         const options = {
             method: 'POST',
             headers: {
@@ -670,10 +666,8 @@ class mainStore {
             .then((response) => {
                 this.setShowLoginPage(false)
                 this.setIsAuthSuccess(true);
-                if (this.isFullScreen) {
-                    if (onSuccess) {
-                        onSuccess();
-                    }
+                if (onSuccess) {
+                    onSuccess();
                 }
             })
             .catch((err) => {

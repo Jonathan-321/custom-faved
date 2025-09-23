@@ -42,7 +42,6 @@ function SetupMiddleware() {
     return <Navigate to="/setup" replace />;
   }
   if (!store.isAuthSuccess && isEditPage) {
-    store.setIsFullScreen(true);
     if (store.showLoginPage) {
       return <Navigate
         to={{
@@ -74,7 +73,7 @@ const App = observer(() => {
           <Route path="/setup/import" element={<SetupImport />} />
           <Route path="/setup/bookmarklet" element={<SetupBookmarklet />} />
           <Route path="/create-item"
-            element={<Dialog open={true}><EditItemForm isFullScreen={true} /></Dialog>}
+            element={<Dialog open={true}><EditItemForm isCloseWindowOnSubmit={true} /></Dialog>}
           />
         </Route>
         <Route path="*" element={<NotFound />} />

@@ -23,7 +23,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Image } from 'lucide-react';
 
 interface EditItemFormProps {
-  isFullScreen: boolean;
+  isCloseWindowOnSubmit: boolean;
 }
 
 const INITIAL_ITEM_DATA: ItemType = {
@@ -47,7 +47,7 @@ const safeDecodeURIComponent = (encodedURI: string): string => {
   }
 };
 
-const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
+const EditItemForm: React.FC<EditItemFormProps> = ({ isCloseWindowOnSubmit }) => {
   const store = useContext(StoreContext);
   const location = useLocation();
 
@@ -79,17 +79,16 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
   }, [currentItem, form]);
 
   useEffect(() => {
-    if (isFullScreen) {
-      store.setIsFullScreen(true);
+    if (isCloseWindowOnSubmit) {
       form.setValue('title', urlParams.title);
       form.setValue('description', urlParams.description);
       form.setValue('url', urlParams.url);
       form.setValue('image', urlParams.image);
     }
-  }, [isFullScreen, urlParams, form]);
+  }, [isCloseWindowOnSubmit, urlParams, form]);
 
   const handleSubmit = (values: ItemType) => {
-    store.onCreateItem(values, false, false, isFullScreen ? window : null);
+    store.onCreateItem(values, false, false, isCloseWindowOnSubmit ? window : null);
     store.setIsShowEditModal(false);
     form.reset();
   };
@@ -111,7 +110,7 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
   };
 
   const handleClose = () => {
-    if (isFullScreen) {
+    if (isCloseWindowOnSubmit) {
       window.close();
     } else {
       store.fetchItems();
@@ -190,7 +189,7 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
           <DialogOverlay>
             <DialogContent
               className="sm:max-w-[1200px] max-h-[90dvh] overflow-y-auto"
-              showCloseButton={!isFullScreen}
+              showCloseButton={!isCloseWindowOnSubmit}
               style={{
                 WebkitOverflowScrolling: 'touch',
                 maxHeight: 'calc(100dvh)',

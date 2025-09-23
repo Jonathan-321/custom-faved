@@ -67,7 +67,7 @@ export const Page = observer(() => {
           store.fetchItems()
         }
       }} open={store.isShowEditModal} >
-        {store.isShowEditModal && <EditItemForm isFullScreen={false} />}
+        {store.isShowEditModal && <EditItemForm isCloseWindowOnSubmit={false} />}
         {store.isOpenSettingsModal && <SettingsDialog />}
       </Dialog>
     </SidebarProvider >
