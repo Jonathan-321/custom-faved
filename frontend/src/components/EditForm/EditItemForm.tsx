@@ -189,8 +189,12 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
         <DialogPortal>
           <DialogOverlay>
             <DialogContent
-              className="sm:max-w-[1200px] max-h-[870px] overflow-y-auto"
+              className="sm:max-w-[1200px] max-h-[90dvh] overflow-y-auto"
               showCloseButton={!isFullScreen}
+              style={{
+                WebkitOverflowScrolling: 'touch',
+                maxHeight: 'calc(100dvh)',
+              }}
             >
               <DialogHeader>
                 <div className="flex flex-row justify-between items-center">
@@ -199,7 +203,7 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
                   </DialogTitle>
                 </div>
               </DialogHeader>
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 py-4">
                 <div className="lg:col-span-2 space-y-4">
                   <div className="grid gap-3">
                     {renderTextField('title', 'Title')}
@@ -247,7 +251,6 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
                               className="max-w-full max-h-[300px] mx-auto rounded-md shadow-sm"
                             />
                           </a>
-
                         </div>
                       ) : (
                         <div className="text-center text-muted-foreground">
@@ -262,7 +265,7 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
                   </FormItem>
                 </div>
               </div>
-              <DialogFooter className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 gap-2 mt-6">
+              <DialogFooter className="bg-background border-t pt-4 mt-4 flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 gap-2">
                 <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto order-2 sm:order-1">
                   <Button
                     type="submit"
