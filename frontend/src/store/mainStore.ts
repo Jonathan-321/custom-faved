@@ -4,19 +4,8 @@ import { API_ENDPOINTS } from './api';
 import { ActionType } from '@/components/Dashboard/types';
 import type { LoginType, PasswordType, UsernameType, UsetType, ItemType, TagsObjectType, TagType } from '@/types/types';
 
-export const calculateToastWidth = (message: string): string => {
-    const MIN_WIDTH = 200;
-    const MAX_WIDTH = 600;
-    const CHAR_WIDTH = 8;
-    const calculatedWidth = Math.min(
-        MAX_WIDTH,
-        Math.max(MIN_WIDTH, message.length * CHAR_WIDTH)
-    );
-    return `${calculatedWidth}px`;
-};
-
-const stylesTost = (message: string) => ({
-    width: calculateToastWidth(message),
+const stylesTost = () => ({
+    width: 320,
     left: '50%',
     transform: 'translateX(-50%)'
 });
@@ -36,11 +25,11 @@ const handleResponse = (promise, defaultErrorMessage, setShowLoginPage) => {
             return response.json();
         })
         .then((data) => {
-            toast(data.message, { position: 'top-center', style: stylesTost(data.message) });
+            toast(data.message, { position: 'top-center', style: stylesTost() });
             return data
         })
         .catch((err, data) => {
-            toast.error((err instanceof Error ? err.message : defaultErrorMessage), { position: 'top-center', style: stylesTost(err.message) })
+            toast.error((err instanceof Error ? err.message : defaultErrorMessage), { position: 'top-center', style: stylesTost() })
         })
 };
 
@@ -148,7 +137,7 @@ class mainStore {
             const data = await response.json();
             this.setTags(data);
         } catch (err) {
-            toast.error('Error fetching tags', { position: 'top-center', style: stylesTost(err.message) })
+            toast.error('Error fetching tags', { position: 'top-center', style: stylesTost() })
         }
     }
     onCreateTag = async (title: string) => {
@@ -257,7 +246,7 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then((data) => toast(data.message, { position: 'top-center', style: stylesTost(data.message) }))
+            .then((data) => toast(data.message, { position: 'top-center', style: stylesTost() }))
             .catch(err => console.error(err))
             .finally(() => {
                 const tag = { ...this.tags[tagID as unknown as number], pinned }
@@ -308,7 +297,7 @@ class mainStore {
                 this.setItemsOriginal(data)
             } catch (err) {
                 this.error = (err instanceof Error ? err.message : 'Failed to fetch items');
-                toast(err.message, { position: 'top-center', style: stylesTost(err.message) })
+                toast(err.message, { position: 'top-center', style: stylesTost() })
             }
         };
 
@@ -335,7 +324,7 @@ class mainStore {
                 await fetchItems();
             })
             .catch(err => {
-                toast(err.message, { position: 'top-center', style: stylesTost(err.message) })
+                toast(err.message, { position: 'top-center', style: stylesTost() })
 
             })
 
@@ -364,8 +353,8 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then((response) => toast(response.message, { position: 'top-center', style: stylesTost(response.message) }))
-            .catch(err => toast(err.message, { position: 'top-center', style: stylesTost(err.message) }))
+            .then((response) => toast(response.message, { position: 'top-center', style: stylesTost() }))
+            .catch(err => toast(err.message, { position: 'top-center', style: stylesTost() }))
             .finally(() => {
                 this.fetchItems()
                 this.fetchTags()
@@ -413,10 +402,10 @@ class mainStore {
                     }, 1000);
                 }
 
-                toast(message, { position: 'top-center', style: stylesTost(message) })
+                toast(message, { position: 'top-center', style: stylesTost() })
 
             })
-            .catch(err => toast(err.message, { position: 'top-center', style: stylesTost(err.message) }))
+            .catch(err => toast(err.message, { position: 'top-center', style: stylesTost() }))
             .finally(() => {
                 if (!onSave) {
                     this.fetchItems()
@@ -462,7 +451,7 @@ class mainStore {
             })
             .catch(err => {
                 if (!noErrorEmit) {
-                    toast(err.message, { position: 'top-center', style: stylesTost(err.message) })
+                    toast(err.message, { position: 'top-center', style: stylesTost() })
                 }
                 this.setIsAuthSuccess(false)
                 return false
@@ -502,11 +491,11 @@ class mainStore {
                 this.setIsAuthSuccess(true)
                 this.setUserName(val.username);
 
-                toast.success(response.message, { position: 'top-center', style: stylesTost(response.message) })
+                toast.success(response.message, { position: 'top-center', style: stylesTost() })
                 return true
             })
             .catch((err) => {
-                toast.error(err.message, { position: 'top-center', style: stylesTost(err.message) })
+                toast.error(err.message, { position: 'top-center', style: stylesTost() })
                 return false
             })
 
@@ -541,12 +530,12 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                toast(response.message, { position: 'top-center', style: stylesTost(response.message) })
+                toast(response.message, { position: 'top-center', style: stylesTost() })
                 this.setUserName(val.username);
 
             })
             .catch((err) => {
-                toast(err.message, { position: 'top-center', style: stylesTost(err.message) })
+                toast(err.message, { position: 'top-center', style: stylesTost() })
             })
     }
     createPassword = (val: PasswordType, reset: any) => {
@@ -578,11 +567,11 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                toast(response.message, { position: 'top-center', style: stylesTost(response.message) })
+                toast(response.message, { position: 'top-center', style: stylesTost() })
                 reset()
             })
             .catch((err) => {
-                toast(err.message, { position: 'top-center', style: stylesTost(err.message) })
+                toast(err.message, { position: 'top-center', style: stylesTost() })
             })
     }
     deleteUser = () => {
@@ -610,12 +599,12 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                toast(response.message, { position: 'top-center', style: stylesTost(response.message) })
+                toast(response.message, { position: 'top-center', style: stylesTost() })
                 this.setIsAuthSuccess(false)
                 this.setUserName('');
             })
             .catch((err) => {
-                toast(err.message, { position: 'top-center', style: stylesTost(err.message) })
+                toast(err.message, { position: 'top-center', style: stylesTost() })
             })
     }
     logOut = () => {
@@ -643,11 +632,11 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                toast(response.message, { position: 'top-center', style: stylesTost(response.message) })
+                toast(response.message, { position: 'top-center', style: stylesTost() })
                 this.setShowLoginPage(true);
             })
             .catch((err) => {
-                toast(err.message, { position: 'top-center', style: stylesTost(err.message) })
+                toast(err.message, { position: 'top-center', style: stylesTost() })
             })
     }
     login = (values: LoginType, setIsLoading: (val: boolean) => void, onSuccess?: () => void) => {
@@ -689,7 +678,7 @@ class mainStore {
             })
             .catch((err) => {
                 toast(err.message, {
-                    position: 'top-center', style: stylesTost(err.message)
+                    position: 'top-center', style: stylesTost()
                 })
             })
             .finally(() => { setIsLoading(false) })
@@ -720,7 +709,7 @@ class mainStore {
             })
             .then((response) => {
                 toast.success(response.message, {
-                    position: 'top-center', style: stylesTost(response.message)
+                    position: 'top-center', style: stylesTost()
                 })
                 this.setShowLoginPage(false)
                 this.setIsshowInitializeDatabasePage(false)
@@ -728,7 +717,7 @@ class mainStore {
             })
             .catch((err) => {
                 toast.error(err.message, {
-                    position: 'top-center', style: stylesTost(err.message)
+                    position: 'top-center', style: stylesTost()
                 })
                 return false
             })
@@ -737,7 +726,7 @@ class mainStore {
         return this.importBookmarks(selectedFile, setIsLoading, 'pocket-zip', API_ENDPOINTS.importBookmarks.pocket)
     }
 
-    importBrowserBookmarks = async(selectedFile: File, setIsLoading: (val: boolean) => void) => {
+    importBrowserBookmarks = async (selectedFile: File, setIsLoading: (val: boolean) => void) => {
         return this.importBookmarks(selectedFile, setIsLoading, 'browser-html', API_ENDPOINTS.importBookmarks.browser)
     }
     importBookmarks = async (selectedFile: File, setIsLoading: (val: boolean) => void, inputName: string, endpointUrl: string) => {
@@ -771,11 +760,11 @@ class mainStore {
                 this.isOpenSettingsModal = false;
                 this.fetchItems();
                 this.fetchTags();
-                toast.success(response.message, { position: 'top-center', style: stylesTost(response.message) });
+                toast.success(response.message, { position: 'top-center', style: stylesTost() });
                 return true;
             })
             .catch((err) => {
-                toast.error(err.message, { position: 'top-center', style: stylesTost(err.message) });
+                toast.error(err.message, { position: 'top-center', style: stylesTost() });
                 return false;
             })
             .finally(() => setIsLoading(false))

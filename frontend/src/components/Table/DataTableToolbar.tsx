@@ -18,23 +18,23 @@ export function DataTableToolbar<TData>({
 
   return (
     <div className="flex items-center justify-between flex-grow">
-        <Input
-          placeholder="Search..."
-          value={globalFilter ?? ''}
-          onChange={(e) => table.setGlobalFilter(String(e.target.value))}
-          className="h-9"
-        />
+      <Input
+        placeholder="Search..."
+        value={globalFilter ?? ''}
+        onChange={(e) => table.setGlobalFilter(String(e.target.value))}
+        className="h-9 pl-6"
+      />
 
-        {isFiltered && (
-          <Button
-            variant="ghost"
-            onClick={() => table.resetColumnFilters()}
-            className="h-9 px-2 lg:px-3"
-          >
-            Reset
-            <X />
-          </Button>
-        )}
+      {isFiltered && (
+        <Button
+          variant="ghost"
+          onClick={() => table.resetColumnFilters()}
+          className="h-9 px-2 lg:px-3"
+        >
+          Reset
+          <X />
+        </Button>
+      )}
     </div>
   )
 }

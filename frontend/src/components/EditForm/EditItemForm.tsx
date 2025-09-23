@@ -241,14 +241,13 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isFullScreen }) => {
                     <div className="border rounded-md p-4 bg-gray-50 dark:bg-[#202020] min-h-[200px] flex items-center justify-center">
                       {imageUrl ? (
                         <div className="text-center">
-                          <img
-                            src={imageUrl}
-                            alt="Preview"
-                            className="max-w-full max-h-[300px] mx-auto rounded-md shadow-sm"
-                            onError={(e) => {
-                              e.currentTarget.style.display = 'none';
-                            }}
-                          />
+                          <a href={imageUrl} target="_blank" rel="noopener noreferrer">
+                            <img
+                              src={imageUrl}
+                              className="max-w-full max-h-[300px] mx-auto rounded-md shadow-sm"
+                            />
+                          </a>
+
                         </div>
                       ) : (
                         <div className="text-center text-muted-foreground">

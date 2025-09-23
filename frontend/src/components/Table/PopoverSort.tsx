@@ -37,7 +37,7 @@ export const PopoverSort: React.FC<{
             <PopoverTrigger asChild>
                 <Button className="" variant="outline"><ArrowDownUp /></Button>
             </PopoverTrigger>
-            <PopoverContent className=" flex flex-row flex-nowrap w-[320px] justify-between items-center" >
+            <PopoverContent className="flex flex-row flex-nowrap w-[320px] justify-between items-center" >
                 <Select
                     value={selectedSortColumn || ""}
                     onValueChange={(e) => { handleSortChange(e, sortDirection) }}

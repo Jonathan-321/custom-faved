@@ -166,7 +166,6 @@ export const DataTable: React.FC = observer(() => {
             sortableColumns={sortableColumns}
           />
         </Popover>
-
         <Tooltip>
           <TooltipTrigger asChild>
             <Button onClick={toggleTableView} variant="outline">
@@ -177,9 +176,7 @@ export const DataTable: React.FC = observer(() => {
             <p> {!isTableView ? "Table view" : "Card view"}</p>
           </TooltipContent>
         </Tooltip>
-
       </div>
-
       <div className="m-4 overflow-hidden ">
         {isTableView ? <Table className=" table-fixed w-full">
           <TableBody>
@@ -191,7 +188,7 @@ export const DataTable: React.FC = observer(() => {
                 >
                   {row.getVisibleCells().map((cell) => {
                     return (
-                      <TableCell key={cell.id} className={`${cell.id.split("_")[1] !== "id" ? 'w-full pb-5 pt-5 break-words ' : 'pb-5 pt-5 pr-14 w-12'}`}>
+                      <TableCell key={cell.id} className={`${cell.id.split("_")[1] !== "id" ? 'w-full pb-5 pt-5 pl-6 break-words ' : 'pb-5 pt-5 pr-14 w-12'}`}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
