@@ -21,7 +21,7 @@ export const CardView: React.FC<{ el: any }> = observer(({ el }) => {
     const store = React.useContext(StoreContext);
     return (
 
-        <div className='flex flex-col justify-between h-full group'>
+        <div className='flex flex-col justify-between h-full'>
 
             <CardHeader>
                 <CardAction>
@@ -29,7 +29,7 @@ export const CardView: React.FC<{ el: any }> = observer(({ el }) => {
                         <DropdownMenuTrigger asChild>
                             <Button
                                 variant="link"
-                                className="data-[state=open]:bg-muted text-muted-foreground flex size-8 absolute top-2 right-2 hidden group-hover:inline-flex bg-white border-1"
+                                className="data-[state=open]:bg-muted text-muted-foreground flex size-8 absolute top-2 right-2"
                                 size="icon"
                             >
                                 <IconDotsVertical />
