@@ -2,6 +2,7 @@
 
 namespace Utils;
 
+use Exception;
 use Framework\ServiceContainer;
 use Models\Repository;
 use Models\TagCreator;
@@ -36,7 +37,7 @@ function extractTagSegments(string $title): array
 	$segments = explode('/', $title);
 	$segments = array_map(fn($segment) => str_replace('__SLASH__', '/', $segment), $segments);
 	// Remove empty segments
-	$segments = array_filter($segments, fn ($segment) => '' !== trim($segment));
+	$segments = array_filter($segments, fn($segment) => '' !== trim($segment));
 	return $segments;
 }
 
@@ -87,6 +88,73 @@ function findURLMatches($checked_url, $items, &$host_matches)
 	}
 	return $url_matches;
 }
+
+/*
+ * Resolve relative URL to absolute URL
+ */
+function resolveUrl(string $relative_url, string $base_url): string
+{
+	// If it's already an absolute URL, return as is
+	if (filter_var($relative_url, FILTER_VALIDATE_URL)) {
+		return $relative_url;
+	}
+
+	// Parse base URL
+	$baseParts = parse_url($base_url);
+	$scheme = $baseParts['scheme'] ?? 'https';
+	$host = $baseParts['host'] ?? '';
+
+	// Handle protocol-relative URLs
+	if (str_starts_with($relative_url, '//')) {
+		return $scheme . ':' . $relative_url;
+	}
+
+	// Handle absolute paths
+	if (str_starts_with($relative_url, '/')) {
+		return $scheme . '://' . $host . $relative_url;
+	}
+
+	// Handle relative paths
+	$path = $baseParts['path'] ?? '/';
+	$path = rtrim(dirname($path), '/');
+
+	return $scheme . '://' . $host . $path . '/' . $relative_url;
+}
+
+function fetchPageHTML(string $url): string
+{
+	// Initialize cURL
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+	curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+	curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+	$html = curl_exec($ch);
+
+	if (curl_errno($ch)) {
+		$error = curl_error($ch);
+		curl_close($ch);
+		throw new Exception("Failed to fetch URL: " . $error, 400);
+	}
+
+	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	curl_close($ch);
+
+	if ($http_code < 200 || $http_code > 300) {
+		throw new Exception("Page returned HTTP error: {$http_code}", 400);
+	}
+
+	if ($html === false) {
+		throw new Exception("Failed to retrieve page content", 400);
+	}
+
+	return $html;
+}
+
 
 function createWelcomeContent($repository)
 {

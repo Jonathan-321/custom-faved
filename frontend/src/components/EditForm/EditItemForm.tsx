@@ -23,6 +23,8 @@ import { ActionType } from '../dashboard/types';
 import type { ItemType } from '@/types/types';
 import { useLocation } from 'react-router-dom';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
+import {IconCloudDownload} from "@tabler/icons-react";
+import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip.tsx";
 
 
 const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFullScreen: boolean }> = ({ setIsShowEditModal, isFullScreen }) => {
@@ -54,7 +56,7 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
     title: "",
     comments: '',
     created_at: undefined,
-    image: undefined,
+    image: '',
     tags: [],
     updated_at: undefined,
     url: ''
@@ -94,6 +96,18 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
     store.onDeleteItem(store.idItem as number)
     setIsShowEditModal(false)
     form.reset()
+  }
+
+  const updateMetadataFromUrl = async(url) => {
+    const data: {data: {title:string, description: string, image_url: string}} = await store.fetchUrlMetadata(url);
+
+    if(!data || !data?.data) {
+      return;
+    }
+
+    form.setValue('title', data.data.title || '')
+    form.setValue('description', data.data.description || '')
+    form.setValue('image', data.data.image_url || '')
   }
 
   return (
@@ -143,15 +157,27 @@ const EditItemForm: React.FC<{ setIsShowEditModal: (val: boolean) => void, isFul
                       return (
                         <FormItem>
                           <FormLabel>URL</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="text"
-                              id="name-1"
-                              value={field.value ?? undefined}
-                              onChange={(value) => {
-                                field.onChange(value ?? null);
-                              }}
-                            />
+                          <FormControl >
+                            <div className='flex flex-row gap-2'>
+                              <Input
+                                type="text"
+                                id="name-1"
+                                value={field.value ?? undefined}
+                                onChange={(value) => {
+                                  field.onChange(value ?? null);
+                                }}
+                              />
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Button onClick={() => updateMetadataFromUrl(field.value) } variant="outline">
+                                    <IconCloudDownload  />
+                                  </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  Pull title, description and image from the URL.
+                                </TooltipContent>
+                              </Tooltip>
+                            </div>
                           </FormControl>
                           <FormMessage />
                         </FormItem>

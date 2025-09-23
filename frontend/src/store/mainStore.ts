@@ -30,6 +30,7 @@ const handleResponse = (promise, defaultErrorMessage, setShowLoginPage) => {
         })
         .catch((err, data) => {
             toast.error((err instanceof Error ? err.message : defaultErrorMessage), { position: 'top-center', style: stylesTost })
+            return null
         })
 };
 
@@ -760,6 +761,23 @@ class mainStore {
             })
             .finally(() => setIsLoading(false))
     };
+
+    fetchUrlMetadata = (url: string) => {
+
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')
+            },
+        };
+
+        return handleResponse(
+          fetch(API_ENDPOINTS.urlMetdata.fetch(url), options),
+          'Error fetching metadata from URL',
+          this.setShowLoginPage
+        )
+    }
 }
 
 export default new mainStore();
