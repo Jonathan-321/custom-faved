@@ -28,8 +28,17 @@ export const LoginForm = observer(({ className, ...props }: React.ComponentProps
   const [isLoading, setIsLoading] = useState(false);
   const store = useContext(StoreContext);
   const navigate = useNavigate();
+
+  // Redirect if user already logged in
   useEffect(() => {
-    if (!store.showLoginPage) navigate('/', { replace: true });
+    if (store.showLoginPage) {
+      return;
+    }
+
+    const redirectUrl = location.state?.from?.pathname
+      ? location.state.from.pathname + location.state?.from?.search
+      : '/';
+    navigate(redirectUrl, { replace: true });
   }, [store.showLoginPage])
 
 
@@ -41,9 +50,7 @@ export const LoginForm = observer(({ className, ...props }: React.ComponentProps
     },
   })
   function onSubmit(values: z.infer<typeof formSchema>) {
-    store.login(values, setIsLoading, location.search.length > 0 ? () => {
-      navigate(`/create-item${location.search}`, { replace: true });
-    } : null);
+    store.login(values, setIsLoading);
   }
   return (
 

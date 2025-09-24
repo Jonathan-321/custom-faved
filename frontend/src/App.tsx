@@ -37,28 +37,16 @@ const SetupMiddleware = observer(() => {
 
   // If we are not on the setup page, and need to be, redirect to setup
   const isSetupPage = location.pathname === '/setup';
-  const isLoginPage = location.pathname === '/login';
-  const isEditPage = location.pathname === '/create-item';
+
   if (!isSetupPage && store.showInitializeDatabasePage) {
     return <Navigate to="/setup" replace />;
   }
-  if (store.showLoginPage && !isEditPage && !isLoginPage) {
-    return <Navigate to="/login" replace />;
-  }
-  if (!store.isAuthSuccess && isEditPage) {
-    if (store.showLoginPage) {
-      return <Navigate
-        to={{
-          pathname: '/login',
-          search: location.search
-        }}
-        replace
-        state={{ from: location, params: location.search }}
-      />
-    }
 
+  // If we are not on the login page, and need to be, redirect to login
+  const isLoginPage = location.pathname === '/login';
+  if (store.showLoginPage && !isLoginPage) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
   }
-
 
   // Otherwise continue
   return <Outlet />;

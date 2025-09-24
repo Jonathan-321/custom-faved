@@ -635,7 +635,7 @@ class mainStore {
                 toast(err.message, { position: 'top-center', style: stylesTost() })
             })
     }
-    login = (values: LoginType, setIsLoading: (val: boolean) => void, onSuccess?: () => void | null) => {
+    login = (values: LoginType, setIsLoading: (val: boolean) => void) => {
         const options = {
             method: 'POST',
             headers: {
@@ -666,9 +666,6 @@ class mainStore {
             .then((response) => {
                 this.setShowLoginPage(false)
                 this.setIsAuthSuccess(true);
-                if (onSuccess) {
-                    onSuccess();
-                }
             })
             .catch((err) => {
                 toast(err.message, {
