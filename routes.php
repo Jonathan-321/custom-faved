@@ -8,6 +8,7 @@ use Controllers\ItemsCreateController;
 use Controllers\ItemsDeleteController;
 use Controllers\ItemsGetController;
 use Controllers\ItemsUpdateController;
+use Controllers\UrlMetadataController;
 use Controllers\UserUsernameUpdateController;
 use Controllers\TagsController;
 use Controllers\TagsCreateController;
@@ -77,6 +78,11 @@ return [
 			],
 			'bookmarks' => [
 				'POST' => ImportBookmarksController::class,
+			],
+		],
+		'url-metadata' => [
+			'/' => [
+				'GET' => UrlMetadataController::class,
 			],
 		],
 	]

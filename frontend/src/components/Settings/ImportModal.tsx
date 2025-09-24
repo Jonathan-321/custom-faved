@@ -55,20 +55,17 @@ export const ImportModal = ({onSuccess}: { onSuccess?: () => void }) => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="browser" className="flex items-center gap-2">
-              <div className="flex items-center gap-0.5">
-                <IconBrandFirefox className="w-4 h-4"/>
+        <Tabs value={activeTab} onValueChange={handleTabChange}>
+          <TabsList className="h-auto w-full items-stretch">
+            <TabsTrigger value="browser" className="flex flex-wrap">
+              <div className="inline-flex items-center gap-0.5">
                 <IconBrandChrome className="w-4 h-4"/>
-                <IconBrandSafari className="w-4 h-4"/>
-                <IconBrandEdge className="w-4 h-4"/>
               </div>
-              From browser
+              <span>From browser</span>
             </TabsTrigger>
-            <TabsTrigger value="pocket" className="flex items-center gap-2">
+            <TabsTrigger value="pocket" className="flex flex-wrap">
               <IconBrandPocket className="w-4 h-4"/>
-              From Pocket
+              <span>From Pocket</span>
             </TabsTrigger>
           </TabsList>
 
@@ -118,7 +115,13 @@ export const ImportModal = ({onSuccess}: { onSuccess?: () => void }) => {
                 disabled={isLoading}
               />
               <p className="text-muted-foreground text-sm">
-                Select your exported bookmarks file in HTML format. Exports from Chrome, Firefox, Safari, and Edge are
+                Select your exported bookmarks file in HTML format.
+              </p>
+              <p className="text-muted-foreground text-sm">
+                Exports from <IconBrandChrome className="inline w-4 h-4 align-text-top ml-1"/> Chrome,
+                <IconBrandFirefox className=" inline w-4 h-4 align-text-top ml-1"/> Firefox,
+                <IconBrandSafari className=" inline w-4 h-4 align-text-top ml-1"/> Safari,
+                <IconBrandEdge className="inline  w-4 h-4 align-text-top ml-1"/> Edge, and most other browsers are
                 supported.
               </p>
             </div>

@@ -21,6 +21,9 @@ import type { ItemType } from '@/types/types';
 import { useLocation } from 'react-router-dom';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
 import { Image } from 'lucide-react';
+import {IconCloudDownload} from "@tabler/icons-react";
+import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip.tsx";
+
 
 interface EditItemFormProps {
   isCloseWindowOnSubmit: boolean;
@@ -32,7 +35,7 @@ const INITIAL_ITEM_DATA: ItemType = {
   title: "",
   comments: '',
   created_at: undefined,
-  image: undefined,
+  image: '',
   tags: [],
   updated_at: undefined,
   url: ''
@@ -119,6 +122,18 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isCloseWindowOnSubmit }) =>
       form.reset();
     }
   };
+
+  const updateMetadataFromUrl = async(url) => {
+    const data: {data: {title:string, description: string, image_url: string}} = await store.fetchUrlMetadata(url);
+
+    if(!data || !data?.data) {
+      return;
+    }
+
+    form.setValue('title', data.data.title || '')
+    form.setValue('description', data.data.description || '')
+    form.setValue('image', data.data.image_url || '')
+  }
 
   const renderTextField = (name: keyof ItemType, label: string, isDisabled = false) => (
     <FormField
@@ -209,7 +224,40 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isCloseWindowOnSubmit }) =>
                   </div>
 
                   <div className="grid gap-3">
-                    {renderTextField('url', 'URL')}
+                    <FormField
+                      control={form.control}
+                      name="url"
+                      render={({ field }) => {
+                        return (
+                          <FormItem>
+                            <FormLabel>URL</FormLabel>
+                            <FormControl >
+                              <div className='flex flex-row gap-2'>
+                                <Input
+                                  type="text"
+                                  id="name-1"
+                                  value={field.value ?? undefined}
+                                  onChange={(value) => {
+                                    field.onChange(value ?? null);
+                                  }}
+                                />
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Button onClick={() => updateMetadataFromUrl(field.value) } variant="outline">
+                                      <IconCloudDownload  />
+                                    </Button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    Pull title, description and image from the URL.
+                                  </TooltipContent>
+                                </Tooltip>
+                              </div>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        );
+                      }}
+                    />
                   </div>
 
                   <div className="grid gap-3">
