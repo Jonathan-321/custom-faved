@@ -11,7 +11,6 @@ import { Dialog } from "@/components/ui/dialog"
 import { observer } from "mobx-react-lite"
 import { StoreContext } from "@/store/storeContext"
 import { AppSidebar } from "@/components/Sidebar/AppSidebar"
-import { useNavigate } from "react-router-dom"
 import { DataTable } from "../Table/DataTable"
 import { SettingsDialog } from "../Settings/SettingsModal"
 import { TagType } from "@/types/types"
@@ -19,7 +18,6 @@ import Loading from "@/components/Loading"
 
 
 export const Page = observer(() => {
-  const navigate = useNavigate();
   const store = useContext(StoreContext);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -31,12 +29,6 @@ export const Page = observer(() => {
     loadData();
   }, []);
 
-  useEffect(() => {
-    if (store.showLoginPage) {
-      navigate('/login', { replace: true });
-    }
-
-  }, [store.showLoginPage, store.showInitializeDatabasePage, navigate]);
 
   if (isLoading) {
     return <Loading />;
