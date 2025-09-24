@@ -44,7 +44,7 @@ const SetupMiddleware = observer(() => {
 
   // If we are not on the login page, and need to be, redirect to login
   const isLoginPage = location.pathname === '/login';
-  if (store.showLoginPage && !isLoginPage) {
+  if (store.isAuthRequired && !isLoginPage) {
     return <Navigate to="/login" replace state={{ from: location }} />;
   }
 

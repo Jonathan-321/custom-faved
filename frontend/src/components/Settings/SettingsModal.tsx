@@ -56,7 +56,7 @@ export const SettingsDialog = observer(() => {
   const store = React.useContext(StoreContext);
   React.useEffect(() => {
     store.getUser()
-  }, [store.isAuthSuccess])
+  }, [store.user])
   if (!store.isOpenSettingsModal) {
     return <div>{'Loading...'}</div>
   }
@@ -108,7 +108,7 @@ export const SettingsDialog = observer(() => {
               </div>
             </header>
             <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 pt-0 h-full min-h-0">
-              {store.selectedItemSettingsModal === "Authentication settings" && !store.isAuthSuccess
+              {store.selectedItemSettingsModal === "Authentication settings" && !store.user
                 ?
                 <CardsCreateAccount />
                 :

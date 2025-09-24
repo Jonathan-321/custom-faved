@@ -31,7 +31,7 @@ export const LoginForm = observer(({ className, ...props }: React.ComponentProps
 
   // Redirect if user already logged in
   useEffect(() => {
-    if (store.showLoginPage) {
+    if (store.isAuthRequired) {
       return;
     }
 
@@ -39,7 +39,7 @@ export const LoginForm = observer(({ className, ...props }: React.ComponentProps
       ? location.state.from.pathname + location.state?.from?.search
       : '/';
     navigate(redirectUrl, { replace: true });
-  }, [store.showLoginPage])
+  }, [store.isAuthRequired])
 
 
   const form = useForm<z.infer<typeof formSchema>>({

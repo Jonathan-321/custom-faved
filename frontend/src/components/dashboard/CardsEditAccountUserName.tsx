@@ -22,7 +22,7 @@ export const CardsEditAccountUserName = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: store.userName ?? "",
+      username: store.user.username ?? '',
     },
   })
   const onSubmit = (values: z.infer<typeof formSchema>) => {

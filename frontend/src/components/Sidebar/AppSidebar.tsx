@@ -185,7 +185,7 @@ export const AppSidebar = observer(({ allTags, ...props }: AppSidebarProps) => {
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter>
-        {store.userName && <NavUser />}
+        {store.user && <NavUser username={store.user.username} />}
       </SidebarFooter>
     </Sidebar>
   )

@@ -12,7 +12,7 @@ export const SetupAuth = observer(() => {
   const navigate = useNavigate();
   const nextStep = '/setup/bookmarklet'
 
-  if (store.isAuthSuccess) {
+  if (store.user) {
     return <Navigate to={nextStep} replace={true}/>
   }
 

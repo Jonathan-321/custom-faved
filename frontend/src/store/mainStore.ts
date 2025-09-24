@@ -11,12 +11,12 @@ const stylesTost = () => ({
 });
 
 
-const handleResponse = (promise, defaultErrorMessage, setShowLoginPage) => {
+const handleResponse = (promise, defaultErrorMessage, setIsAuthRequired) => {
     return promise
         .then(response => {
             if (!response.ok) {
                 if (response.status === 401) {
-                    setShowLoginPage(true)
+                    setIsAuthRequired(true)
                 }
                 return response.json().then(data => {
                     throw new Error(data.message || `HTTP error! status: ${response.status}`);
@@ -54,9 +54,9 @@ class mainStore {
     items: ItemType[] = [];
     tags: TagsObjectType[] = [];
     type: ActionType = "" as ActionType
-    userName: string = "" as string
+    user: { username: string } | null = null
     idItem: number | undefined = undefined;
-    showLoginPage = false;
+    isAuthRequired = false;
     showInitializeDatabasePage = false;
     error: string | null = null;
     isOpenSettingsModal: boolean = false;
@@ -64,7 +64,6 @@ class mainStore {
     currentPage: number = 1;
     selectedTagId: string | null = '0'; // Default to '0' for no tag selected
     itemsOriginal: ItemType[] = [];
-    isAuthSuccess: boolean = false;
     isShowEditModal: boolean = false;
 
     constructor() {
@@ -76,14 +75,16 @@ class mainStore {
     setCurrentTagId = (val: string | null | number) => {
         this.selectedTagId = val === null ? null : val.toString();
     }
-    setUserName = (val: string) => {
-        this.userName = val
+    setUser = (username: string) => {
+        this.user = {
+            username: username,
+        }
+    }
+    unsetUser = () => {
+        this.user = null
     }
     setIsShowEditModal = (val: boolean) => {
         this.isShowEditModal = val
-    }
-    setIsAuthSuccess = (val: boolean) => {
-        this.isAuthSuccess = val;
     }
     setCurrentPage = (val: number) => {
         this.currentPage = val;
@@ -116,8 +117,8 @@ class mainStore {
         }
         this.tags = tags as unknown as TagsObjectType[];
     };
-    setShowLoginPage = (val: boolean) => {
-        this.showLoginPage = val;
+    setIsAuthRequired = (val: boolean) => {
+        this.isAuthRequired = val;
     };
     fetchTags = async () => {
         try {
@@ -150,7 +151,7 @@ class mainStore {
             })
         };
 
-        await handleResponse(fetch(API_ENDPOINTS.tags.create, options), 'Error creating tag', this.setShowLoginPage)
+        await handleResponse(fetch(API_ENDPOINTS.tags.create, options), 'Error creating tag', this.setIsAuthRequired)
             .then((data) => {
                 tagID = data?.data?.tag_id || null;
             })
@@ -174,7 +175,7 @@ class mainStore {
             },
         };
 
-        handleResponse(fetch(API_ENDPOINTS.tags.deleteTag(tagID), options), 'Error deleting tag', this.setShowLoginPage)
+        handleResponse(fetch(API_ENDPOINTS.tags.deleteTag(tagID), options), 'Error deleting tag', this.setIsAuthRequired)
             .finally(() => {
                 this.fetchTags()
                 this.fetchItems()
@@ -193,7 +194,7 @@ class mainStore {
             })
         };
 
-        handleResponse(fetch(API_ENDPOINTS.tags.updateTitle(tagID), options), 'Error updating tag title', this.setShowLoginPage)
+        handleResponse(fetch(API_ENDPOINTS.tags.updateTitle(tagID), options), 'Error updating tag title', this.setIsAuthRequired)
             .finally(() => {
                 this.fetchTags()
             })
@@ -214,7 +215,7 @@ class mainStore {
         handleResponse(
             fetch(API_ENDPOINTS.tags.updateColor(tagID), options),
             'Error updating tag color',
-            this.setShowLoginPage
+            this.setIsAuthRequired
         )
             .finally(() => {
                 const tag = { ...this.tags[tagID as unknown as number], color }
@@ -236,7 +237,7 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.setShowLoginPage(true)
+                        this.setIsAuthRequired(true)
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -281,7 +282,7 @@ class mainStore {
                 const response = await fetch(API_ENDPOINTS.items.list, options);
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.setShowLoginPage(true)
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
                         this.setIsshowInitializeDatabasePage(true)
@@ -302,7 +303,7 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.setShowLoginPage(true)
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
                         this.setIsshowInitializeDatabasePage(true)
@@ -315,7 +316,7 @@ class mainStore {
             })
             .then(async ({ data }) => {
                 if (data.user !== null) {
-                    this.setUserName(data.user.username);
+                    this.setUser(data.user.username);
                 }
                 await fetchItems();
             })
@@ -338,7 +339,7 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.setShowLoginPage(true)
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
                         this.setIsshowInitializeDatabasePage(true)
@@ -377,7 +378,7 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.setShowLoginPage(true)
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
                         this.setIsshowInitializeDatabasePage(true)
@@ -424,7 +425,7 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.setShowLoginPage(true)
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
                         this.setIsshowInitializeDatabasePage(true)
@@ -436,21 +437,17 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                if (response.message === "User created successfully." || response.message === "User retrieved successfully.") {
-                    this.setIsAuthSuccess(true)
-                }
                 if (response.data.user !== null) {
-                    this.setUserName(response.data.user.username);
-
+                    this.setUser(response.data.user.username);
+                    return true;
                 }
-                return true
+                return false;
             })
             .catch(err => {
                 if (!noErrorEmit) {
                     toast(err.message, { position: 'top-center', style: stylesTost() })
                 }
-                this.setIsAuthSuccess(false)
-                return false
+                return false;
             })
 
     }
@@ -472,7 +469,7 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.setShowLoginPage(true)
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
                         this.setIsshowInitializeDatabasePage(true)
@@ -484,8 +481,7 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                this.setIsAuthSuccess(true)
-                this.setUserName(val.username);
+                this.setUser(val.username);
 
                 toast.success(response.message, { position: 'top-center', style: stylesTost() })
                 return true
@@ -514,7 +510,7 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.setShowLoginPage(true)
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
                         this.setIsshowInitializeDatabasePage(true)
@@ -527,7 +523,7 @@ class mainStore {
             })
             .then((response) => {
                 toast(response.message, { position: 'top-center', style: stylesTost() })
-                this.setUserName(val.username);
+                this.setUser(val.username);
 
             })
             .catch((err) => {
@@ -551,7 +547,7 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.setShowLoginPage(true)
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
                         this.setIsshowInitializeDatabasePage(true)
@@ -583,7 +579,7 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.setShowLoginPage(true)
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
                         this.setIsshowInitializeDatabasePage(true)
@@ -596,8 +592,7 @@ class mainStore {
             })
             .then((response) => {
                 toast(response.message, { position: 'top-center', style: stylesTost() })
-                this.setIsAuthSuccess(false)
-                this.setUserName('');
+                this.unsetUser();
             })
             .catch((err) => {
                 toast(err.message, { position: 'top-center', style: stylesTost() })
@@ -616,7 +611,7 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.setShowLoginPage(true)
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
                         this.setIsshowInitializeDatabasePage(true)
@@ -629,7 +624,7 @@ class mainStore {
             })
             .then((response) => {
                 toast(response.message, { position: 'top-center', style: stylesTost() })
-                this.setShowLoginPage(true);
+                this.setIsAuthRequired(true);
             })
             .catch((err) => {
                 toast(err.message, { position: 'top-center', style: stylesTost() })
@@ -652,7 +647,7 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.setShowLoginPage(true)
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
                         this.setIsshowInitializeDatabasePage(true)
@@ -664,8 +659,7 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                this.setShowLoginPage(false)
-                this.setIsAuthSuccess(true);
+                this.setIsAuthRequired(false)
             })
             .catch((err) => {
                 toast(err.message, {
@@ -687,7 +681,7 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.setShowLoginPage(true)
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
                         this.setIsshowInitializeDatabasePage(true)
@@ -702,7 +696,7 @@ class mainStore {
                 toast.success(response.message, {
                     position: 'top-center', style: stylesTost()
                 })
-                this.setShowLoginPage(false)
+                this.setIsAuthRequired(false)
                 this.setIsshowInitializeDatabasePage(false)
                 return true
             })
@@ -736,7 +730,7 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.setShowLoginPage(true)
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
                         this.setIsshowInitializeDatabasePage(true)

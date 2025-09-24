@@ -29,7 +29,7 @@ export function CardsEditAccountPassword() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: store.userName ?? "",
+      username: store.user?.username ?? '',
       password: '',
       passwordConfirm: "",
     },
