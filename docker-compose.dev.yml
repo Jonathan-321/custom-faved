@@ -5,8 +5,9 @@ services:
     restart: always
     working_dir: /var/www/html
     volumes:
-      - .:/var/www/html
-      - ./apache-conf:/etc/apache2/sites-enabled
+      - .:/var/www/html:delegated
+      - ./apache-conf:/etc/apache2/sites-enabled:delegated
+      - ./certbot-conf:/etc/letsencrypt:delegated
     ports:
       - "${BACKEND_PORT:-8000}:80"
   node:

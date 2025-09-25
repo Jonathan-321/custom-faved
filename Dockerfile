@@ -3,8 +3,10 @@ FROM php:8.4-apache
 # Install system dependencies
 RUN apt-get update && \
     apt-get install -y libzip-dev && \
-    docker-php-ext-install zip
+    docker-php-ext-install zip && \
+    apt-get install -y certbot python3-certbot-apache
 
-RUN a2enmod rewrite
+RUN a2enmod rewrite && \
+    a2enmod ssl
 
 WORKDIR /var/www/html
