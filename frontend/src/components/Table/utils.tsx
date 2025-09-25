@@ -1,5 +1,5 @@
 import React from "react"
-import { StoreContext } from "@/store/storeContext"
+import {StoreContext} from "@/store/storeContext"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,14 +7,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { z } from "zod"
-import { type ColumnDef } from "@tanstack/react-table"
-import { IconDotsVertical } from "@tabler/icons-react"
-import { Badge } from "../ui/badge"
-import { colorMap } from "@/lib/utils.ts"
-import { observer } from "mobx-react-lite"
-import { ActionType } from "../dashboard/types"
-import { Button } from "@/components/ui/button"
+import {z} from "zod"
+import {type ColumnDef} from "@tanstack/react-table"
+import {IconDotsVertical} from "@tabler/icons-react"
+import {Badge} from "../ui/badge"
+import {colorMap} from "@/lib/utils.ts"
+import {observer} from "mobx-react-lite"
+import {ActionType} from "../dashboard/types"
+import {Button} from "@/components/ui/button"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -50,7 +50,7 @@ const getColorClass = (color?: string): string => {
   return colorMap[color] || colorMap.gray || "bg-gray-500"
 }
 
-const TagBadge = observer(({ tagID }: { tagID: number }) => {
+const TagBadge = observer(({tagID}: { tagID: number }) => {
   const [isHovered, setIsHovered] = React.useState(false)
   const store = React.useContext(StoreContext)
   const safeTagList = store.tags || {}
@@ -81,24 +81,25 @@ const TagBadge = observer(({ tagID }: { tagID: number }) => {
   )
 })
 
-const UrlCellContent = observer(({ item }: { item: z.infer<typeof schema> }) => {
-  const { url, title, tags, updated_at, created_at } = item
+const UrlCellContent = observer(({item}: { item: z.infer<typeof schema> }) => {
+  const {url, title, tags, updated_at, created_at} = item
 
   return (
     <div className="flex flex-col items-start w-full text-left wrap-anywhere gap-2">
       {title &&
-        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight line-clamp-3" title={title}>
-          {title}
-        </h4>
+          <h4 className="scroll-m-20 text-xl font-semibold tracking-tight line-clamp-3" title={title}>
+            {title}
+          </h4>
       }
       {url &&
-        <a className="text-custom-blue underline line-clamp-3 break-all" href={url} target="_blank" rel="noopener noreferrer">
-          {url}
-        </a>
+          <a className="text-custom-blue underline line-clamp-3 break-all" href={url} target="_blank"
+             rel="noopener noreferrer">
+            {url}
+          </a>
       }
       {tags && <div className="text-left w-full py-2 leading-6.5">
         {tags.map((tagID) => (
-          <TagBadge key={tagID} tagID={tagID} />
+          <TagBadge key={tagID} tagID={tagID}/>
         ))}
       </div>}
       <div className="text-muted-foreground text-sm mt-auto">
@@ -108,15 +109,15 @@ const UrlCellContent = observer(({ item }: { item: z.infer<typeof schema> }) => 
   )
 })
 
-const DescriptionCellContent = ({ item }: { item: z.infer<typeof schema> }) => {
-  const { comments, image, description } = item
+const DescriptionCellContent = ({item}: { item: z.infer<typeof schema> }) => {
+  const {comments, image, description} = item
 
   return (
     <div className="flex flex-col items-start text-start w-full flex-wrap">
       {image &&
-        <a href={image} target="_blank" rel="noopener noreferrer">
-          <img className="w-auto h-auto max-h-[200px] rounded-sm" src={image} alt="Preview" />
-        </a>
+          <a href={image} target="_blank" rel="noopener noreferrer">
+              <img className="w-auto h-auto max-h-[200px] rounded-sm" src={image} alt="Preview"/>
+          </a>
       }
       {description && (<p className="leading-7 [&:not(:first-child)]:mt-6 whitespace-pre-line">
         {description}
@@ -126,7 +127,7 @@ const DescriptionCellContent = ({ item }: { item: z.infer<typeof schema> }) => {
   )
 }
 
-const ActionsCell = observer(({ row, }: { row: any }) => {
+const ActionsCell = observer(({row,}: { row: any }) => {
   const store = React.useContext(StoreContext)
   const handleEdit = () => {
     store.setType(ActionType.EDIT)
@@ -150,14 +151,14 @@ const ActionsCell = observer(({ row, }: { row: any }) => {
           className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
           size="icon"
         >
-          <IconDotsVertical />
+          <IconDotsVertical/>
           <span className="sr-only">Open menu</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-32">
         <DropdownMenuItem onClick={handleEdit}>Edit</DropdownMenuItem>
         <DropdownMenuItem onClick={handleMakeCopy}>Make a copy</DropdownMenuItem>
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator/>
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <div
@@ -195,14 +196,14 @@ export const createColumns = (): ColumnDef<z.infer<typeof schema>>[] => [
     header: 'url',
     enableSorting: true,
     enableHiding: false,
-    cell: ({ row }) => <UrlCellContent item={row.original} />,
+    cell: ({row}) => <UrlCellContent item={row.original}/>,
   },
   {
     accessorKey: "description",
     header: 'description',
     enableSorting: true,
     enableHiding: false,
-    cell: ({ row }) => <DescriptionCellContent item={row.original} />,
+    cell: ({row}) => <DescriptionCellContent item={row.original}/>,
   },
   {
     accessorKey: "title",
@@ -228,7 +229,7 @@ export const createColumns = (): ColumnDef<z.infer<typeof schema>>[] => [
     header: "",
     accessorKey: "id",
     enableHiding: false,
-    cell: ({ row }) => (
+    cell: ({row}) => (
       <ActionsCell
         row={row}
       />
