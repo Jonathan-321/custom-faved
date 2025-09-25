@@ -101,7 +101,7 @@ export const CardView: React.FC<{ el: any }> = observer(({ el }) => {
                     >
                         {el.url}
                     </a>)}
-                    {el.tags && (<div className="flex-start text-left w-full flex-wrap py-2">
+                    {el.tags && (<div className="text-left w-full py-2 leading-6.5">
                         {el.tags.map((tagID, index) => (
                             <TagBadge key={index} tagID={tagID} />
                         ))}
@@ -118,7 +118,7 @@ export const CardView: React.FC<{ el: any }> = observer(({ el }) => {
                     </CardDescription>)}
                 </div>
             </CardHeader>
-            <CardFooter className="pt-3">
+            <CardFooter className="pt-3 text-left">
                 <div>
                     <p className="text-muted-foreground text-sm"><small className="text-sm leading-none font-medium">Created at:</small> {el.updated_at ?? el.created_at}</p>
                 </div>

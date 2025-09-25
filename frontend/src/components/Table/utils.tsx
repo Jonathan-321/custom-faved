@@ -70,12 +70,12 @@ const TagBadge = observer(({ tagID }: { tagID: number }) => {
     <Badge
       key={tagID}
       variant={'secondary'}
-      className="mr-2 mb-2 cursor-pointer"
+      className="mr-2 cursor-pointer"
       onClick={setTag}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <span className={`w-3 h-3 rounded-full inline-block mr-1 ${colorClass}`}></span>
+      <span className={`w-3 h-3 rounded-full inline-block align-[-2px] mr-2 ${colorClass}`}></span>
       <span>{isHovered ? fullPath : tagName}</span>
     </Badge>
   )
@@ -96,7 +96,7 @@ const UrlCellContent = observer(({ item }: { item: z.infer<typeof schema> }) => 
           {url}
         </a>
       }
-      {tags && <div className="flex-start text-left w-full flex-wrap py-2">
+      {tags && <div className="text-left w-full py-2 leading-6.5">
         {tags.map((tagID) => (
           <TagBadge key={tagID} tagID={tagID} />
         ))}
