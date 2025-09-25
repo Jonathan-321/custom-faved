@@ -21,7 +21,7 @@ import type { ItemType } from '@/types/types';
 import { useLocation } from 'react-router-dom';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
 import { Image } from 'lucide-react';
-import {IconCloudDownload} from "@tabler/icons-react";
+import {IconCloudDownload, IconProgress} from "@tabler/icons-react";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip.tsx";
 
 
@@ -53,6 +53,7 @@ const safeDecodeURIComponent = (encodedURI: string): string => {
 const EditItemForm: React.FC<EditItemFormProps> = ({ isCloseWindowOnSubmit }) => {
   const store = useContext(StoreContext);
   const location = useLocation();
+  const [isMetadataLoading, setIsMetadataLoading] = React.useState(false);
 
   const currentItem = useMemo(() => {
     if (store.type === ActionType.EDIT && store.items.length > 0) {
@@ -124,6 +125,7 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isCloseWindowOnSubmit }) =>
   };
 
   const updateMetadataFromUrl = async(url) => {
+    setIsMetadataLoading(true);
     const data: {data: {title:string, description: string, image_url: string}} = await store.fetchUrlMetadata(url);
 
     if(!data || !data?.data) {
@@ -133,6 +135,8 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isCloseWindowOnSubmit }) =>
     form.setValue('title', data.data.title || '')
     form.setValue('description', data.data.description || '')
     form.setValue('image', data.data.image_url || '')
+
+    setIsMetadataLoading(false);
   }
 
   const renderTextField = (name: keyof ItemType, label: string, isDisabled = false) => (
@@ -243,8 +247,10 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isCloseWindowOnSubmit }) =>
                                 />
                                 <Tooltip>
                                   <TooltipTrigger asChild>
-                                    <Button onClick={() => updateMetadataFromUrl(field.value) } variant="outline">
-                                      <IconCloudDownload  />
+                                    <Button onClick={() => updateMetadataFromUrl(field.value) } variant="outline" disabled={isMetadataLoading}>
+                                      {isMetadataLoading ?
+                                        <IconProgress className="animate-spin" />
+                                        : <IconCloudDownload  />}
                                     </Button>
                                   </TooltipTrigger>
                                   <TooltipContent>
