@@ -56,7 +56,7 @@ export const SettingsDialog = observer(() => {
   const store = React.useContext(StoreContext);
   React.useEffect(() => {
     store.getUser()
-  }, [store.user])
+  }, [])
   if (!store.isOpenSettingsModal) {
     return <div>{'Loading...'}</div>
   }
