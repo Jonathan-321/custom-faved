@@ -29,7 +29,7 @@ export function CardsEditAccountPassword() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: store.userName ?? "",
+      username: store.user?.username ?? '',
       password: '',
       passwordConfirm: "",
     },
@@ -47,7 +47,6 @@ export function CardsEditAccountPassword() {
             <CardTitle className="text-lg">Change Password</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            {/* Скрытое поле для имени пользователя - обязательно для accessibility */}
             <FormField
               control={form.control}
               name="username"

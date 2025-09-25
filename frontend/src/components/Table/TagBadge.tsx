@@ -34,20 +34,15 @@ export const TagBadge: React.FC<{ tagID: number }> = observer(({ tagID }) => {
     return (
         <Badge
             variant={'secondary'}
-            className="mr-2 mb-2 cursor-pointer relative"
+            className="mr-2 cursor-pointer"
             onClick={setTag}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
             <span
-                className={`w-3 h-3 rounded-full inline-block mr-1 ${colorClass}`}
+                className={`w-3 h-3 rounded-full inline-block align-[-2px] mr-2 ${colorClass}`}
             ></span>
             <span>{isHovered ? fullPath : tagName}</span>
-            {isHovered && (
-                <div className="absolute top-full left-0 mt-1 p-2 bg-gray-800 text-white text-xs rounded z-10">
-                    {fullPath}
-                </div>
-            )}
         </Badge>
     );
 });

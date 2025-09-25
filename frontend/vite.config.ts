@@ -13,16 +13,14 @@ export default defineConfig({
       "@assets": path.resolve(__dirname, "./src/assets"),
       "@api": path.resolve(__dirname, "./src/api"),
       "@utils": path.resolve(__dirname, "./src/utils"),
-      // "@redux": path.resolve(__dirname, "./src/redux"),
     },
   },
   server: {
-    // port: 8001,
     proxy: {
       '/api': {
         target: 'http://host.docker.internal:' + (process.env.BACKEND_PORT || '8000'),
         changeOrigin: true,
       },
     }
-  }
+  },
 })

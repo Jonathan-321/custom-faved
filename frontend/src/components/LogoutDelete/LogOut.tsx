@@ -16,7 +16,7 @@ export const LogOutModal = observer(() => {
         <PopoverContent className="w-50">
             <div className="grid gap-4">
                 <div className="space-y-2">
-                    <h4 className="leading-none font-medium">{store.userName}</h4>
+                    <h4 className="leading-none font-medium">{store.user?.username}</h4>
                 </div>
                 <div className="grid gap-2">
                     <div className="flex justify-end">

@@ -3,20 +3,20 @@ import { toast } from 'sonner';
 import { API_ENDPOINTS } from './api';
 import { ActionType } from '@/components/dashboard/types';
 import type { LoginType, PasswordType, UsernameType, UsetType, ItemType, TagsObjectType, TagType } from '@/types/types';
-import { NavigateFunction } from 'react-router-dom';
 
-export const stylesTost = {
-    width: "320px",
+const stylesTost = () => ({
+    width: 320,
     left: '50%',
     transform: 'translateX(-50%)'
-}
+});
 
-const handleResponse = (promise, defaultErrorMessage, setShowLoginPage) => {
+
+const handleResponse = (promise, defaultErrorMessage, setIsAuthRequired) => {
     return promise
         .then(response => {
             if (!response.ok) {
                 if (response.status === 401) {
-                    setShowLoginPage(true)
+                    setIsAuthRequired(true)
                 }
                 return response.json().then(data => {
                     throw new Error(data.message || `HTTP error! status: ${response.status}`);
@@ -25,11 +25,11 @@ const handleResponse = (promise, defaultErrorMessage, setShowLoginPage) => {
             return response.json();
         })
         .then((data) => {
-            toast(data.message, { position: 'top-center', style: stylesTost });
+            toast(data.message, { position: 'top-center', style: stylesTost() });
             return data
         })
         .catch((err, data) => {
-            toast.error((err instanceof Error ? err.message : defaultErrorMessage), { position: 'top-center', style: stylesTost })
+            toast.error((err instanceof Error ? err.message : defaultErrorMessage), { position: 'top-center', style: stylesTost() })
             return null
         })
 };
@@ -55,9 +55,9 @@ class mainStore {
     items: ItemType[] = [];
     tags: TagsObjectType[] = [];
     type: ActionType = "" as ActionType
-    userName: string = "" as string
+    user: { username: string } | null = null
     idItem: number | undefined = undefined;
-    showLoginPage = false;
+    isAuthRequired = false;
     showInitializeDatabasePage = false;
     error: string | null = null;
     isOpenSettingsModal: boolean = false;
@@ -65,25 +65,27 @@ class mainStore {
     currentPage: number = 1;
     selectedTagId: string | null = '0'; // Default to '0' for no tag selected
     itemsOriginal: ItemType[] = [];
-    isTableView: boolean = false;
-    isAuthSuccess: boolean = false;
-
-
+    isShowEditModal: boolean = false;
 
     constructor() {
         makeAutoObservable(this); // Makes state observable and actions transactional
     }
+    setIsshowInitializeDatabasePage = (val: boolean) => {
+        this.showInitializeDatabasePage = val;
+    }
     setCurrentTagId = (val: string | null | number) => {
         this.selectedTagId = val === null ? null : val.toString();
     }
-    setUserName = (val: string) => {
-        this.userName = val
+    setUser = (username: string) => {
+        this.user = {
+            username: username,
+        }
     }
-    setIsAuthSuccess = (val: boolean) => {
-        this.isAuthSuccess = val;
+    unsetUser = () => {
+        this.user = null
     }
-    setIsTableView = (val: boolean) => {
-        this.isTableView = val;
+    setIsShowEditModal = (val: boolean) => {
+        this.isShowEditModal = val
     }
     setCurrentPage = (val: number) => {
         this.currentPage = val;
@@ -116,8 +118,8 @@ class mainStore {
         }
         this.tags = tags as unknown as TagsObjectType[];
     };
-    setShowLoginPage = (val: boolean) => {
-        this.showLoginPage = val;
+    setIsAuthRequired = (val: boolean) => {
+        this.isAuthRequired = val;
     };
     fetchTags = async () => {
         try {
@@ -133,7 +135,7 @@ class mainStore {
             const data = await response.json();
             this.setTags(data);
         } catch (err) {
-            toast.error('Error fetching tags', { position: 'top-center', style: stylesTost })
+            toast.error('Error fetching tags', { position: 'top-center', style: stylesTost() })
         }
     }
     onCreateTag = async (title: string) => {
@@ -150,7 +152,7 @@ class mainStore {
             })
         };
 
-        await handleResponse(fetch(API_ENDPOINTS.tags.create, options), 'Error creating tag', this.setShowLoginPage)
+        await handleResponse(fetch(API_ENDPOINTS.tags.create, options), 'Error creating tag', this.setIsAuthRequired)
             .then((data) => {
                 tagID = data?.data?.tag_id || null;
             })
@@ -174,7 +176,7 @@ class mainStore {
             },
         };
 
-        handleResponse(fetch(API_ENDPOINTS.tags.deleteTag(tagID), options), 'Error deleting tag', this.setShowLoginPage)
+        handleResponse(fetch(API_ENDPOINTS.tags.deleteTag(tagID), options), 'Error deleting tag', this.setIsAuthRequired)
             .finally(() => {
                 this.fetchTags()
                 this.fetchItems()
@@ -193,7 +195,7 @@ class mainStore {
             })
         };
 
-        handleResponse(fetch(API_ENDPOINTS.tags.updateTitle(tagID), options), 'Error updating tag title', this.setShowLoginPage)
+        handleResponse(fetch(API_ENDPOINTS.tags.updateTitle(tagID), options), 'Error updating tag title', this.setIsAuthRequired)
             .finally(() => {
                 this.fetchTags()
             })
@@ -214,7 +216,7 @@ class mainStore {
         handleResponse(
             fetch(API_ENDPOINTS.tags.updateColor(tagID), options),
             'Error updating tag color',
-            this.setShowLoginPage
+            this.setIsAuthRequired
         )
             .finally(() => {
                 const tag = { ...this.tags[tagID as unknown as number], color }
@@ -236,13 +238,13 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true
+                        this.setIsAuthRequired(true)
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 return response.json();
             })
-            .then((data) => toast(data.message, { position: 'top-center', style: stylesTost }))
+            .then((data) => toast(data.message, { position: 'top-center', style: stylesTost() }))
             .catch(err => console.error(err))
             .finally(() => {
                 const tag = { ...this.tags[tagID as unknown as number], pinned }
@@ -281,10 +283,10 @@ class mainStore {
                 const response = await fetch(API_ENDPOINTS.items.list, options);
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -293,7 +295,7 @@ class mainStore {
                 this.setItemsOriginal(data)
             } catch (err) {
                 this.error = (err instanceof Error ? err.message : 'Failed to fetch items');
-                toast(err.message, { position: 'top-center', style: stylesTost })
+                toast(err.message, { position: 'top-center', style: stylesTost() })
             }
         };
 
@@ -302,10 +304,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -313,14 +315,14 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then(async({ data }) => {
+            .then(async ({ data }) => {
                 if (data.user !== null) {
-                    this.setUserName(data.user.username);
+                    this.setUser(data.user.username);
                 }
                 await fetchItems();
             })
             .catch(err => {
-                toast(err.message, { position: 'top-center', style: stylesTost })
+                toast(err.message, { position: 'top-center', style: stylesTost() })
 
             })
 
@@ -338,10 +340,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -349,14 +351,14 @@ class mainStore {
                 }
                 return response.json();
             })
-            .then((response) => toast(response.message, { position: 'top-center', style: stylesTost }))
-            .catch(err => toast(err.message, { position: 'top-center', style: stylesTost }))
+            .then((response) => toast(response.message, { position: 'top-center', style: stylesTost() }))
+            .catch(err => toast(err.message, { position: 'top-center', style: stylesTost() }))
             .finally(() => {
                 this.fetchItems()
                 this.fetchTags()
             })
     }
-    onCreateItem = (val: ItemType, isCreateCopy = false as boolean, onSave = false, closeWindow = false) => {
+    onCreateItem = (val: ItemType, isCreateCopy = false as boolean, onSave = false, closeWindow = null) => {
         const options = {
             method: onSave ? 'PATCH' : !isCreateCopy ? this.type === ActionType.EDIT ? 'PATCH' : 'POST' : 'POST',
             headers: {
@@ -377,10 +379,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -398,10 +400,10 @@ class mainStore {
                     }, 1000);
                 }
 
-                toast(message, { position: 'top-center', style: stylesTost })
+                toast(message, { position: 'top-center', style: stylesTost() })
 
             })
-            .catch(err => toast(err.message, { position: 'top-center', style: stylesTost }))
+            .catch(err => toast(err.message, { position: 'top-center', style: stylesTost() }))
             .finally(() => {
                 if (!onSave) {
                     this.fetchItems()
@@ -411,7 +413,7 @@ class mainStore {
 
             })
     }
-    getUser = async(noErrorEmit = false) => {
+    getUser = async (noErrorEmit = false) => {
         const options = {
             method: 'GET',
             headers: {
@@ -424,10 +426,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -436,21 +438,17 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                if (response.message === "User created successfully." || response.message === "User retrieved successfully.") {
-                    this.setIsAuthSuccess(true)
-                }
                 if (response.data.user !== null) {
-                    this.setUserName(response.data.user.username);
-
+                    this.setUser(response.data.user.username);
+                    return true;
                 }
-                return true
+                return false;
             })
             .catch(err => {
                 if (!noErrorEmit) {
-                    toast(err.message, { position: 'top-center', style: stylesTost })
+                    toast(err.message, { position: 'top-center', style: stylesTost() })
                 }
-                this.setIsAuthSuccess(false)
-                return false
+                return false;
             })
 
     }
@@ -472,10 +470,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -484,14 +482,13 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                this.setIsAuthSuccess(true)
-                this.setUserName(val.username);
+                this.setUser(val.username);
 
-                toast.success(response.message, { position: 'top-center', style: stylesTost })
+                toast.success(response.message, { position: 'top-center', style: stylesTost() })
                 return true
             })
             .catch((err) => {
-                toast.error(err.message, { position: 'top-center', style: stylesTost })
+                toast.error(err.message, { position: 'top-center', style: stylesTost() })
                 return false
             })
 
@@ -514,10 +511,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -526,12 +523,12 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                toast(response.message, { position: 'top-center', style: stylesTost })
-                this.setUserName(val.username);
+                toast(response.message, { position: 'top-center', style: stylesTost() })
+                this.setUser(val.username);
 
             })
             .catch((err) => {
-                toast(err.message, { position: 'top-center', style: stylesTost })
+                toast(err.message, { position: 'top-center', style: stylesTost() })
             })
     }
     createPassword = (val: PasswordType, reset: any) => {
@@ -551,10 +548,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -563,11 +560,11 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                toast(response.message, { position: 'top-center', style: stylesTost })
+                toast(response.message, { position: 'top-center', style: stylesTost() })
                 reset()
             })
             .catch((err) => {
-                toast(err.message, { position: 'top-center', style: stylesTost })
+                toast(err.message, { position: 'top-center', style: stylesTost() })
             })
     }
     deleteUser = () => {
@@ -583,10 +580,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -595,11 +592,11 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                toast(response.message, { position: 'top-center', style: stylesTost })
-                this.setIsAuthSuccess(false)
+                toast(response.message, { position: 'top-center', style: stylesTost() })
+                this.unsetUser();
             })
             .catch((err) => {
-                toast(err.message, { position: 'top-center', style: stylesTost })
+                toast(err.message, { position: 'top-center', style: stylesTost() })
             })
     }
     logOut = () => {
@@ -615,10 +612,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -627,11 +624,11 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                toast(response.message, { position: 'top-center', style: stylesTost })
-                this.setShowLoginPage(true);
+                toast(response.message, { position: 'top-center', style: stylesTost() })
+                this.setIsAuthRequired(true);
             })
             .catch((err) => {
-                toast(err.message, { position: 'top-center', style: stylesTost })
+                toast(err.message, { position: 'top-center', style: stylesTost() })
             })
     }
     login = (values: LoginType, setIsLoading: (val: boolean) => void) => {
@@ -651,10 +648,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -663,14 +660,11 @@ class mainStore {
                 return response.json();
             })
             .then((response) => {
-                // toast(response.message, {
-                //     position: 'top-center', style: stylesTost
-                // })
-                this.showLoginPage = false
+                this.setIsAuthRequired(false)
             })
             .catch((err) => {
                 toast(err.message, {
-                    position: 'top-center', style: stylesTost
+                    position: 'top-center', style: stylesTost()
                 })
             })
             .finally(() => { setIsLoading(false) })
@@ -688,10 +682,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -701,15 +695,15 @@ class mainStore {
             })
             .then((response) => {
                 toast.success(response.message, {
-                    position: 'top-center', style: stylesTost
+                    position: 'top-center', style: stylesTost()
                 })
-                this.showLoginPage = false
-                this.showInitializeDatabasePage = false
+                this.setIsAuthRequired(false)
+                this.setIsshowInitializeDatabasePage(false)
                 return true
             })
             .catch((err) => {
                 toast.error(err.message, {
-                    position: 'top-center', style: stylesTost
+                    position: 'top-center', style: stylesTost()
                 })
                 return false
             })
@@ -718,10 +712,10 @@ class mainStore {
         return this.importBookmarks(selectedFile, setIsLoading, 'pocket-zip', API_ENDPOINTS.importBookmarks.pocket)
     }
 
-    importBrowserBookmarks = async(selectedFile: File, setIsLoading: (val: boolean) => void) => {
+    importBrowserBookmarks = async (selectedFile: File, setIsLoading: (val: boolean) => void) => {
         return this.importBookmarks(selectedFile, setIsLoading, 'browser-html', API_ENDPOINTS.importBookmarks.browser)
     }
-    importBookmarks = async(selectedFile: File, setIsLoading: (val: boolean) => void, inputName: string, endpointUrl: string) => {
+    importBookmarks = async (selectedFile: File, setIsLoading: (val: boolean) => void, inputName: string, endpointUrl: string) => {
         const formData = new FormData();
         formData.append(inputName, selectedFile);
         const options = {
@@ -737,10 +731,10 @@ class mainStore {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 401) {
-                        this.showLoginPage = true;
+                        this.setIsAuthRequired(true)
                     }
                     if (response.status === 424) {
-                        this.showInitializeDatabasePage = true;
+                        this.setIsshowInitializeDatabasePage(true)
                     }
                     return response.headers.get('Content-Type')?.includes('application/json')
                         ? response.json().then(json => Promise.reject(json))
@@ -752,11 +746,11 @@ class mainStore {
                 this.isOpenSettingsModal = false;
                 this.fetchItems();
                 this.fetchTags();
-                toast.success(response.message, { position: 'top-center', style: stylesTost });
+                toast.success(response.message, { position: 'top-center', style: stylesTost() });
                 return true;
             })
             .catch((err) => {
-                toast.error(err.message, { position: 'top-center', style: stylesTost });
+                toast.error(err.message, { position: 'top-center', style: stylesTost() });
                 return false;
             })
             .finally(() => setIsLoading(false))
@@ -775,7 +769,7 @@ class mainStore {
         return handleResponse(
           fetch(API_ENDPOINTS.urlMetdata.fetch(url), options),
           'Error fetching metadata from URL',
-          this.setShowLoginPage
+          this.setIsAuthRequired
         )
     }
 }

@@ -22,13 +22,12 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { User } from "lucide-react"
-import { observer } from "mobx-react-lite"
 import { StoreContext } from "@/store/storeContext"
 import { useContext } from "react"
 
-export const NavUser = observer(() => {
+export const NavUser = ({username}: {username: string} ) => {
   const store = useContext(StoreContext);
-  const { isMobile } = useSidebar()
+  const {isMobile} = useSidebar()
 
   return (
     <SidebarMenu>
@@ -40,14 +39,14 @@ export const NavUser = observer(() => {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg grayscale">
-                <AvatarImage alt={store.userName} />
-                <AvatarFallback className="rounded-lg"><User /></AvatarFallback>
+                <AvatarImage alt={username}/>
+                <AvatarFallback className="rounded-lg"><User/></AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{store.userName}</span>
+                <span className="truncate font-medium">{username}</span>
 
               </div>
-              <IconDotsVertical className="ml-auto size-4" />
+              <IconDotsVertical className="ml-auto size-4"/>
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -60,19 +59,19 @@ export const NavUser = observer(() => {
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarFallback className="rounded-lg">
-                    <User />
+                    <User/>
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{store.userName}</span>
+                  <span className="truncate font-medium">{username}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator/>
             <DropdownMenuItem onClick={() => {
               store.logOut()
             }}>
-              <IconLogout />
+              <IconLogout/>
               Log out
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -81,4 +80,3 @@ export const NavUser = observer(() => {
     </SidebarMenu>
   )
 }
-)

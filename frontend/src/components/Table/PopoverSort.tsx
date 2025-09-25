@@ -11,12 +11,12 @@ import { useState } from "react"
 
 const formatDateFieldName = (fieldName) => {
     if (fieldName === 'created_at' || fieldName === 'updated_at') {
-        return fieldName.charAt().toUpperCase() + fieldName.slice(1).replace('_', ' ').toLowerCase();
+        return fieldName.charAt(0).toUpperCase() + fieldName.slice(1).replace('_', ' ').toLowerCase();
     }
     if (!fieldName) {
         return "";
     }
-    return fieldName.charAt().toUpperCase() + fieldName.slice(1).toLowerCase();
+    return fieldName.charAt(0).toUpperCase() + fieldName.slice(1).toLowerCase();
 }
 
 export const PopoverSort: React.FC<{
@@ -24,13 +24,20 @@ export const PopoverSort: React.FC<{
     handleSortChange: any;
     sortableColumns: any;
 }> = observer(({ selectedSortColumn, handleSortChange, sortableColumns }) => {
-    const [sortDirection, setSortDirection] = useState<string>()
+    const [sortDirection, setSortDirection] = useState<string>("asc"); // Устанавливаем начальное значение
+
+    const handleDirectionChange = (e) => {
+        const newDirection = e === "ASC" ? "asc" : "desc";
+        setSortDirection(newDirection); // Сначала обновляем состояние
+        handleSortChange(selectedSortColumn, newDirection); // Затем вызываем handleSortChange
+    };
+
     return (
         <div>
             <PopoverTrigger asChild>
                 <Button className="" variant="outline"><ArrowDownUp /></Button>
             </PopoverTrigger>
-            <PopoverContent className=" flex flex-row flex-nowrap w-[320px] justify-between items-center" >
+            <PopoverContent className="flex flex-row flex-nowrap w-[320px] justify-between items-center" >
                 <Select
                     value={selectedSortColumn || ""}
                     onValueChange={(e) => { handleSortChange(e, sortDirection) }}
@@ -50,15 +57,10 @@ export const PopoverSort: React.FC<{
 
                 </Select>
                 <div >
-                    {selectedSortColumn
-                        &&
+                    {selectedSortColumn && (
                         <Select
-                            defaultValue="ASC"
-
-                            onValueChange={(e) => {
-                                handleSortChange(selectedSortColumn, e === "ASC" ? "asc" : "desc")
-                                setSortDirection(e === "ASC" ? "asc" : "desc")
-                            }}
+                            value={sortDirection === "asc" ? "ASC" : "DESC"} // Отображаем текущее направление
+                            onValueChange={handleDirectionChange}
                         >
                             <SelectTrigger className="w-[90px]">
                                 <SelectValue placeholder="ASC" />
@@ -71,7 +73,7 @@ export const PopoverSort: React.FC<{
                             </SelectContent>
 
                         </Select>
-                    }
+                    )}
                 </div>
                 {selectedSortColumn && <Button variant={"ghost"} onClick={() => { handleSortChange("") }} className="flex "> <X color="#7b7474" strokeWidth={1} /></Button>}
             </PopoverContent>

@@ -8,7 +8,7 @@ import { ModeToggle } from "../mode-toggle"
 import { ActionType } from "../dashboard/types"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
-export const SiteHeader: React.FC<{ setType: (val: ActionType) => void; setIsShowEditModal: (val: boolean) => void }> = ({ setType, setIsShowEditModal }) => {
+export const SiteHeader: React.FC<{ setType: (val: ActionType) => void }> = ({ setType }) => {
   const store = useContext(StoreContext);
 
   return (
@@ -19,7 +19,7 @@ export const SiteHeader: React.FC<{ setType: (val: ActionType) => void; setIsSho
           orientation="vertical"
           className="mx-2 data-[orientation=vertical]:h-4"
         />
-        <Button variant="default" size="sm" className="sm:flex" onClick={() => { setIsShowEditModal(true); setType(ActionType.CREATE) }}>
+        <Button variant="default" size="sm" className="sm:flex" onClick={() => { store.setIsShowEditModal(true); setType(ActionType.CREATE) }}>
           New item
         </Button>
         <Tooltip>

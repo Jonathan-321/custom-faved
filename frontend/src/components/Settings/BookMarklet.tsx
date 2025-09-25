@@ -22,10 +22,39 @@ const BookmarkletPage = ({onSuccess}: { onSuccess?: () => void }) => {
     const urlParams = new URLSearchParams();
     urlParams.append('url', window.location.href);
     urlParams.append('title', document.title);
-
     const meta_description = document.querySelector('meta[name="description"]');
     if (meta_description) {
       urlParams.append('description', meta_description.getAttribute('content') || '');
+    }
+
+    const imageUrl = document.querySelector('meta[property="og:image"]')?.getAttribute('content')
+      ?? document.querySelector('meta[property="twitter:image"]')?.getAttribute('content')
+      ?? Array.from(document.querySelectorAll('img')).find(img => img.naturalWidth >= 200 && img.naturalHeight >= 200)?.getAttribute('src')
+
+    if (imageUrl) {
+      const resolveUrl = (url) => {
+        if (url.startsWith('http')) {
+          return url;
+        }
+
+        // Handle protocol-relative URLs
+        if (url.startsWith('//')) {
+          return (window.location.protocol || 'https') + url;
+        }
+
+        // Handle absolute paths
+        if (url.startsWith('/')) {
+          return window.location.origin + url;
+        }
+
+        // Handle relative paths
+        let path = window.location.pathname || '/';
+        path = path.substring(0, path.lastIndexOf('/'));
+
+        return window.location.origin + path + '/' + url;
+      }
+
+      urlParams.append('image', resolveUrl(imageUrl));
     }
 
     const windowWidth = 700;
@@ -53,7 +82,7 @@ const BookmarkletPage = ({onSuccess}: { onSuccess?: () => void }) => {
 
   const generateBookmarkletCode = () => {
     const basePath = window.location.origin + '/create-item';
-    return `javascript:(${bookmarkletFunction})();`.replace("<<BASE_PATH>>", basePath);
+    return `javascript:(${bookmarkletFunction.toString()})();`.replace("<<BASE_PATH>>", basePath);
   };
 
   const copyBookmarkletCode = async () => {
@@ -84,7 +113,6 @@ const BookmarkletPage = ({onSuccess}: { onSuccess?: () => void }) => {
   return (
     <div className="flex flex-col gap-4">
       <Card>
-
         <CardHeader>
           <CardTitle className="text-lg">What is a Bookmarklet?</CardTitle>
           <CardDescription>
@@ -98,9 +126,7 @@ const BookmarkletPage = ({onSuccess}: { onSuccess?: () => void }) => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-
           <div className="flex flex-wrap justify-around">
-
             <Card className="text-center border-none shadow-none">
               <CardContent className="p-0">
                 <GitCompare className="w-8 h-8 text-primary mx-auto mb-3"/>
@@ -135,10 +161,8 @@ const BookmarkletPage = ({onSuccess}: { onSuccess?: () => void }) => {
           <CardTitle className="text-lg">
             Installation
           </CardTitle>
-
         </CardHeader>
         <CardContent className="space-y-6">
-
           <div className="flex flex-col sm:flex-row gap-4 items-center">
             <a
               className="gap-2 bg-background/20 border-2 border-dashed border-1 hover:bg-background/30 cursor-move w-full sm:w-auto py-1 px-3 flex justify-center items-center rounded-md"

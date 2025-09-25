@@ -14,7 +14,7 @@ import z from "zod"
 import { useContext, useEffect, useState } from "react"
 import { StoreContext } from "@/store/storeContext"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { observer } from "mobx-react-lite"
 import { Loader2Icon } from "lucide-react"
 const formSchema = z.object({
@@ -24,12 +24,24 @@ const formSchema = z.object({
     .string().min(1, { message: "Password is required" })
 })
 export const LoginForm = observer(({ className, ...props }: React.ComponentProps<"div">) => {
+  const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const store = useContext(StoreContext);
   const navigate = useNavigate();
+
+  // Redirect if user already logged in
   useEffect(() => {
-    if (!store.showLoginPage) navigate('/', { replace: true });
-  }, [store.showLoginPage])
+    if (store.isAuthRequired) {
+      return;
+    }
+
+    const redirectUrl = location.state?.from?.pathname
+      ? location.state.from.pathname + location.state?.from?.search
+      : '/';
+    navigate(redirectUrl, { replace: true });
+  }, [store.isAuthRequired])
+
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,7 +50,7 @@ export const LoginForm = observer(({ className, ...props }: React.ComponentProps
     },
   })
   function onSubmit(values: z.infer<typeof formSchema>) {
-    store.login(values, setIsLoading)
+    store.login(values, setIsLoading);
   }
   return (
 
