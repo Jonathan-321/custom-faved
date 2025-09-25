@@ -13,7 +13,7 @@ import { IconDotsVertical } from "@tabler/icons-react"
 import { Badge } from "../ui/badge"
 import { colorMap } from "@/lib/utils.ts"
 import { observer } from "mobx-react-lite"
-import { ActionType } from "../Dashboard/types"
+import { ActionType } from "../dashboard/types"
 import { Button } from "@/components/ui/button"
 import {
   AlertDialog,

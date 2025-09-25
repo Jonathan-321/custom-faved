@@ -9,7 +9,7 @@ import { SetupAuth } from './components/Setup/SetupAuth';
 import { SetupImport } from './components/Setup/SetupImport';
 import { SetupBookmarklet } from './components/Setup/SetupBookmarklet';
 import { Toaster } from './components/ui/sonner';
-import { Page } from './components/Dashboard/Page';
+import { Page } from './components/dashboard/page';
 import EditItemForm from './components/EditForm/EditItemForm';
 import { Dialog } from './components/ui/dialog';
 import { NotFound } from './components/NotFound';

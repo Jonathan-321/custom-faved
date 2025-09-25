@@ -5,7 +5,7 @@ import { Import } from "lucide-react"
 import { useContext } from "react"
 import { StoreContext } from "@/store/storeContext"
 import { ModeToggle } from "../mode-toggle"
-import { ActionType } from "../Dashboard/types"
+import { ActionType } from "../dashboard/types"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
 export const SiteHeader: React.FC<{ setType: (val: ActionType) => void }> = ({ setType }) => {

@@ -16,7 +16,7 @@ import { StoreContext } from '@/store/storeContext';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 import { formSchema } from './utils';
-import { ActionType } from '../Dashboard/types';
+import { ActionType } from '../dashboard/types';
 import type { ItemType } from '@/types/types';
 import { useLocation } from 'react-router-dom';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';

@@ -22,8 +22,11 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { User } from "lucide-react"
+import { StoreContext } from "@/store/storeContext"
+import { useContext } from "react"
 
 export const NavUser = ({username}: {username: string} ) => {
+  const store = useContext(StoreContext);
   const {isMobile} = useSidebar()
 
   return (

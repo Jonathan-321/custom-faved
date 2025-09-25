@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { toast } from 'sonner';
 import { API_ENDPOINTS } from './api';
-import { ActionType } from '@/components/Dashboard/types';
+import { ActionType } from '@/components/dashboard/types';
 import type { LoginType, PasswordType, UsernameType, UsetType, ItemType, TagsObjectType, TagType } from '@/types/types';
 
 const stylesTost = () => ({
@@ -769,7 +769,7 @@ class mainStore {
         return handleResponse(
           fetch(API_ENDPOINTS.urlMetdata.fetch(url), options),
           'Error fetching metadata from URL',
-          this.setShowLoginPage
+          this.setIsAuthRequired
         )
     }
 }
