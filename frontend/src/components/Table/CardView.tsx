@@ -82,7 +82,7 @@ export const CardView: React.FC<{ el: any }> = observer(({ el }) => {
                 <div className="flex flex-col items-start w-full text-left wrap-anywhere gap-2">
                     {el.image && (
                         <a href={el.image} target='_blank'>
-                            <img className="w-auto h-auto mb-3 rounded-sm" src={el.image} />
+                            <img className="w-auto h-auto max-h-[200px] mb-3 rounded-sm" src={el.image} />
                         </a>
                     )}
 
