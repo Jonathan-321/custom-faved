@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Bookmark, Copy, Feather, GitCompare, Shield } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useIsMobile } from "@/hooks/use-mobile.ts";
+import React, {useState} from 'react';
+import {Bookmark, Copy, Feather, GitCompare, Shield} from 'lucide-react';
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {Badge} from "@/components/ui/badge";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {useIsMobile} from "@/hooks/use-mobile.ts";
 
-const BookmarkletPage = ({ onSuccess }: { onSuccess?: () => void }) => {
+const BookmarkletPage = ({onSuccess}: { onSuccess?: () => void }) => {
   const [copied, setCopied] = useState(false);
   const bookmarkletRef = React.useRef(null);
   const isMobile = useIsMobile();
@@ -26,37 +26,35 @@ const BookmarkletPage = ({ onSuccess }: { onSuccess?: () => void }) => {
     if (meta_description) {
       urlParams.append('description', meta_description.getAttribute('content') || '');
     }
-    let imageUrl = '';
 
-    const ogImage = document.querySelector('meta[property="og:image"]');
-    if (ogImage) {
-      imageUrl = ogImage.getAttribute('content') || '';
-    }
-
-    if (!imageUrl) {
-      const twitterImage = document.querySelector('meta[property="twitter:image"]');
-      if (twitterImage) {
-        imageUrl = twitterImage.getAttribute('content') || '';
-      }
-    }
-
-    if (!imageUrl) {
-      const images = document.querySelectorAll('img');
-      for (let img of images) {
-        if (img.naturalWidth >= 200 && img.naturalHeight >= 200) {
-          if (img.src.startsWith('http')) {
-            imageUrl = img.src;
-            break;
-          } else if (img.src.startsWith('/')) {
-            imageUrl = window.location.origin + img.src;
-            break;
-          }
-        }
-      }
-    }
+    const imageUrl = document.querySelector('meta[property="og:image"]')?.getAttribute('content')
+      ?? document.querySelector('meta[property="twitter:image"]')?.getAttribute('content')
+      ?? Array.from(document.querySelectorAll('img')).find(img => img.naturalWidth >= 200 && img.naturalHeight >= 200)?.getAttribute('src')
 
     if (imageUrl) {
-      urlParams.append('image', imageUrl);
+      const resolveUrl = (url) => {
+        if (url.startsWith('http')) {
+          return url;
+        }
+
+        // Handle protocol-relative URLs
+        if (url.startsWith('//')) {
+          return (window.location.protocol || 'https') + url;
+        }
+
+        // Handle absolute paths
+        if (url.startsWith('/')) {
+          return window.location.origin + url;
+        }
+
+        // Handle relative paths
+        let path = window.location.pathname || '/';
+        path = path.substring(0, path.lastIndexOf('/'));
+
+        return window.location.origin + path + '/' + url;
+      }
+
+      urlParams.append('image', resolveUrl(imageUrl));
     }
 
     const windowWidth = 700;
@@ -131,7 +129,7 @@ const BookmarkletPage = ({ onSuccess }: { onSuccess?: () => void }) => {
           <div className="flex flex-wrap justify-around">
             <Card className="text-center border-none shadow-none">
               <CardContent className="p-0">
-                <GitCompare className="w-8 h-8 text-primary mx-auto mb-3" />
+                <GitCompare className="w-8 h-8 text-primary mx-auto mb-3"/>
                 <h4 className="font-semibold text-primary mb-2">Compatible</h4>
                 <p className="text-sm text-muted-foreground max-w-[180px] mx-auto">Works in all modern desktop and
                   mobile browsers</p>
@@ -140,7 +138,7 @@ const BookmarkletPage = ({ onSuccess }: { onSuccess?: () => void }) => {
 
             <Card className="text-center border-none shadow-none">
               <CardContent className="p-0">
-                <Shield className="w-8 h-8 text-primary mx-auto mb-3" />
+                <Shield className="w-8 h-8 text-primary mx-auto mb-3"/>
                 <h4 className="font-semibold text-primary mb-2">Secure</h4>
                 <p className="text-sm text-muted-foreground max-w-[180px] mx-auto">No access to your page data until
                   activated</p>
@@ -149,7 +147,7 @@ const BookmarkletPage = ({ onSuccess }: { onSuccess?: () => void }) => {
 
             <Card className="text-center border-none shadow-none">
               <CardContent className="p-0">
-                <Feather className="w-8 h-8 text-primary mx-auto mb-3" />
+                <Feather className="w-8 h-8 text-primary mx-auto mb-3"/>
                 <h4 className="font-semibold text-primary mb-2">Lightweight</h4>
                 <p className="text-sm text-muted-foreground max-w-[180px] mx-auto">No browser extension is needed</p>
               </CardContent>
@@ -173,14 +171,14 @@ const BookmarkletPage = ({ onSuccess }: { onSuccess?: () => void }) => {
                 onSuccess && onSuccess();
               }}
             >
-              <Bookmark className="w-4 h-4" />
+              <Bookmark className="w-4 h-4"/>
               Add to Faved
             </a>
             <Button
               onClick={copyBookmarkletCode}
               className="gap-2 w-full sm:w-auto"
             >
-              <Copy className="w-4 h-4" />
+              <Copy className="w-4 h-4"/>
               {copied ? 'Copied!' : 'Copy Code'}
             </Button>
           </div>
