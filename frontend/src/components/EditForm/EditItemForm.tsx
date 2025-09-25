@@ -126,7 +126,10 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isCloseWindowOnSubmit }) =>
 
   const updateMetadataFromUrl = async(url) => {
     setIsMetadataLoading(true);
+
     const data: {data: {title:string, description: string, image_url: string}} = await store.fetchUrlMetadata(url);
+
+    setIsMetadataLoading(false);
 
     if(!data || !data?.data) {
       return;
@@ -136,7 +139,6 @@ const EditItemForm: React.FC<EditItemFormProps> = ({ isCloseWindowOnSubmit }) =>
     form.setValue('description', data.data.description || '')
     form.setValue('image', data.data.image_url || '')
 
-    setIsMetadataLoading(false);
   }
 
   const renderTextField = (name: keyof ItemType, label: string, isDisabled = false) => (
