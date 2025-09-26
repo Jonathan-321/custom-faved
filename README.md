@@ -28,6 +28,7 @@ Faved is a simple self-hosted web application to store and organise web links. A
 - Docker
 
 ## Installation
+### Installation with Docker (fastest way to run locally)
 #### 1. Pull the latest stable image from Docker Hub
 
 ```bash
@@ -44,10 +45,86 @@ This command will:
 * Map port `8080` on your host to port `80` inside the container (`-p 8080:80`). You can change `8080` to any port you prefer.
 * Create and mount a named volume called faved-data to application storage directory inside the container (`-v faved-data:/var/www/html/storage`).
 
-#### 3. Set up database
+#### 3. Access the application
 Once the container is running, you can access the Faved application in your web browser at http://localhost:8080. 
 
-The first time you visit, you'll be prompted to set up the database. Just click "Initialize Database" to proceed and finish the installation.
+The first time you visit, you'll be prompted to set up the database. Just click "Create Database" to proceed and finish the installation.
+
+### Installation using Docker Compose (recommended for server deployment)
+#### 1. Create a new directory for your Faved installation
+```bash
+mkdir faved-app
+cd faved-app
+```
+#### 2. Copy the `docker-compose.yml` [file from this repository](/docker-compose.yml) to your new directory
+```bash
+curl -O https://raw.githubusercontent.com/denho/faved/refs/heads/main/docker-compose.yml
+ ```
+#### 3. Change the application default ports (optional)
+
+By default, the application will run on port `8080`. When you are installing on a server, you probably want to use port 80.
+
+If you want to change the default port, create an `.env` file with the corresponding environmental variables, like this (change the port to the desired one):
+```bash
+echo 'PORT=80' >> .env
+```
+If you are planning to use your own domain with an SSL, also add the following variable:
+```bash
+SSL_PORT=443
+```
+#### 3. Start the Docker service 
+```bash
+docker-compose up -d
+```
+#### 4. Enable SSL for your domain (optional)
+If you are planning to use your own domain with an SSL, run the following command to install a Let\'s Encrypt certificate (replace `yourdomain.com` with your domain name):
+```bash
+docker exec -it faved-web-app sh -c "certbot --apache -d yourdomain.com"
+```
+#### 5. Access the application
+
+Once the container is running, you can access the Faved application in your web browser under the local or remote address and the port you've set up. 
+
+Typically, the URL will be: 
+- http://localhost:8080 for a local installation (if you changed the default port number, replace `8080` with the port you've set)
+- https://example.com for a server installation with a domain and SSL enabled
+- http://206.189.108.11 for a server installation without a domain (replace `206.189.108.11` with your actual server IP address) 
+
+The first time you visit, you'll be prompted to set up the database. Just click "Create Database" to proceed and finish the installation.
+
+## Updating
+
+### Updating with Docker
+
+#### 1. Pull the latest stable image from Docker Hub
+
+```bash
+docker pull denho/faved
+```
+
+#### 2. Stop and remove the running container
+```bash
+docker stop faved
+docker rm faved
+```
+If you changed the container name during installation, replace `faved` with the name you used.
+
+#### Start a new Docker container
+```bash
+docker run -d --name faved -p 8080:80 -v faved-data:/var/www/html/storage denho/faved
+```
+
+### Updating using Docker Compose
+#### 1. Pull the latest `docker-compose.yml` [file from this repository](/docker-compose.yml) to your directory with the application
+```bash
+cd faved-app
+curl -O https://raw.githubusercontent.com/denho/faved/refs/heads/main/docker-compose.yml
+ ```
+
+#### 2. Recreate the Docker service with the latest image pulled from Docker Hub
+```bash
+docker compose up --pull always -d
+```
 
 ## Using the Bookmarklet
 
