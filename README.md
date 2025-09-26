@@ -115,9 +115,10 @@ docker run -d --name faved -p 8080:80 -v faved-data:/var/www/html/storage denho/
 ```
 
 ### Updating using Docker Compose
-#### 1. Pull the latest `docker-compose.yml` [file from this repository](/docker-compose.yml) to your directory with the application
+#### 1. Pull the latest `docker-compose.yml` [file from this repository](/docker-compose.yml) to your Faved instance directory
 ```bash
 cd faved-app
+rm docker-compose.yml
 curl -O https://raw.githubusercontent.com/denho/faved/refs/heads/main/docker-compose.yml
  ```
 
