@@ -1,0 +1,34 @@
+FROM php:8.4-apache
+
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y libzip-dev && \
+    docker-php-ext-install zip && \
+    apt-get install -y certbot python3-certbot-apache
+
+RUN a2enmod rewrite && \
+    a2enmod ssl
+
+WORKDIR /var/www/html
+
+RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
+
+RUN rm -rf /etc/apache2/sites-enabled/*
+COPY ./apache-conf /etc/apache2/sites-enabled
+
+COPY ./controllers /var/www/html/controllers
+COPY ./framework /var/www/html/framework
+COPY ./models /var/www/html/models
+COPY ./public /var/www/html/public
+
+COPY ./storage /var/www/html/storage
+RUN rm -rf /var/www/html/storage/*
+RUN chown www-data:www-data /var/www/html/storage
+
+COPY ./utils /var/www/html/utils
+COPY ./views /var/www/html/views
+COPY ./Config.php /var/www/html/Config.php
+COPY ./init.php /var/www/html/init.php
+COPY ./routes.php /var/www/html/routes.php
+
+RUN find . \( -name ".DS_Store" -o -name ".gitignore" \) -type f -delete
