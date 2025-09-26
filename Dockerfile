@@ -10,3 +10,5 @@ RUN a2enmod rewrite && \
     a2enmod ssl
 
 WORKDIR /var/www/html
+
+RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
