@@ -1,7 +1,9 @@
 name: faved-dev
 services:
   apache-php:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     restart: always
     working_dir: /var/www/html
     volumes:
