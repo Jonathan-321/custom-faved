@@ -70,16 +70,16 @@ echo 'PORT=80' >> .env
 ```
 If you are planning to use your own domain with an SSL, also add the following variable:
 ```bash
-SSL_PORT=443
+echo 'SSL_PORT=443' >> .env
 ```
 #### 3. Start the Docker service 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 #### 4. Enable SSL for your domain (optional)
 If you are planning to use your own domain with an SSL, run the following command to install a Let\'s Encrypt certificate (replace `yourdomain.com` with your domain name):
 ```bash
-docker exec -it faved-web-app sh -c "certbot --apache -d yourdomain.com"
+docker compose exec -it apache-php sh -c "certbot --apache -d yourdomain.com"
 ```
 #### 5. Access the application
 
