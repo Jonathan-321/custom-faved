@@ -26,6 +26,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../ui/alert-dialog"
+import { TagBadge } from "./TagBadge"
+
 
 export const schema = z.object({
   id: z.number(),
@@ -44,42 +46,6 @@ interface TagItem {
   color?: string
   title?: string
 }
-
-const getColorClass = (color?: string): string => {
-  if (!color) return colorMap.gray || "bg-gray-500"
-  return colorMap[color] || colorMap.gray || "bg-gray-500"
-}
-
-const TagBadge = observer(({tagID}: { tagID: number }) => {
-  const [isHovered, setIsHovered] = React.useState(false)
-  const store = React.useContext(StoreContext)
-  const safeTagList = store.tags || {}
-  const tagItem = safeTagList[tagID] || {}
-  const fullPath = tagItem?.fullPath.replaceAll('\\/', '/');
-  const tagName = tagItem?.title;
-  const colorClass = getColorClass(tagItem.color)
-
-  const setTag = () => {
-    store.setCurrentTagId(tagID)
-    store.setCurrentPage(1)
-  }
-
-  if (!fullPath) return null
-
-  return (
-    <Badge
-      key={tagID}
-      variant={'secondary'}
-      className="mr-2 cursor-pointer"
-      onClick={setTag}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <span className={`w-3 h-3 rounded-full inline-block align-[-2px] mr-2 ${colorClass}`}></span>
-      <span>{isHovered ? fullPath : tagName}</span>
-    </Badge>
-  )
-})
 
 const UrlCellContent = observer(({item}: { item: z.infer<typeof schema> }) => {
   const {url, title, tags, updated_at, created_at} = item
