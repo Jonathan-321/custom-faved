@@ -210,7 +210,7 @@ export const DataTable: React.FC = observer(() => {
             )}
           </TableBody>
         </Table> :
-          <div className="grid grid-cols-1 gap-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs @2xl/main:grid-cols-2 @5xl/main:grid-cols-3 @7xl/main:grid-cols-4 @min-[108rem]/main:grid-cols-5  @min-[126rem]/main:grid-cols-6 @min-[142rem]/main:grid-cols-7">
             {currentRows.length > 0 ? (
               currentRows.map((row) => {
                 const el = row.original;

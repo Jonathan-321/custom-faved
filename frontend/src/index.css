@@ -157,5 +157,8 @@ a:hover {
     @apply bg-background text-foreground;
   }
 
+  button {
+    cursor: pointer;
+  }
 }
 
