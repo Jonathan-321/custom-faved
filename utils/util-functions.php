@@ -198,7 +198,7 @@ function createWelcomeContent($repository)
 		'Free open-source bookmark manager with customisable nested tags. Super fast and lightweight. All data is stored locally. - denho/faved',
 		'https://github.com/denho/faved',
 		'',
-		'',
+		'https://repository-images.githubusercontent.com/995300772/35566533-7ffc-4101-a7ce-926f5d82b6ca',
 		null
 	);
 	$repository->attachItemTags([$faved_tag_id]
@@ -229,7 +229,7 @@ function createWelcomeContent($repository)
 		'Pocket is shutting down on July 8, 2025. As a privacy-first alternative, Faved lets you organize and manage your bookmarks while keeping full ownership of your data. Learn how to migrate your data from Pocket to Faved in a few simple steps.',
 		'https://faved.dev/blog/migrate-pocket-to-faved',
 		'',
-		'',
+		'https://faved.dev/static/images/posts/migrate-pocket-to-faved/migrate-from-pocket-to-faved-ogimage.png',
 		null
 	);
 	$repository->attachItemTags([$welcome_tag_id], $item_id);
