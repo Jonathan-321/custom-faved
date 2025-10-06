@@ -69,7 +69,7 @@ const UrlCellContent = observer(({item}: { item: z.infer<typeof schema> }) => {
         ))}
       </div>}
       <div className="text-muted-foreground text-sm mt-auto">
-        <small className="text-sm leading-none font-medium">Created at:</small> {updated_at ?? created_at}
+        <small className="text-sm leading-none font-medium">Created at:</small> {created_at}
       </div>
     </div>
   )

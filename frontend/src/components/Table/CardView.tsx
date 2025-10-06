@@ -120,7 +120,7 @@ export const CardView: React.FC<{ el: any }> = observer(({ el }) => {
             </CardHeader>
             <CardFooter className="pt-3 text-left">
                 <div>
-                    <p className="text-muted-foreground text-sm"><small className="text-sm leading-none font-medium">Created at:</small> {el.updated_at ?? el.created_at}</p>
+                    <p className="text-muted-foreground text-sm"><small className="text-sm leading-none font-medium">Created at:</small> {el.created_at}</p>
                 </div>
             </CardFooter>
         </div>
