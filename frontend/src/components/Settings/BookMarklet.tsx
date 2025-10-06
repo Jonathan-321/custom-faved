@@ -28,7 +28,7 @@ const BookmarkletPage = ({onSuccess}: { onSuccess?: () => void }) => {
     }
 
     const imageUrl = document.querySelector('meta[property="og:image"]')?.getAttribute('content')
-      ?? document.querySelector('meta[property="twitter:image"]')?.getAttribute('content')
+      ?? document.querySelector('meta[name="twitter:image"]')?.getAttribute('content')
       ?? Array.from(document.querySelectorAll('img')).find(img => img.naturalWidth >= 200 && img.naturalHeight >= 200)?.getAttribute('src')
 
     if (imageUrl) {
