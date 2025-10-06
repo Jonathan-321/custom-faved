@@ -164,10 +164,10 @@ function createWelcomeContent($repository)
 
 	$item_id = $repository->createItem(
 		'Faved - Organize Your Bookmarks',
-		'A self-hosted, open-source solution to store, categorize, and access your bookmarks from anywhere.',
+		'Free, open-source bookmark manager: superfast, lightweight, and secure. Organize with customisable nested tags, save web pages from any browser via a bookmarklet.',
 		'https://faved.dev/',
 		'Faved main site',
-		'https://faved.dev/static/images/bookmark-thumb.png',
+		'https://faved.dev/static/images/og-image.png',
 		null
 	);
 	$repository->attachItemTags([$faved_tag_id], $item_id);
