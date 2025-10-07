@@ -11,17 +11,19 @@ Faved is a simple self-hosted web application to store and organise web links. A
 
 </div>
 
-<img width="1000" height="791" alt="screenshot-list-desktop-mobile-ff-small-compressorio" src="https://github.com/user-attachments/assets/58987e97-5ed3-4628-aed6-0756d6404c81" />
+https://github.com/user-attachments/assets/0ecbf26a-9ed8-49d9-a5ce-33d471c06fdf
 
 
 ## Features
 
-- **Clean Interface**: A distraction-free UI to help you quickly find and manage your bookmarks.
+- **Clean Interface**: A distraction-free responsive UI to help you quickly find and manage your bookmarks on any desktop or mobile device. Includes instant search, bookmark sorting, multiple layouts, and sleek dark mode.
 - **Advanced tagging system**: Organize bookmarks with colored nested tags. Pin important tags at the top for quick access.
-- **Browser bookmarklet**: Save bookmarks from any desktop or mobile browser without installing any extensions.
+- **Browser bookmarklet**: Save bookmarks from any desktop or mobile browser without installing any extensions. It is secure and convenient.
 - **Lightweight and swift**: Built with efficiency in mind, Faved loads fast and runs with minimal resource usage.
-- **One-click migration from Pocket**: easily move your saved links, tags, collections and notes from Pocket by uploading the exported ZIP file.
+- **Import from browser**: Importing bookmarks from Chrome, Safari, Firefox, Edge, fully preserving your browser bookmark folders structure.
+- **One-click migration from Pocket**: Easily move your saved links, tags, collections and notes from Pocket by uploading the exported ZIP file.
 - **Open Source**: The code is open for you to inspect, modify, and contribute to.
+
 
 ## Requirements
 
