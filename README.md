@@ -11,7 +11,7 @@ Free and open source. No ads or tracking. All data is stored locally.
 
 </div>
 
-<img width="3600" height="2100" alt="screenshot-list-desktop-mobile-safari" src="https://github.com/user-attachments/assets/ae0f88b1-d993-4050-aad1-b5b92022c13b" />
+<img width="2400" height="1400" alt="screenshot-list-desktop-mobile-safari" src="https://github.com/user-attachments/assets/9b5fb4d4-6b95-4fae-a9bd-fb1600a3d00c" />
 
 
 ## Features
