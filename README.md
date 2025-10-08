@@ -11,7 +11,7 @@ Free and open source. No ads or tracking. All data is stored locally.
 
 </div>
 
-https://github.com/user-attachments/assets/0ecbf26a-9ed8-49d9-a5ce-33d471c06fdf
+<img width="3600" height="2100" alt="screenshot-list-desktop-mobile-safari" src="https://github.com/user-attachments/assets/ae0f88b1-d993-4050-aad1-b5b92022c13b" />
 
 
 ## Features
@@ -24,12 +24,15 @@ https://github.com/user-attachments/assets/0ecbf26a-9ed8-49d9-a5ce-33d471c06fdf
 - **One-click migration from Pocket**: Easily move your saved links, tags, collections and notes from Pocket by uploading the exported ZIP file.
 - **Open Source**: The code is open for you to inspect, modify, and contribute to.
 
+## Overview video
 
-## Requirements
-
-- Docker
+https://github.com/user-attachments/assets/0ecbf26a-9ed8-49d9-a5ce-33d471c06fdf
 
 ## Installation
+
+Requirements: 
+- Docker
+
 ### Installation with Docker (fastest way to run locally)
 #### 1. Pull the latest stable image from Docker Hub
 
@@ -51,6 +54,8 @@ This command will:
 Once the container is running, you can access the Faved application in your web browser at http://localhost:8080. 
 
 The first time you visit, you'll be prompted to set up the database. Just click "Create Database" to proceed and finish the installation.
+
+--- 
 
 ### Installation using Docker Compose (recommended for server deployment)
 #### 1. Create a new directory for your Faved installation
@@ -115,6 +120,8 @@ If you changed the container name during installation, replace `faved` with the 
 ```bash
 docker run -d --name faved -p 8080:80 -v faved-data:/var/www/html/storage denho/faved
 ```
+
+---
 
 ### Updating using Docker Compose
 #### 1. Pull the latest `docker-compose.yml` [file from this repository](/docker-compose.yml) to your Faved instance directory
