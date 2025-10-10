@@ -7,8 +7,11 @@ Free and open source. No ads or tracking. All data is stored locally.
 
 <div align="center">
   
-  🧪 **[Try Live Demo](https://demo.faved.dev/)** | 🌐 **[Visit Website](https://faved.dev/)** | 📚 **[Read Blog](https://faved.dev/blog)** | 𝕏 **[Follow on X](https://x.com/FavedTool)**
-
+  🧪 **[Try Live Demo](https://demo.faved.dev/)** | 🌐 **[Visit Website](https://faved.dev/)** |  ☁️ **[Cloud Version](https://faved.dev/waitlist?ref=gh-readme)** 
+</div>
+<div align="center">
+  
+  📚 **[Read Blog](https://faved.dev/blog)** | 𝕏 **[Follow on X](https://x.com/FavedTool)**
 </div>
 
 <img width="2400" height="1400" alt="screenshot-list-desktop-mobile-safari" src="https://github.com/user-attachments/assets/9b5fb4d4-6b95-4fae-a9bd-fb1600a3d00c" />
