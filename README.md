@@ -153,14 +153,14 @@ docker compose up --pull always -d
 
 ## Project Structure
 
-- `/controllers`: Application controllers
-- `/frontend`: React frontend source files
-- `/framework`: Core framework components
-- `/models`: Data models
-- `/public`: Web-accessible files
-- `/storage`: Database storage
-- `/utils`: Utility classes
-- `/views`: HTML templates
+See [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) for detailed code organization.
+
+### Quick Navigation
+- 📚 **[Bookmark Import Tools](scripts/bookmark-import/)** - Import bookmarks from Chrome/Safari
+- 🎨 **[Frontend Code](frontend/src/)** - React components and UI
+- 🔧 **[Backend API](controllers/)** - PHP controllers and endpoints
+- 📦 **[Scripts](scripts/)** - Utility scripts and tools
+- 📄 **[Documentation](docs/)** - Project documentation
 
 ## License
 
