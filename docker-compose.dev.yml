@@ -3,7 +3,7 @@ services:
   apache-php:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: docker/Dockerfile.dev
     restart: always
     working_dir: /var/www/html
     volumes:

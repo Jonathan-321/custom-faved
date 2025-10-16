@@ -18,7 +18,7 @@ fi
 
 # Run the import
 echo "📚 Importing bookmarks from your browsers..."
-docker compose -f docker-compose.dev.yml exec apache-php php import-bookmarks.php
+docker compose -f docker-compose.dev.yml exec apache-php php scripts/bookmark-import/import-bookmarks.php
 
 echo ""
 echo "✅ Sync complete!"
