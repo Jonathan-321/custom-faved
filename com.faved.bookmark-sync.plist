@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.faved.bookmark-sync</string>
+    
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/osascript</string>
+        <string>-e</string>
+        <string>do shell script "cd /Users/jonathanmuhire/faved && /usr/bin/open -a 'Google Chrome' http://localhost:5173/setup/import"</string>
+    </array>
+    
+    <key>StartInterval</key>
+    <integer>3600</integer>
+    
+    <key>RunAtLoad</key>
+    <true/>
+    
+    <key>StandardOutPath</key>
+    <string>/Users/jonathanmuhire/faved/bookmark-sync.log</string>
+    
+    <key>StandardErrorPath</key>
+    <string>/Users/jonathanmuhire/faved/bookmark-sync-error.log</string>
+</dict>
+</plist>

@@ -9,6 +9,7 @@ use Utils\DOMParser;
 use function Framework\data;
 use function Utils\fetchPageHTML;
 use function Utils\resolveUrl;
+use function Utils\suggestTags;
 
 class UrlMetadataController implements ControllerInterface
 {
@@ -34,6 +35,8 @@ class UrlMetadataController implements ControllerInterface
 			$image_url = resolveUrl($image_url, $url);
 		}
 
+		$suggested_tags = suggestTags($url, $parser->extractTitle() ?? '', $parser->extractDescription() ?? '');
+
 		return data([
 			'success' => true,
 			'message' => 'Metadata fetched successfully',
@@ -41,7 +44,8 @@ class UrlMetadataController implements ControllerInterface
 				'title' => $parser->extractTitle() ?? parse_url($url, PHP_URL_HOST),
 				'description' => $parser->extractDescription() ?? '',
 				'image_url' => $image_url ?? '',
-				'url' => $url
+				'url' => $url,
+				'suggested_tags' => $suggested_tags
 			]
 		]);
 	}
